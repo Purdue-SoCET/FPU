@@ -1,6 +1,6 @@
-`ifndef CPU_TYPES_PKG_VH
-`define CPU_TYPES_PKG_VH
-package cpu_types_pkg;
+`ifndef FPU_TYPES_PKG_VH
+`define FPU_TYPES_PKG_VH
+package fpu_types_pkg;
 
 	// word width and size
 	parameter WORD_W	= 32;
