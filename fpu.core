@@ -1,0 +1,143 @@
+CAPI=2:
+name: socet:aft:fpu:0.1.0
+description: SoCET FPU module
+
+filesets:
+  rtl:
+#    depend:
+#      - "socet:digital-lib:counter"
+    files:
+      - src/apb_slave.sv
+    file_type: systemVerilogSource
+
+  tb:
+    files:
+      - tb/tb_apb_slave.sv
+    file_type: systemVerilogSource
+
+  rtl_rcv_block:
+    depend:
+      - "socet:digital-lib:counter"
+      - "socet:digital-lib:shift_register"
+      - "socet:digital-lib:edge_detector"
+    files:
+      - src/rcv_block.sv
+      - src/rcu.sv
+      - src/timer.sv
+      - src/sr_9bit.sv
+      - src/stop_bit_chk.sv
+      - src/rx_data_buff.sv
+    file_type: systemVerilogSource
+  
+  tb_rcv_block:
+    files:
+      - tb/tb_rcv_block.sv
+    file_type: systemVerilogSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: apb_slave
+
+  rcv_block: &rcv_block
+    filesets:
+      - rtl_rcv_block
+    toplevel: rcv_block
+    
+  sim:
+    <<: *default
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb
+    toplevel: 
+      - tb_apb_slave
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+
+  sim_rcv_block:
+    <<: *rcv_block
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_rcv_block
+    toplevel: 
+      - tb_rcv_block
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+
+  fpga:
+    <<: *default
+    description: Synthesize for FPGA
+    default_tool: quartus
+    toplevel:
+      - apb_slave
+    parameters:
+      - SYNTHESIS=true
+    tools:
+      quartus:
+        family: Cyclone IV E
+        device: EP4CE115F29C7 
+              
+
+  lint:
+    filesets:
+      - lint_files
+    description: Linting
+    default_tool: veriblelint
+    toplevel: tb_apb_slave
+    tools:
+      veriblelint:
+        verible_lint_args: ['--autofix=inplace-interactive', '--rules_config_search']
+
+  format:
+    filesets:
+      - lint_files
+    description: Formatting
+    default_tool: veribleformat
+    toplevel: tb_apb_slave
+    tools:
+      veribleformat:
+        verible_format_args: ['--indentation_spaces=4', '--inplace']
+
+parameters:
+  SYNTHESIS:
+    datatype: bool
+    paramtype: vlogdefine
