@@ -21,6 +21,7 @@ package fpu_types_pkg;
 	parameter SIGN_W					= 1;
 	parameter HALF_EXPONENT_W	= 5;
 	parameter HALF_FRACTION_W	= 10;
+	parameter HALF_FLOAT_W		= 15;	
 
 	// half-precision special number representations
 	parameter HALF_ZERO		= 16'h0000; // exponent 0, mantissa zero
@@ -117,6 +118,12 @@ package fpu_types_pkg;
 		CLASS_QNAN			= 10'b1000000000, // rs1 is a quiet NaN
 
 	} fpu_classify_w;
+
+typedef logic [WORD_W-1:0] word_t;
+typedef logic [HALF_EXPONENT_W-1:0] exp_t; // 5 bits
+typedef logic [HALF_FRACTION_W-1:0] mant_t; // 10 bits
+
+
 
 endpackage
 `endif // FPU_TYPES_PKG_VH
