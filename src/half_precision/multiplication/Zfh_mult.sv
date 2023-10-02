@@ -8,10 +8,10 @@ module Zfh_mult (
 import cpu_types_pkg::*;    
 
 logic sign1, sign2, sign_product, exp_overflow;
-logic implicit_leading_bit1, implicit_leading_bit2, implicit_leading_bit_product;
+logic implicit_leading_bit1, implicit_leading_bit2;
 exp_t exp1, exp2, exp_product;
 mant_t mant1, mant2, mant_product;
-logic [WORD_W+1 : 0] mant_product_full;
+logic [21: 0] mant_product_full;
 
 /////////// Initialization ///////////
 assign exp1 = float1[HALF_EXPONENT_W-1 : 0]; // all exp(s) are signed to represent float between 1 and 2
@@ -46,7 +46,7 @@ always_comb begin : mult
     end else if (exp1 == '1 & ~mant1[HALF_FRACTION_W-1] | exp2 == '1 & ~mant2[HALF_FRACTION_W-1]) begin
         //SNaN
         exp_product = '1;
-        mant_product = '1;
+        mant_product = 10'b0111111111;
         sign_product = '1;
     end
 
@@ -63,13 +63,15 @@ always_comb begin : mult
         exp_product = exp1 + exp2;
         exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1])
         mant_product_full = {implicit_leading_bit1, mant1} * {implicit_leading_bit2, mant2};
-        implicit_leading_bit_product = mant_product_full[WORD_W+1];
+        if (mant_product[21:20] == 2'd2 | mant_product[21:20] == 2'd3) begin
+            exp_product = exp_product + 1;
+        end
         if (~exp_overflow) begin
-            mant_product = mant_product_full[WORD_W: WORD_W-HALF_FRACTION_W+1]; 
+            mant_product = mant_product_full[19:0]; 
         end else begin
-            //overflow in exp, product = NaN
+            //overflow in exp, product = SNaN
             exp_product = '1;
-            mant_product = '1;
+            mant_product = 10'b0111111111;
             sign_product = '1;
         end
     end
