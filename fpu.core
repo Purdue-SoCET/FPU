@@ -7,43 +7,38 @@ filesets:
 #    depend:
 #      - "socet:digital-lib:counter"
     files:
-      - src/apb_slave.sv
+      - src/fpu.sv
     file_type: systemVerilogSource
 
   tb:
     files:
-      - tb/tb_apb_slave.sv
+      - tb/tb_fpu.sv
     file_type: systemVerilogSource
 
-  rtl_rcv_block:
-    depend:
-      - "socet:digital-lib:counter"
-      - "socet:digital-lib:shift_register"
-      - "socet:digital-lib:edge_detector"
+  rtl_multiply:
+#    depend:
+#      - "socet:digital-lib:counter"
+#      - "socet:digital-lib:shift_register"
+#      - "socet:digital-lib:edge_detector"
     files:
-      - src/rcv_block.sv
-      - src/rcu.sv
-      - src/timer.sv
-      - src/sr_9bit.sv
-      - src/stop_bit_chk.sv
-      - src/rx_data_buff.sv
+      - src/half_precision/multiplication/float_mult_16bit.sv
     file_type: systemVerilogSource
   
-  tb_rcv_block:
+  tb_multiply:
     files:
-      - tb/tb_rcv_block.sv
+      - src/half_precision/multiplication/tb_float_mult_16bit.sv
     file_type: systemVerilogSource
 
 targets:
   default: &default
     filesets:
       - rtl
-    toplevel: apb_slave
+    toplevel: fpu
 
-  rcv_block: &rcv_block
+  multiply: &multiply
     filesets:
-      - rtl_rcv_block
-    toplevel: rcv_block
+      - rtl_multiply
+    toplevel: multiply
     
   sim:
     <<: *default
@@ -52,7 +47,7 @@ targets:
     filesets_append:
       - tb
     toplevel: 
-      - tb_apb_slave
+      - tb_fpu
     tools:
       xcelium:
         xrun_options:
@@ -74,14 +69,14 @@ targets:
           - --binary
           - --timescale 1ns
 
-  sim_rcv_block:
-    <<: *rcv_block
+  sim_multiply:
+    <<: *multiply
     description: Simulate w/TB
     default_tool: xcelium
     filesets_append:
-      - tb_rcv_block
+      - tb_multiply
     toplevel: 
-      - tb_rcv_block
+      - tb_multiply
     tools:
       xcelium:
         xrun_options:
@@ -108,7 +103,7 @@ targets:
     description: Synthesize for FPGA
     default_tool: quartus
     toplevel:
-      - apb_slave
+      - fpu
     parameters:
       - SYNTHESIS=true
     tools:
@@ -122,7 +117,7 @@ targets:
       - lint_files
     description: Linting
     default_tool: veriblelint
-    toplevel: tb_apb_slave
+    toplevel: tb_fpu
     tools:
       veriblelint:
         verible_lint_args: ['--autofix=inplace-interactive', '--rules_config_search']
@@ -132,7 +127,7 @@ targets:
       - lint_files
     description: Formatting
     default_tool: veribleformat
-    toplevel: tb_apb_slave
+    toplevel: tb_fpu
     tools:
       veribleformat:
         verible_format_args: ['--indentation_spaces=4', '--inplace']
