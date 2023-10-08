@@ -21,7 +21,7 @@ package fpu_types_pkg;
 	parameter SIGN_W					= 1;
 	parameter HALF_EXPONENT_W	= 5;
 	parameter HALF_FRACTION_W	= 10;
-	parameter HALF_FLOAT_W		= 15;	
+	parameter HALF_FLOAT_W		= 16;	
 
 	// half-precision special number representations
 	parameter HALF_ZERO		= 16'h0000; // exponent 0, mantissa zero
@@ -55,10 +55,10 @@ package fpu_types_pkg;
 		FUNCT_FSGNJ		= 5'b00100, // includes FSGNJ, FSGNJN, FSGNJX
 		FUNCT_FMINMAX	= 5'b00101, // include FMIN/FMAX
 		FUNCT_FCOMP		= 5'b10100, // include FEQ, FLT, FLE
-		FUNCT_FCLASS	= 5'b11100,
+		FUNCT_FCLASS	= 5'b11100
 
-		FUNCT_FCVTHI	= 5'b00000, // convert H to I // TODO: unknown
-		FUNCT_FCVTIH	= 5'b00000, // convert I to H // TODO: unknown
+		// FUNCT_FCVTHI	= 5'b00000, // convert H to I // TODO: unknown
+		// FUNCT_FCVTIH	= 5'b00000 // convert I to H // TODO: unknown
 
 	} fpu_funct_t;
 
@@ -78,28 +78,29 @@ package fpu_types_pkg;
 		FMT_SINGLE	= 2'b00,
 		FMT_DOUBLE	= 2'b01,
 		FMT_HALF		= 2'b10,
-		FMT_QUAD		= 2'b11,
+		FMT_QUAD		= 2'b11
 
-	} fpu_width_t;
+	} fpu_fmt_t;
 
 	// rm field types
-	typedef enum logic [FMT_W - 1 : 0] {
+	typedef enum logic [RM_W - 1 : 0] {
 
 		RM_RNE	= 3'b000,	// round to nearest, ties to even
 		RM_RTZ	= 3'b001,	// round towards zero
 		RM_RDN	=	3'b010,	// round down (towards -inf)
 		RM_RUP	= 3'b011,	// round up (rowards inf)
 		RM_RMM	= 3'b100,	// round to nearest, ties to max magnitude
-		RM_DYN	= 3'b111,	// selects dynamic rounding mode; in rounding mode register, invalid
+		RM_DYN	= 3'b111	// selects dynamic rounding mode; in rounding mode register, invalid
 
+		// TODO overlapping enum values
 		// for FMINMAX instructions
-		RM_FMIN	= 3'b000,
-		RM_FMAX	= 3'b001,
+		// RM_FMIN	= 3'b000,
+		// RM_FMAX	= 3'b001,
 
 		// for FCOMP instructions
-		RM_FEQ		= 3'b010,
-		RM_FLT		= 3'b001,
-		RM_FLE		= 3'b000
+		// RM_FEQ		= 3'b010,
+		// RM_FLT		= 3'b001,
+		// RM_FLE		= 3'b000
 
 	} fpu_rm_t;
 
@@ -115,15 +116,13 @@ package fpu_types_pkg;
 		CLASS_NORM			= 10'b0001000000, // rs1 is a positive normal number
 		CLASS_INF				= 10'b0010000000, // rs1 is +inf
 		CLASS_SIGNAN		= 10'b0100000000, // rs1 is a signaling NaN
-		CLASS_QNAN			= 10'b1000000000, // rs1 is a quiet NaN
+		CLASS_QNAN			= 10'b1000000000 // rs1 is a quiet NaN
 
 	} fpu_classify_w;
 
 typedef logic [WORD_W-1:0] word_t;
 typedef logic [HALF_EXPONENT_W-1:0] exp_t; // 5 bits
 typedef logic [HALF_FRACTION_W-1:0] mant_t; // 10 bits
-
-
 
 endpackage
 `endif // FPU_TYPES_PKG_VH

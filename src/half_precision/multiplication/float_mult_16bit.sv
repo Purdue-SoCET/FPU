@@ -5,7 +5,7 @@ module float_mult_16bit (
     input logic [HALF_FLOAT_W-1:0] float2,
     output logic [HALF_FLOAT_W-1:0] product
 );
-import cpu_types_pkg::*;    
+import fpu_types_pkg::*;    
 
 logic sign1, sign2, sign_product, exp_overflow;
 logic implicit_leading_bit1, implicit_leading_bit2;
@@ -18,8 +18,8 @@ assign exp1 = float1[HALF_EXPONENT_W-1 : 0]; // all exp(s) are signed to represe
 assign exp2 = float2[HALF_EXPONENT_W-1 : 0];
 assign mant1 = float1[HALF_FRACTION_W-1 : 0];
 assign mant2 = float2[HALF_FRACTION_W-1 : 0];
-assign sign1 = float1[HALF_FLOAT_W-1 : 0];
-assign sign2 = float2[HALF_FLOAT_W-1 : 0];
+assign sign1 = float1[HALF_FLOAT_W-1];
+assign sign2 = float2[HALF_FLOAT_W-1];
 assign implicit_leading_bit1 = ~(exp1 == '0);
 assign implicit_leading_bit2 = ~(exp2 == '0);
 
