@@ -21,14 +21,14 @@ filesets:
 #      - "socet:digital-lib:shift_register"
 #      - "socet:digital-lib:edge_detector"
     files:
-      - include/fpu_types_pkg.vh
+      - include/fpu_types_pkg.vh : {is_include_file: true}
       - src/half_precision/multiplication/float_mult_16bit.sv
     file_type: systemVerilogSource
   
   tb_multiply:
     files:
-      - include/fpu_types_pkg.vh
-      - src/half_precision/multiplication/tb_float_mult_16bit.sv
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/half_precision/multiplication/tb_multiply.sv
     file_type: systemVerilogSource
 
 targets:
