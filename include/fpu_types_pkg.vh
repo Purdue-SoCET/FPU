@@ -12,7 +12,7 @@ package fpu_types_pkg;
 	parameter IMM_W			= 12;
 	parameter FMT_W			= 2;
 	parameter RM_W			= 3;
-	parameter FUNCT5_W	= 5
+	parameter FUNCT5_W	= 5;
 
 	// special format widths
 	parameter CLASSIFY_W	= 10;
