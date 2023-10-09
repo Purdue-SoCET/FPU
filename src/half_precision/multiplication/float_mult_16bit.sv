@@ -23,13 +23,16 @@ assign sign2 = float2[HALF_FLOAT_W-1];
 assign implicit_leading_bit1 = ~(exp1 == '0);
 assign implicit_leading_bit2 = ~(exp2 == '0);
 
-assign exp_product = '0;
-assign mant_product = '0;
-assign sign_product = '0;
-assign mant_product_full = '0;
 assign product = {sign_product, exp_product, mant_product};
 
 always_comb begin : mult
+    /////////// Default ///////////
+    exp_product = '0;
+    mant_product = '0;
+    sign_product = '0;
+    mant_product_full = '0;
+    exp_overflow = '0;
+
     /////////// Zero ///////////
     if ((float1 == HALF_ZERO | float1 == HALF_ZERO) | (float2 == HALF_ZERO | float2 == HALF_ZERO)) begin
         exp_product = '0;
@@ -63,11 +66,11 @@ always_comb begin : mult
         exp_product = exp1 + exp2;
         exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
         mant_product_full = {implicit_leading_bit1, mant1} * {implicit_leading_bit2, mant2};
-        if (mant_product[21:20] == 2'd2 | mant_product[21:20] == 2'd3) begin
+        if (mant_product_full[21:20] == 2'd2 | mant_product_full[21:20] == 2'd3) begin
             exp_product = exp_product + 1;
         end
         if (~exp_overflow) begin
-            mant_product = mant_product_full[19:0]; 
+            mant_product = mant_product_full[19:10]; 
         end else begin
             //overflow in exp, product = SNaN
             exp_product = '1;

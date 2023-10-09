@@ -30,6 +30,7 @@ initial begin
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
+    $finish;
 end
 
 endprogram
