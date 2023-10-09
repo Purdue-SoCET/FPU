@@ -25,6 +25,10 @@ parameter PERIOD = 10;
 logic [3:0] test_num;
 
 initial begin
+    // generate waveform files
+    $dumpfile("waveform_multiply.fst");
+    $dumpvars;
+
     test_num = 0;
     tb_float1 = '0;
     tb_float2 = '0;
