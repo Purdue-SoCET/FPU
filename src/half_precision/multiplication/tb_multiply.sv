@@ -28,12 +28,57 @@ initial begin
     // generate waveform files
     $dumpfile("waveform_multiply.fst");
     $dumpvars;
-
-    test_num = 0;
+    /////////// Zero ///////////
+    test_num = 0; // case0: 0 * 0
     tb_float1 = '0;
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
+
+    test_num += 1; // case1: 5 * 0
+    tb_float1 = 16'h0900;
+    tb_float2 = '0;
+    #(PERIOD)
+    @(negedge CLK);
+
+    /////////// Inf ///////////
+    test_num += 1; // case2: +Inf * 5
+    tb_float1 = 16'h7c00; 
+    tb_float2 = 16'h0900;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case3: 5 * -Inf
+    tb_float1 = 16'h0900;
+    tb_float2 = 16'hfc00;
+    #(PERIOD)
+    @(negedge CLK);
+
+    /////////// NaN ///////////
+    test_num += 1; // case4: +Inf * 0 (QNaN)
+    tb_float1 = 16'h7c00; 
+    tb_float2 = '0;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case5: 0 * -Inf (QNaN)
+    tb_float1 = '0;
+    tb_float2 = 16'hfc00;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case6: QNaN * 5
+    tb_float1 = 16'hfe00;
+    tb_float2 = 16'h0900;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case7: 5 * SNaN
+    tb_float1 = 16'h0900;
+    tb_float2 = 16'hfd00;
+    #(PERIOD)
+    @(negedge CLK);
+
     $finish;
 end
 
