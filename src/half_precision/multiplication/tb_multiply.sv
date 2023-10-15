@@ -36,7 +36,7 @@ initial begin
     @(negedge CLK);
 
     test_num += 1; // case1: 5 * 0
-    tb_float1 = 16'h0900;
+    tb_float1 = 16'h4510;
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
@@ -44,12 +44,12 @@ initial begin
     /////////// Inf ///////////
     test_num += 1; // case2: +Inf * 5
     tb_float1 = 16'h7c00; 
-    tb_float2 = 16'h0900;
+    tb_float2 = 16'h4510;
     #(PERIOD)
     @(negedge CLK);
 
     test_num += 1; // case3: 5 * -Inf
-    tb_float1 = 16'h0900;
+    tb_float1 = 16'h4510;
     tb_float2 = 16'hfc00;
     #(PERIOD)
     @(negedge CLK);
@@ -69,17 +69,73 @@ initial begin
 
     test_num += 1; // case6: QNaN * 5
     tb_float1 = 16'hfe00;
-    tb_float2 = 16'h0900;
+    tb_float2 = 16'h4510;
     #(PERIOD)
     @(negedge CLK);
 
     test_num += 1; // case7: 5 * SNaN
-    tb_float1 = 16'h0900;
+    tb_float1 = 16'h4510;
     tb_float2 = 16'hfd00;
     #(PERIOD)
     @(negedge CLK);
 
+    test_num += 1; // case8: normal * normal = normal (5*3)
+    tb_float1 = 16'h4510;
+    tb_float2 = 16'h4200;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case9: subnormal * normal  = normal (5*0.5)
+    tb_float1 = 16'h4510;
+    tb_float2 = 16'h0200;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case10: normal * subnormal = subnormal (0.125*2)
+    tb_float1 = 16'h0400;
+    tb_float2 = 16'h4000;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case11: subnormal * subnormal = subnormal (0.5*0.25)
+    tb_float1 = 16'h0200;
+    tb_float2 = 16'h0100;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case12: overflow
+    tb_float1 = 16'h7800;
+    tb_float2 = 16'h0400;
+    #(PERIOD)
+    @(negedge CLK);
+    
     $finish;
 end
+
+task print(input [15:0] half_product, input [3:0] testNum);
+    logic half_sign;
+    logic [4:0] half_exp;
+    logic [10:0] double_exp;
+    logic [9:0] half_mant;
+    logic [63:0] double_product;
+
+    half_sign = half_product[15];
+    if (half_product[14:10] != '0) begin
+        half_exp = half_product[14:10] - 5'd15; //unbiased
+        double_exp = {6'b0, half_exp} + 10'd1023; //biased
+    end else begin
+        double_exp = '0;
+    end
+    
+    half_mant = half_product[9:0];
+    
+    double_product = {half_sign, double_exp, half_mant, 42'b0};
+
+    $display("test num = %d: product = %f", testNum, $bitstoreal(double_product));
+endtask 
 
 endprogram
