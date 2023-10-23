@@ -1,11 +1,12 @@
 `include "fpu_types_pkg.vh"
+import fpu_types_pkg::*;
 
 module float_mult_16bit (
     input logic [HALF_FLOAT_W-1:0] float1,
     input logic [HALF_FLOAT_W-1:0] float2,
     output logic [HALF_FLOAT_W-1:0] product
 );
-import fpu_types_pkg::*;    
+   
 
 logic sign1, sign2, sign_product, exp_overflow;
 logic implicit_leading_bit1, implicit_leading_bit2;
