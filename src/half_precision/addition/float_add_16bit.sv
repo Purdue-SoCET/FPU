@@ -1,198 +1,108 @@
-module top (
-  // I/O ports
-  input  logic hz100, reset,
-  input  logic [20:0] pb,
-  output logic [7:0] left, right,
-         ss7, ss6, ss5, ss4, ss3, ss2, ss1, ss0,
-  output logic red, green, blue,
+`include "fpu_types_pkg.vh"
+import fpu_types_pkg::*;
 
-  // UART ports
-  output logic [7:0] txdata,
-  input  logic [7:0] rxdata,
-  output logic txclk, rxclk,
-  input  logic txready, rxready
+module float_add_16bit (
+	input logic CLK,
+	input logic nRST,
+
+	input logic [HALF_FLOAT_W - 1 : 0] float1,
+	input logic [HALF_FLOAT_W - 1 : 0] float2,
+	output logic [HALF_FLOAT_W - 1 : 0] sum,
+
+	output logic stall
 );
-  reg[15:0] float1, float2, expected_sum, sum;
-  assign float2 =         {1'b0, 5'b10101, 10'b0011001100};
-  assign float1 =         {1'b0, 5'b10101, 10'b0011100011};
-  assign expected_sum =   {1'b0, 5'b11011, 10'b0111011100};
-  
-  half_FP_add add1(.clk(hz100), .rst(1'b0), .float1(float1), .float2(float2), .sum_out(sum));  
-  
-  assign blue = (sum == expected_sum) ? 1'b1 : 1'b0;
-  assign left = sum[15:8];
-  assign right = sum[7:0];
-  
-  
-endmodule
 
-// Add more modules down here...
+// internal signals
+logic A_larger;
 
-module half_FP_add (
-  input clk, rst, 
-  input [15:0] float1, float2,
-  output[15:0] sum_out
-);
-  logic sign1, sign2, sign_s, hidden_bit1, hidden_bit2;
-  logic [4:0] exp1, exp2, exp_s;
-  logic [9:0] mant1, mant2, mant_s;
-  logic [13:0] sum;
-  logic guard, round_bit, sticky;
-  
-  typedef enum logic [2:0] { 
-    initializing,
-    special_case,
-    align,
-    add,
-    normalise_1,
-    normalise_2,
-    round,
-    assemble
-  } state_t;
-  
-  state_t state;
-  state_t next_state;
-  
-  always_comb begin
-    case(state)
-      initializing: begin
-        sign1 = float1[15];
-        sign2 = float2[15];
-        
-        exp1 = float1[14:10];
-        exp2 = float2[14:10];
-        
-        mant1 = float1[9:0];
-        mant2 = float2[9:0];
-        hidden_bit1 = 1'b1;
-        hidden_bit2 = 1'b1;
-        
-        next_state = special_case;
-      end
-      
-      special_case: begin
-        next_state = align;
-      end
-      
-      align: begin
-        if(exp1 > exp2) begin
-          exp2 = exp2 + 1;
-          mant2 = mant2 >> 1;
-        end
-        else if(exp2 > exp1) begin
-          exp1 = exp1 + 1;
-          mant1 = mant1 >> 1;
-        end
-        else begin
-          next_state = add;
-        end
-      end
-      
-      add: begin
-        exp_s = exp1;
-        if(sign1 == sign2) begin
-          sum = {4'b0000, mant1 + mant2};
-          sign_s = sign1;
-        end
-        else begin
-          if(mant1 >= mant2) begin
-            sum = {4'b0000, mant1 - mant2};
-            sign_s = sign1;
-          end
-          else begin
-            sum = {4'b0000, mant2 - mant1};
-            sign_s = sign2;
-          end
-        end
-        
-        if(sum[9]) begin
-          mant_s = sum[13:4];
-          guard = sum[3];
-          round_bit = sum[2];
-          sticky = sum[1] | sum[0];
-          exp_s = exp_s + 1;
-        end
-        else begin
-          mant_s = sum[12:3];
-          guard = sum[2];
-          round_bit = sum[1];
-          sticky = sum[0];
-        end
-        
-        next_state = normalise_1;
-      end
-      
-      normalise_1: begin
-        if(mant_s[9] == 0 && exp_s > 0) begin
-          exp_s = exp_s - 1;
-          mant_s = mant_s << 1;
-          mant_s[0] = guard;
-          guard = round_bit;
-          round_bit = 0;
-        end
-        else begin
-          next_state = normalise_2;
-        end
-      end
-      
-      normalise_2: begin
-        if(exp_s == 0) begin
-          exp_s = exp_s + 1;
-          mant_s = mant_s >> 1;
-          guard = mant_s[0];
-          round_bit = guard;
-          sticky = sticky | round_bit;
-        end
-        else begin
-          state = round;
-        end
-      end
-      
-      round: begin
-        if(guard && (round_bit | sticky | mant_s[0])) begin
-          if(mant_s == 10'b1111111111) begin
-            exp_s = exp_s + 1;
-          end
-        end
-        next_state = assemble;
-      end
-      
-      assemble: begin
-        sum_out[15] = sign_s;
-        sum_out[14:10] = exp_s;
-        sum_out[9:0] = mant_s;
-      end
-      
-      default: begin
-        sign_s = 0;
-        sign1 = 0;
-        sign2 = 0;
-        
-        exp_s = 0;
-        exp1 = 0;
-        exp2 = 0;
-        
-        hidden_bit1 = 0;
-        hidden_bit2 = 0;
-        
-        mant_s = 0;
-        mant1 = 0;
-        mant2 = 0;
-        
-        guard = 0;
-        round_bit = 0;
-        sticky = 0;
-        sum = 0;
+logic sign_A, sign_B;
+logic [4:0] exponent_A, exponent_B;
+logic [9:0] fraction_A, fraction_B;
 
-        next_state = state;
-      end
-    endcase
-  end
-  
-  always_ff @(posedge clk, posedge rst) begin
-    if(rst == 1'b1) begin
-      state <= initializing;
-    end
-    else state <= next_state;
-  end
+logic [4:0] exponent_difference;
+logic carry_temp;
+logic [9:0] fraction_temp; // TODO calculate correct length of this
+logic [4:0] exponent_loop_counter; // TODO calculate correct length of this
+
+// next state signals
+logic [HALF_FLOAT_W - 1 : 0] sum_nxt;
+logic stall_nxt; // 'processing'
+
+logic [9:0] fraction_temp_nxt; // TODO calculate correct length of this
+
+// assign statements
+assign A_larger = (float1[14:10] > float2[14:10]) | ((float1[14:10] == float2[14:10]) & (float1[9:0] >= float2[9:0])); // A_larger will be 1 if float1 >= float2
+// hardwire internal 'A' to larger of two inputs
+assign sign_A = A_larger ? float1[15] : float2[15];
+assign exponent_A = A_larger ? float1[14:10] : float2[14:10];
+assign fraction_A = A_larger ? float1[9:0] : float2[9:0];
+// hardwire internal 'B' to smaller of two inputs
+assign sign_B = A_larger ? float2[15] : float1[15];
+assign exponent_B = A_larger ? float2[14:10] : float1[14:10];
+assign fraction_B = (A_larger ? float2[9:0] : float1[9:0]) >> exponent_difference; // bit shift to 'align' float1 and float2
+// loop logic
+assign exponent_difference = exponent_A - exponent_B; // due to setup, this will always be >= 0
+
+// A will always be the larger input
+
+always_ff @ (posedge CLK, negedge nRST) begin : NXT_LOGIC
+
+	if (~nRST) begin
+
+		sum <= '0;
+		stall <= '0;
+
+	end else begin
+
+		sum <= sum_nxt;
+		stall <= stall_nxt;
+
+	end
+end
+
+always_comb begin : LOOP_LOGIC
+	
+	// default values
+	sum_nxt = sum;
+	stall_nxt = stall;
+
+	carry_temp = '0; // only used as intermediate step, shouldn't matter if reset
+	fraction_temp_nxt = fraction_temp;
+	exponent_loop_counter = '0; // TODO better way to handle?
+
+	// handle stall/processing
+	if (~stall & ~fraction_temp[9]) begin // TODO fix index value
+
+		stall_nxt = 1'b1; // start processing
+
+		// need to check if the fraction ADD/SUB causes a carry out and adjust exponent counter accordingly
+		{ carry_temp, fraction_temp_nxt } = (sign_A == sign_B) ? fraction_A + fraction_B : fraction_A - fraction_B; // generate carry out correctly for ADD/SUB
+
+		if (carry_temp) begin
+
+			fraction_temp_nxt = fraction_temp >> 1;
+			exponent_loop_counter = exponent_A + 1;
+
+		end
+
+	end else if (stall & ~fraction_temp[9]) begin // TODO fix index value
+
+		// shift fraction over until MSB is a 1 to avoid losing precision
+		fraction_temp_nxt = fraction_temp << 1;
+		exponent_loop_counter -= 1; // adjust result exponent accordingly
+	
+	end else if (stall & fraction_temp[9]) begin // TODO fix index value
+
+		stall_nxt = 1'b0; // done processing
+
+		// create final sum
+		sum_nxt = { sign_A, exponent_loop_counter, fraction_temp[9:0] };
+
+	end else begin
+
+		// TODO check? (this is done processing state)
+		
+	end
+end
+
 endmodule
