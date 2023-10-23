@@ -21,12 +21,30 @@ filesets:
 #      - "socet:digital-lib:shift_register"
 #      - "socet:digital-lib:edge_detector"
     files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
       - src/half_precision/multiplication/float_mult_16bit.sv
     file_type: systemVerilogSource
   
   tb_multiply:
     files:
-      - src/half_precision/multiplication/tb_float_mult_16bit.sv
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/half_precision/multiplication/tb_multiply.sv
+    file_type: systemVerilogSource
+
+  rtl_add:
+#    depend:
+#      - "socet:digital-lib:counter"
+#      - "socet:digital-lib:shift_register"
+#      - "socet:digital-lib:edge_detector"
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/half_precision/addition/float_add_16bit.sv
+    file_type: systemVerilogSource
+  
+  tb_add:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/half_precision/addition/tb_add.sv
     file_type: systemVerilogSource
 
 targets:
@@ -39,6 +57,11 @@ targets:
     filesets:
       - rtl_multiply
     toplevel: multiply
+
+  add: &add
+    filesets:
+      - rtl_add
+    toplevel: add
     
   sim:
     <<: *default
@@ -77,6 +100,35 @@ targets:
       - tb_multiply
     toplevel: 
       - tb_multiply
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+  
+  sim_add:
+    <<: *add
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_add
+    toplevel: 
+      - tb_add
     tools:
       xcelium:
         xrun_options:
