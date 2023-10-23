@@ -80,39 +80,41 @@ initial begin
     @(negedge CLK);
 
     test_num += 1; // case8: normal * normal = normal (5*3)
-    tb_float1 = 16'h4510;
-    tb_float2 = 16'h4200;
+    tb_float1 = 16'b0100001000000000;
+    tb_float2 = 16'b0100010100000000;
     #(PERIOD)
     @(negedge CLK);
     print(tb_product, test_num);
 
-    test_num += 1; // case9: subnormal * normal  = normal (5*0.5)
-    tb_float1 = 16'h4510;
-    tb_float2 = 16'h0200;
+    test_num += 1; // case9: normal * normal = normal (1.75 * 2.25 = 3.937500)
+    tb_float1 = 16'b0011111100000000;
+    tb_float2 = 16'b0100000010000000;
     #(PERIOD)
     @(negedge CLK);
     print(tb_product, test_num);
 
-    test_num += 1; // case10: normal * subnormal = subnormal (0.125*2)
-    tb_float1 = 16'h0400;
-    tb_float2 = 16'h4000;
+    test_num += 1; // case10: normal * normal = normal (0.625 * 0.4375 = 0.2734375)
+    tb_float1 = 16'b0011100100000000;
+    tb_float2 = 16'b0011011100000000;
     #(PERIOD)
     @(negedge CLK);
     print(tb_product, test_num);
 
-    test_num += 1; // case11: subnormal * subnormal = subnormal (0.5*0.25)
-    tb_float1 = 16'h0200;
-    tb_float2 = 16'h0100;
+
+
+    test_num += 1; // case11: normal * normal = normal (2.843750 * 2.843750 = 4.175781)
+    tb_float1 = 16'b0011110111100000;
+    tb_float2 = 16'b0100000110110000;
     #(PERIOD)
     @(negedge CLK);
     print(tb_product, test_num);
 
-    test_num += 1; // case12: overflow
-    tb_float1 = 16'h7800;
-    tb_float2 = 16'h0400;
+    test_num += 1; // case12: subnormal * subnormal
+    tb_float1 = 16'b0000000111111111;
+    tb_float2 = 16'b0000000111111111;
     #(PERIOD)
     @(negedge CLK);
-    
+    check_ans(tb_product, 16'b0,test_num);
     $finish;
 end
 
@@ -124,12 +126,9 @@ task print(input [15:0] half_product, input [3:0] testNum);
     logic [63:0] double_product;
 
     half_sign = half_product[15];
-    if (half_product[14:10] != '0) begin
-        half_exp = half_product[14:10] - 5'd15; //unbiased
-        double_exp = {6'b0, half_exp} + 10'd1023; //biased
-    end else begin
-        double_exp = '0;
-    end
+    half_exp = half_product[14:10] - 5'd15; //unbiased
+    double_exp = {{6{half_exp[4]}}, half_exp} + 10'd1023; //biased
+
     
     half_mant = half_product[9:0];
     
@@ -137,5 +136,13 @@ task print(input [15:0] half_product, input [3:0] testNum);
 
     $display("test num = %d: product = %f", testNum, $bitstoreal(double_product));
 endtask 
+
+task check_ans (input [15:0] result, input [15:0] exp, input [3:0] testNum);
+    if (result == exp) begin
+        $display("test num = %d: correct, result is %b.", testNum, result);
+    end else begin
+        $display("test num = %d: wrong, should be %b, get %b.", testNum, exp, result);
+    end
+endtask
 
 endprogram

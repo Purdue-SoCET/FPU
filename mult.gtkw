@@ -1,38 +1,38 @@
 [*]
 [*] GTKWave Analyzer v3.3.111 (w)1999-2020 BSI
-[*] Sat Oct 14 21:54:06 2023
+[*] Mon Oct 23 16:53:24 2023
 [*]
 [dumpfile] "/home/asicfab/a/socet113/FPU/build/socet_aft_fpu_0.1.0/sim_multiply-verilator/waveform_multiply.fst"
-[dumpfile_mtime] "Sat Oct 14 21:53:40 2023"
-[dumpfile_size] 1467
+[dumpfile_mtime] "Mon Oct 23 16:50:47 2023"
+[dumpfile_size] 1828
 [savefile] "/home/asicfab/a/socet113/FPU/mult.gtkw"
 [timestart] 0
 [size] 1920 908
 [pos] -915 -306
-*-5.138893 101 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-6.336372 82 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_multiply.
 [sst_width] 221
-[signals_width] 276
+[signals_width] 619
 [sst_expanded] 1
-[sst_vpaned_height] 498
+[sst_vpaned_height] 274
 @28
 TOP.tb_multiply.CLK
-@25
+@24
 TOP.tb_multiply.PROG.test_num[3:0]
 @22
 TOP.tb_multiply.tb_float1[15:0]
 TOP.tb_multiply.tb_float2[15:0]
 TOP.tb_multiply.tb_product[15:0]
 @200
-----------
+-product
 @28
 TOP.tb_multiply.Zfh.sign_product
 @22
 TOP.tb_multiply.Zfh.exp_product[4:0]
 TOP.tb_multiply.Zfh.mant_product[9:0]
 @200
-----------
+-Test signals
 @28
 TOP.tb_multiply.Zfh.zero
 TOP.tb_multiply.Zfh.inf
@@ -40,10 +40,14 @@ TOP.tb_multiply.Zfh.snan
 TOP.tb_multiply.Zfh.qnan
 @200
 ----------
-@22
-TOP.tb_multiply.Zfh.exp1[4:0]
-TOP.tb_multiply.Zfh.mant1[9:0]
-TOP.tb_multiply.Zfh.exp2[4:0]
-TOP.tb_multiply.Zfh.mant2[9:0]
+@28
+TOP.tb_multiply.Zfh.n_n
+TOP.tb_multiply.Zfh.n_s
+TOP.tb_multiply.Zfh.s_s
+@200
+----------
+@28
+TOP.tb_multiply.Zfh.carry
+TOP.tb_multiply.Zfh.no_carry
 [pattern_trace] 1
 [pattern_trace] 0
