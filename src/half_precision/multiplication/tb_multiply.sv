@@ -22,7 +22,7 @@ program test(
 import fpu_types_pkg::*;
 
 parameter PERIOD = 10;
-logic [3:0] test_num;
+logic [4:0] test_num;
 
 initial begin
     // generate waveform files
@@ -115,29 +115,77 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'b0,test_num);
+
+    test_num += 1; // case13: subnormal * normal (with carry)
+    tb_float1 = 16'b0_00000_0111111111;
+    tb_float2 = 16'b0_11110_1000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case14: subnormal * normal (without carry)
+    tb_float1 = 16'b0_00000_0001000000;
+    tb_float2 = 16'b0_11110_0000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+    
+    test_num += 1; // case15: normal * subnormal(with carry)
+    tb_float2 = 16'b0_00000_0111111111;
+    tb_float1 = 16'b0_11110_1000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    test_num += 1; // case16: normal * subnormal(without carry)
+    tb_float2 = 16'b0_00000_0001000000;
+    tb_float1 = 16'b0_11110_0000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    print(tb_product, test_num);
+
+    // test_num += 1; // case15: subnormal * normal (result is subnormal)
+    // tb_float1 = 16'b0_00000_0001000000;
+    // tb_float2 = 16'b0_01110_0000000000;
+    // #(PERIOD)
+    // @(negedge CLK);
+    // print(tb_product, test_num);
+
     $finish;
 end
 
-task print(input [15:0] half_product, input [3:0] testNum);
+task print(input [15:0] half_product, input [4:0] testNum);
     logic half_sign;
     logic [4:0] half_exp;
     logic [10:0] double_exp;
     logic [9:0] half_mant;
     logic [63:0] double_product;
+    logic [10:0] shift;
+
+        
 
     half_sign = half_product[15];
-    half_exp = half_product[14:10] - 5'd15; //unbiased
-    double_exp = {{6{half_exp[4]}}, half_exp} + 10'd1023; //biased
-
-    
-    half_mant = half_product[9:0];
+    half_exp = half_product[14:10];
+    if (half_exp == '0) begin
+        for (int i =9; i>= 0; i=i-1) begin
+            if(half_mant[i] == 1'b1) begin
+                shift=i[10:0];
+                break; 
+            end
+        end
+        double_exp = '0 - (11'd10 - shift) -11'd15 + 1 + 11'd1023;
+        half_mant = half_product[9:0] << (11'd10 - shift);
+    end else begin
+        half_exp = half_exp - 5'd15; //unbiased
+        double_exp = {{6{half_exp[4]}}, half_exp} + 10'd1023; //biased
+        half_mant = half_product[9:0];
+    end
     
     double_product = {half_sign, double_exp, half_mant, 42'b0};
-
     $display("test num = %d: product = %f", testNum, $bitstoreal(double_product));
 endtask 
 
-task check_ans (input [15:0] result, input [15:0] exp, input [3:0] testNum);
+task check_ans (input [15:0] result, input [15:0] exp, input [4:0] testNum);
     if (result == exp) begin
         $display("test num = %d: correct, result is %b.", testNum, result);
     end else begin

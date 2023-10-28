@@ -18,6 +18,9 @@ logic [31:0] numerical, temp;
 logic [5:0] left_shift;
 logic zero, qnan, snan, inf, n_n, n_s, s_s; //test signals
 logic carry, no_carry;
+logic [5:0] normalized_exp1;
+logic [5:0] exp_product_temp;
+logic [4:0] shift;
 /////////// Initialization ///////////
 assign exp1 = float1[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W]; // all exp(s) are signed to represent float between 1 and 2
 assign exp2 = float2[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W];
@@ -50,6 +53,9 @@ always_comb begin : mult
     s_s = 0;
     carry = 0;
     no_carry = 0;
+    normalized_exp1 = '0;
+    exp_product_temp = '0;
+    shift = '0;
 
     /////////// Zero ///////////
     if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0))) begin
@@ -90,40 +96,65 @@ always_comb begin : mult
     else begin
         sign_product = sign1 ^ sign2;
         mant_product_full = {implicit_leading_bit1, mant1} * {implicit_leading_bit2, mant2};
-        if (exp1 == '0 & exp2 == '0) begin
+        if (exp1 == '0 & exp2 == '0) begin //sub * sub
             exp_product = '0;
             s_s = 1;
-        end else if (exp1 != '0 & exp2 != '0) begin
+        end else if (exp1 != '0 & exp2 != '0) begin //norm * norm
             exp_product = exp1 + exp2 - 5'd15;
             n_n = 1;
-        end else begin
-            exp_product = exp1 + exp2;
+        end else begin //sub * norm or norm * sub
             n_s = 1;
+            if (exp1 == '0) begin // float1 = sub
+                for (int i =9; i>= 0; i=i-1) begin
+                    if(mant1[i] == 1'b1) begin
+                        shift=i[4:0];
+                        break; 
+                    end
+                end
+                exp_product = exp2 - (5'd10 - shift) -5'd15 + 5'd1;
+                mant_product_full = {1'b1, mant1 << (5'd10 - shift)} * {1'b1, mant2};
+            end else if (exp2 == '0) begin // float2 = sub
+                for (int i =9; i>= 0; i=i-1) begin
+                    if(mant2[i] == 1'b1) begin
+                        shift=i[4:0];
+                        break; 
+                    end
+                end
+                exp_product = exp1 - (5'd10 - shift) -5'd15 + 5'd1;
+                mant_product_full = {1'b1, mant2 << (5'd10 - shift)} * {1'b1, mant1};
+            end
+
         end
 
-        exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
+        
 
-        if (exp_overflow) begin //overflow in exp, product = SNaN
+        //-----------------------------------------------------------------
+        exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
+        
+        if (exp_overflow & !n_s) begin //overflow in exp, product = SNaN
+            exp_overflow = 1;
             exp_product = '1;
             mant_product = 10'b0111111111;
             sign_product = '1;
-        end else if (exp1 == '0 & exp2 == '0) begin //sub * sub guaranteed to be sub
+        end else if (s_s == 1) begin //sub * sub guaranteed to be sub
             mant_product = '0;
-        end else if (mant_product_full[21])begin
+        end else if (mant_product_full[21])begin //mant carry 2 or 3
             carry = 1;
-            if (exp_product == '1) begin
+            if (exp_product == '1) begin //ovf
                 exp_overflow = 1;
                 exp_product = '1;
                 mant_product = 10'b0111111111;
                 sign_product = '1;
+            end else begin
+                exp_product += 1;
+                mant_product = mant_product_full[20:11];
             end
-            exp_product += 1;
-            mant_product = mant_product_full[20:11];
-        end else begin
+        end else begin //mant carry 1
             no_carry = 1;
             mant_product = mant_product_full[19:10];
-        end
-              
+        end 
+        //-----------------------------------------------------------------
+         
     end
 end
 endmodule
