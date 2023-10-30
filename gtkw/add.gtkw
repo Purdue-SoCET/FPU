@@ -1,65 +1,66 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Mon Oct 30 03:05:18 2023
+[*] Mon Oct 30 03:22:19 2023
 [*]
 [dumpfile] "/home/benjaminowen/FPU/build/socet_aft_fpu_0.1.0/sim_add-verilator/waveform_add.fst"
-[dumpfile_mtime] "Mon Oct 30 03:04:01 2023"
-[dumpfile_size] 1613
+[dumpfile_mtime] "Mon Oct 30 03:21:01 2023"
+[dumpfile_size] 1603
 [savefile] "/home/benjaminowen/FPU/gtkw/add.gtkw"
 [timestart] 4
 [size] 2310 1392
 [pos] -1 -1
-*-4.419527 148 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.421749 165 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
-[treeopen] TOP.tb_add.
+[treeopen] TOP.tb_add_16bit.
 [sst_width] 209
 [signals_width] 381
 [sst_expanded] 1
 [sst_vpaned_height] 430
 @22
-TOP.tb_add.PROG.test_num[3:0]
+[color] 4
+TOP.tb_add_16bit.Zfh.float1[15:0]
+[color] 4
+TOP.tb_add_16bit.Zfh.float2[15:0]
+@200
+-
 @28
-TOP.tb_add.PROG.CLK
-@22
-TOP.tb_add.PROG.tb_float1[15:0]
-TOP.tb_add.PROG.tb_float2[15:0]
-TOP.tb_add.PROG.tb_sum[15:0]
+[color] 1
+TOP.tb_add_16bit.Zfh.normal_A
+[color] 1
+TOP.tb_add_16bit.Zfh.normal_B
+[color] 2
+TOP.tb_add_16bit.Zfh.A_larger
+[color] 3
+TOP.tb_add_16bit.Zfh.sign_A
+[color] 3
+TOP.tb_add_16bit.Zfh.sign_B
+[color] 4
+TOP.tb_add_16bit.Zfh.exponent_A[4:0]
+[color] 4
+TOP.tb_add_16bit.Zfh.exponent_B[4:0]
+[color] 5
+TOP.tb_add_16bit.Zfh.fraction_A[10:0]
+[color] 5
+TOP.tb_add_16bit.Zfh.fraction_B[10:0]
+@200
+-
+@28
+[color] 6
+TOP.tb_add_16bit.Zfh.exponent_out[4:0]
+[color] 6
+TOP.tb_add_16bit.Zfh.exponent_difference[4:0]
+@200
+-
+@28
+[color] 1
+TOP.tb_add_16bit.Zfh.carry_out
+[color] 2
+TOP.tb_add_16bit.Zfh.fraction_calc[10:0]
+[color] 2
+TOP.tb_add_16bit.Zfh.fraction_out[10:0]
 @200
 -
 @22
-[color] 1
-TOP.tb_add.Zfh.float1[15:0]
-[color] 1
-TOP.tb_add.Zfh.float2[15:0]
-@28
-[color] 1
-TOP.tb_add.Zfh.normal_A
-[color] 1
-TOP.tb_add.Zfh.normal_B
-[color] 2
-TOP.tb_add.Zfh.exponent_A[4:0]
-[color] 2
-TOP.tb_add.Zfh.exponent_B[4:0]
-[color] 2
-TOP.tb_add.Zfh.exponent_difference[4:0]
-[color] 3
-TOP.tb_add.Zfh.fraction_A[10:0]
-[color] 3
-TOP.tb_add.Zfh.fraction_B[10:0]
-[color] 4
-TOP.tb_add.Zfh.sign_A
-[color] 4
-TOP.tb_add.Zfh.sign_B
-@22
-[color] 6
-TOP.tb_add.Zfh.sum[15:0]
-@28
-[color] 6
-TOP.tb_add.Zfh.carry_out
-TOP.tb_add.Zfh.fraction_calc[10:0]
-TOP.tb_add.Zfh.fraction_out[10:0]
-TOP.tb_add.Zfh.exponent_out[4:0]
-@22
-TOP.tb_add.Zfh.sum_out[15:0]
+TOP.tb_add_16bit.Zfh.sum[15:0]
 [pattern_trace] 1
 [pattern_trace] 0

@@ -2,7 +2,7 @@
 
 `timescale 1 ns/ 1 ns
 
-module tb_add;
+module tb_add_16bit;
     import fpu_types_pkg::*;
 
     parameter PERIOD = 10;
@@ -10,11 +10,12 @@ module tb_add;
     logic [HALF_FLOAT_W - 1 : 0] tb_float1, tb_float2, tb_sum;
     always #(PERIOD/2) CLK++;
 
-    float_add_16bit Zfh (.float1(tb_float1), .float2(tb_float2), .sum(tb_sum));
+    float_add Zfh (.float1(tb_float1), .float2(tb_float2), .sum(tb_sum));
     test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_sum(tb_sum));
 endmodule
 
-program test(
+program test
+(
     input logic CLK,
 
     output logic [HALF_FLOAT_W - 1:0] tb_float1,

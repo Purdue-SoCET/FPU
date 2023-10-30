@@ -1,7 +1,7 @@
 `include "fpu_types_pkg.vh"
 import fpu_types_pkg::*;
 
-module float_add_16bit
+module float_add
 #
 (
 	parameter FLOAT_WIDTH = HALF_FLOAT_W,
@@ -32,8 +32,6 @@ logic [FRACTION_WIDTH : 0] fraction_A, fraction_B, fraction_calc, fraction_out;
 logic [EXPONENT_WIDTH - 1 : 0] exponent_difference;
 logic carry_out;
 
-logic [FLOAT_WIDTH - 1 : 0] sum_out;
-
 // assign statements
 assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : EXPONENT_LSB]) | ((float1[EXPONENT_MSB : EXPONENT_LSB] == float2[EXPONENT_MSB : EXPONENT_LSB]) & (float1[FRACTION_MSB : FRACTION_LSB] >= float2[FRACTION_MSB : FRACTION_LSB])); // A_larger will be 1 if float1 >= float2
 
@@ -61,7 +59,7 @@ assign exponent_out = carry_out ? exponent_A + 1'b1 : exponent_A;
 assign fraction_out = carry_out ? fraction_calc >> 1 : fraction_calc;
 
 // special cases when generating sum output
-assign sum_out =
+assign sum =
 	(exponent_A == '1 & fraction_A != 0) | (exponent_B == '1 & fraction_B != 0) ? HALF_NAN	// carry NaN through equation
 	: exponent_out == '1 ? sign_A ? HALF_INFN : HALF_INF									// determine whether overflow occurred and correct sign
 	: { sign_A, exponent_out, fraction_out[HALF_FRACTION_W - 1 : 0] };						// no errors, assemble sum

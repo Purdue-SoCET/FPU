@@ -38,13 +38,13 @@ filesets:
 #      - "socet:digital-lib:edge_detector"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/addition/float_add_16bit.sv
+      - src/half_precision/addition/float_add.sv
     file_type: systemVerilogSource
   
-  tb_add:
+  tb_add_16bit:
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/addition/tb_add.sv
+      - src/half_precision/addition/tb_add_16bit.sv
     file_type: systemVerilogSource
 
 targets:
@@ -126,9 +126,9 @@ targets:
     description: Simulate w/TB
     default_tool: xcelium
     filesets_append:
-      - tb_add
+      - tb_add_16bit
     toplevel: 
-      - tb_add
+      - tb_add_16bit
     tools:
       xcelium:
         xrun_options:
