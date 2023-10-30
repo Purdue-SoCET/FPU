@@ -6,23 +6,21 @@ module tb_add;
     import fpu_types_pkg::*;
 
     parameter PERIOD = 10;
-    logic CLK = 0, nRST, tb_stall;
+    logic CLK = 0;
     logic [HALF_FLOAT_W - 1 : 0] tb_float1, tb_float2, tb_sum;
     always #(PERIOD/2) CLK++;
 
-    float_add_16bit Zfh (.CLK(CLK), .nRST(nRST), .float1(tb_float1), .float2(tb_float2), .sum(tb_sum), .stall(tb_stall));
-    test PROG (.CLK(CLK), .nRST(nRST), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_sum(tb_sum), .tb_stall(tb_stall));
+    float_add_16bit Zfh (.float1(tb_float1), .float2(tb_float2), .sum(tb_sum));
+    test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_sum(tb_sum));
 endmodule
 
 program test(
     input logic CLK,
-    output logic nRST,
 
     output logic [HALF_FLOAT_W - 1:0] tb_float1,
     output logic [HALF_FLOAT_W - 1:0] tb_float2,
 
-    input logic [HALF_FLOAT_W - 1:0] tb_sum,
-    input logic tb_stall
+    input logic [HALF_FLOAT_W - 1:0] tb_sum
 );
 import fpu_types_pkg::*;
 
@@ -33,10 +31,7 @@ initial begin
     // generate waveform files
     $dumpfile("waveform_add.fst");
     $dumpvars;
-    
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
+
     /////////// Zero ///////////
     test_num = 0; // case0: 0 + 0
     tb_float1 = '0;
@@ -44,19 +39,11 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
-
     test_num += 1; // case1: 5 + 0
     tb_float1 = 16'h4500;
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
-
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
 
     test_num += 1; // case1: 5 + 5
     tb_float1 = 16'h4500;
@@ -64,19 +51,11 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
-
     test_num += 1; // case1: 5 + 128.5
     tb_float1 = 16'h4500;
     tb_float2 = 16'h5804;
     #(PERIOD)
     @(negedge CLK);
-
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
 
     test_num += 1; // case1: 5 + 128.5
     tb_float1 = 16'hFFFF;
@@ -84,9 +63,6 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
     /////////// Inf ///////////
     test_num += 1; // case2: MAX + MAX
     tb_float1 = 16'h7bff; 
@@ -94,9 +70,6 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
     /////////// Inf ///////////
     test_num += 1; // case2: MIN + MIN
     tb_float1 = 16'hFBFF;
@@ -104,9 +77,6 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    nRST = 1'b0;
-    # (PERIOD);
-    nRST = 1'b1;
     test_num += 1; // case3: 3.277E4 * 2
     tb_float1 = 16'h7800;
     tb_float2 = 16'h7800;
