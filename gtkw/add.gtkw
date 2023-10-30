@@ -1,12 +1,12 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Mon Oct 30 02:33:11 2023
+[*] Mon Oct 30 02:44:22 2023
 [*]
 [dumpfile] "/home/benjaminowen/FPU/build/socet_aft_fpu_0.1.0/sim_add-verilator/waveform_add.fst"
-[dumpfile_mtime] "Mon Oct 30 02:31:39 2023"
-[dumpfile_size] 1788
+[dumpfile_mtime] "Mon Oct 30 02:37:46 2023"
+[dumpfile_size] 1838
 [savefile] "/home/benjaminowen/FPU/gtkw/add.gtkw"
-[timestart] 4
+[timestart] 34
 [size] 2310 1392
 [pos] -1 -1
 *-4.419527 165 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1

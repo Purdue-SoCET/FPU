@@ -77,6 +77,16 @@ initial begin
     nRST = 1'b0;
     # (PERIOD);
     nRST = 1'b1;
+
+    test_num += 1; // case1: 5 + 128.5
+    tb_float1 = 16'hFFFF;
+    tb_float2 = 16'h0000;
+    #(PERIOD)
+    @(negedge CLK);
+
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
     /////////// Inf ///////////
     test_num += 1; // case2: MAX + MAX
     tb_float1 = 16'h7bff; 

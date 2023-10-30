@@ -52,8 +52,10 @@ assign { carry_out, fraction_calc } = (sign_A == sign_B) ? fraction_A + fraction
 assign exponent_out = carry_out ? exponent_A + 1'b1 : exponent_A;
 assign fraction_out = carry_out ? fraction_calc >> 1 : fraction_calc;
 // special cases when generating sum output
-assign sum_out = exponent_out == 5'b11111 ? sign_A ? HALF_INFN : HALF_INF	// determine whether overflow occurred and was positive or negative
-	: { sign_A, exponent_out, fraction_out[HALF_FRACTION_W - 1 : 0] };		// no errors, assemble sum
+assign sum_out =
+	(exponent_A == 5'b11111 & fraction_A != 0) | (exponent_B == 5'b11111 & fraction_B != 0) ? HALF_NAN	// carry NaN through equation
+	: exponent_out == 5'b11111 ? sign_A ? HALF_INFN : HALF_INF											// determine whether overflow occurred and correct sign
+	: { sign_A, exponent_out, fraction_out[HALF_FRACTION_W - 1 : 0] };									// no errors, assemble sum
 // if (exponent_out == 5'b11111) begin
 // 	assign sum_out = HALF_INF;
 // end else begin
