@@ -15,10 +15,10 @@ module float_add_16bit
 	parameter FRACTION_LSB = 0
 )
 (
-	input logic [HALF_FLOAT_W - 1 : 0] float1,
-	input logic [HALF_FLOAT_W - 1 : 0] float2,
+	input logic [FLOAT_WIDTH - 1 : 0] float1,
+	input logic [FLOAT_WIDTH - 1 : 0] float2,
 
-	output logic [HALF_FLOAT_W - 1 : 0] sum
+	output logic [FLOAT_WIDTH - 1 : 0] sum
 );
 
 // internal signals
@@ -32,7 +32,7 @@ logic [FRACTION_WIDTH : 0] fraction_A, fraction_B, fraction_calc, fraction_out;
 logic [EXPONENT_WIDTH - 1 : 0] exponent_difference;
 logic carry_out;
 
-logic [HALF_FLOAT_W - 1 : 0] sum_out;
+logic [FLOAT_WIDTH - 1 : 0] sum_out;
 
 // assign statements
 assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : EXPONENT_LSB]) | ((float1[EXPONENT_MSB : EXPONENT_LSB] == float2[EXPONENT_MSB : EXPONENT_LSB]) & (float1[FRACTION_MSB : FRACTION_LSB] >= float2[FRACTION_MSB : FRACTION_LSB])); // A_larger will be 1 if float1 >= float2
