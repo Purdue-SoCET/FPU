@@ -16,13 +16,13 @@ endmodule
 
 program test(
     input logic CLK,
-		input logic nRST,
+    output logic nRST,
 
     output logic [HALF_FLOAT_W - 1:0] tb_float1,
     output logic [HALF_FLOAT_W - 1:0] tb_float2,
 
     input logic [HALF_FLOAT_W - 1:0] tb_sum,
-		input logic tb_stall
+    input logic tb_stall
 );
 import fpu_types_pkg::*;
 
@@ -33,29 +33,73 @@ initial begin
     // generate waveform files
     $dumpfile("waveform_add.fst");
     $dumpvars;
+    
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
     /////////// Zero ///////////
-    test_num = 0; // case0: 0 * 0
+    test_num = 0; // case0: 0 + 0
     tb_float1 = '0;
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
 
-    test_num += 1; // case1: 5 * 0
-    tb_float1 = 16'h4510;
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+
+    test_num += 1; // case1: 5 + 0
+    tb_float1 = 16'h4500;
     tb_float2 = '0;
     #(PERIOD)
     @(negedge CLK);
 
-    /////////// Inf ///////////
-    test_num += 1; // case2: +Inf * 5
-    tb_float1 = 16'h7c00; 
-    tb_float2 = 16'h4510;
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+
+    test_num += 1; // case1: 5 + 5
+    tb_float1 = 16'h4500;
+    tb_float2 = 16'h4500;
     #(PERIOD)
     @(negedge CLK);
 
-    test_num += 1; // case3: 5 * -Inf
-    tb_float1 = 16'h4510;
-    tb_float2 = 16'hfc00;
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+
+    test_num += 1; // case1: 5 + 128.5
+    tb_float1 = 16'h4500;
+    tb_float2 = 16'h5804;
+    #(PERIOD)
+    @(negedge CLK);
+
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+    /////////// Inf ///////////
+    test_num += 1; // case2: MAX + MAX
+    tb_float1 = 16'h7bff; 
+    tb_float2 = 16'h7bff;
+    #(PERIOD)
+    @(negedge CLK);
+
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+    /////////// Inf ///////////
+    test_num += 1; // case2: MIN + MIN
+    tb_float1 = 16'hFBFF;
+    tb_float2 = 16'hFBFF;
+    #(PERIOD)
+    @(negedge CLK);
+
+    nRST = 1'b0;
+    # (PERIOD);
+    nRST = 1'b1;
+    test_num += 1; // case3: 3.277E4 * 2
+    tb_float1 = 16'h7800;
+    tb_float2 = 16'h7800;
     #(PERIOD)
     @(negedge CLK);
     
