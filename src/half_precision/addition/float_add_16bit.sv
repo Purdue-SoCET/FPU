@@ -50,7 +50,10 @@ assign normal_B = exponent_B != '0;
 assign fraction_B = (A_larger ? { normal_B, float2[FRACTION_MSB : FRACTION_LSB] } : { normal_B, float1[FRACTION_MSB : FRACTION_LSB] }) >> exponent_difference; // bit shift to 'align' float1 and float2
 
 // miscellaneous variables
-assign exponent_difference = exponent_A - exponent_B; // due to setup, this will always be >= 0
+assign exponent_difference =
+	~normal_A ? exponent_A - exponent_B				// A is subnormal, and since A >= B, B is also subnormal
+	: ~normal_B ? exponent_A - (exponent_B + 1'b1)	// A is not subnormal, but B is subnormal, so adjust exponent difference to account for weird subnormal exponent
+	: exponent_A - exponent_B;						// A and B are normal, so calculate difference as normal
 
 // sum calculation
 assign { carry_out, fraction_calc } = (sign_A == sign_B) ? fraction_A + fraction_B : fraction_A - fraction_B;
@@ -60,7 +63,7 @@ assign fraction_out = carry_out ? fraction_calc >> 1 : fraction_calc;
 // special cases when generating sum output
 assign sum_out =
 	(exponent_A == '1 & fraction_A != 0) | (exponent_B == '1 & fraction_B != 0) ? HALF_NAN	// carry NaN through equation
-	: exponent_out == '1 ? sign_A ? HALF_INFN : HALF_INF											// determine whether overflow occurred and correct sign
-	: { sign_A, exponent_out, fraction_out[HALF_FRACTION_W - 1 : 0] };									// no errors, assemble sum
+	: exponent_out == '1 ? sign_A ? HALF_INFN : HALF_INF									// determine whether overflow occurred and correct sign
+	: { sign_A, exponent_out, fraction_out[HALF_FRACTION_W - 1 : 0] };						// no errors, assemble sum
 
 endmodule

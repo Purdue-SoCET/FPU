@@ -77,10 +77,17 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
 
-    test_num += 1; // case3: 3.277E4 * 2
-    tb_float1 = 16'h7800;
-    tb_float2 = 16'h7800;
-    #(PERIOD)
+    /////////// Subnormal ///////////
+    test_num += 1; // case2: smallest subnormal + smallest subnormal
+    tb_float1 = 16'h1;
+    tb_float2 = 16'h1;
+    #(PERIOD) // == 0x0002
+    @(negedge CLK);
+
+    test_num += 1; // case2: smallest subnormal + small normal
+    tb_float1 = 16'h0001;
+    tb_float2 = 16'h0401;
+    #(PERIOD) // == 0x0402
     @(negedge CLK);
     
     $finish;
