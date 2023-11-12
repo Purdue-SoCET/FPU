@@ -144,13 +144,19 @@ initial begin
     @(negedge CLK);
     print(tb_product, test_num);
 
-    // test_num += 1; // case15: subnormal * normal (result is subnormal)
-    // tb_float1 = 16'b0_00000_0001000000;
-    // tb_float2 = 16'b0_01110_0000000000;
-    // #(PERIOD)
-    // @(negedge CLK);
-    // print(tb_product, test_num);
+    test_num += 1; // case17: subnormal * normal (result is subnormal)
+    tb_float1 = 16'b0_00000_0001000000;
+    tb_float2 = 16'b0_01110_0000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'h0020,test_num);  
 
+    test_num += 1; // case18: normal * normal (result is subnormal)
+    tb_float1 = 16'b0_00100_0001000000;
+    tb_float2 = 16'b0_00010_0000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'h0001,test_num);  
     $finish;
 end
 

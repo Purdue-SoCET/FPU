@@ -19,8 +19,10 @@ logic [5:0] left_shift;
 logic zero, qnan, snan, inf, n_n, n_s, s_s; //test signals
 logic carry, no_carry;
 logic [5:0] normalized_exp1;
-logic [5:0] exp_product_temp;
+logic [6:0] exp_product_temp;
 logic [4:0] shift;
+logic [6:0] shift_back;
+logic check;
 /////////// Initialization ///////////
 assign exp1 = float1[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W]; // all exp(s) are signed to represent float between 1 and 2
 assign exp2 = float2[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W];
@@ -56,7 +58,8 @@ always_comb begin : mult
     normalized_exp1 = '0;
     exp_product_temp = '0;
     shift = '0;
-
+    shift_back = '0;
+    check = 0;
     /////////// Zero ///////////
     if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0))) begin
         exp_product = '0;
@@ -100,7 +103,8 @@ always_comb begin : mult
             exp_product = '0;
             s_s = 1;
         end else if (exp1 != '0 & exp2 != '0) begin //norm * norm
-            exp_product = exp1 + exp2 - 5'd15;
+            exp_product = (exp1 - 5'd15) + exp2 ;
+            exp_product_temp = ({2'b0, exp1} - 7'd15) + {2'b0,exp2};
             n_n = 1;
         end else begin //sub * norm or norm * sub
             n_s = 1;
@@ -112,6 +116,7 @@ always_comb begin : mult
                     end
                 end
                 exp_product = exp2 - (5'd10 - shift) -5'd15 + 5'd1;
+                exp_product_temp = {2'b0, exp2} - (7'd10 - {2'b0,shift}) -7'd15 + 7'd1;
                 mant_product_full = {1'b1, mant1 << (5'd10 - shift)} * {1'b1, mant2};
             end else if (exp2 == '0) begin // float2 = sub
                 for (int i =9; i>= 0; i=i-1) begin
@@ -121,18 +126,29 @@ always_comb begin : mult
                     end
                 end
                 exp_product = exp1 - (5'd10 - shift) -5'd15 + 5'd1;
+                exp_product_temp = {2'b0,exp1} - (7'd10 - {2'b0,shift}) -7'd15 + 7'd1;
                 mant_product_full = {1'b1, mant2 << (5'd10 - shift)} * {1'b1, mant1};
             end
-
         end
-
+        
+        
+        //-----------------------------------------------------------------
+        exp_product_temp = exp_product_temp + {6'b0, mant_product_full[1]} - 7'd15;
+        if ($signed(exp_product_temp) < $signed(-7'd13) && $signed(exp_product_temp) > $signed(-7'd25)) begin
+            shift_back = -7'd14 - exp_product_temp; 
+            mant_product_full = mant_product_full >> shift_back;
+            exp_product = '0;
+            // check = 1;
+        end
+        else if ($signed(exp_product_temp) < $signed(-7'd24)) begin
+            exp_overflow = 1; 
+        end
         
 
         //-----------------------------------------------------------------
-        exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
+        // exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
         
-        if (exp_overflow & !n_s) begin //overflow in exp, product = SNaN
-            exp_overflow = 1;
+        if (exp_overflow) begin //overflow in exp, product = SNaN
             exp_product = '1;
             mant_product = 10'b0111111111;
             sign_product = '1;
