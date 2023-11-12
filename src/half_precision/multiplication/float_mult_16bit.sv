@@ -80,7 +80,8 @@ always_comb begin : mult
     end else if (exp1 == '1 & ~mant1[HALF_FRACTION_W-1] & mant1 != '0 | exp2 == '1 & ~mant2[HALF_FRACTION_W-1] & mant2 != '0) begin
         //SNaN
         exp_product = '1;
-        mant_product = 10'b0111111111;
+        // mant_product = 10'b0111111111;
+        mant_product = '1; // SNaN * num = QNaN
         sign_product = '1;
 
         snan = 1;
