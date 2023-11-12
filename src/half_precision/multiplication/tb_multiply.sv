@@ -157,6 +157,13 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'h0001,test_num);  
+
+    test_num += 1; // case19: normal * normal (result is underflow)
+    tb_float1 = 16'b0_00100_0001000000;
+    tb_float2 = 16'b0_00001_0000000000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0,test_num);  
     $finish;
 end
 

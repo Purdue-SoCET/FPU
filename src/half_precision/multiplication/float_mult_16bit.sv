@@ -142,7 +142,8 @@ always_comb begin : mult
             // check = 1;
         end
         else if ($signed(exp_product_temp) < $signed(-7'd24)) begin
-            exp_overflow = 1; 
+            exp_product = '0;
+            s_s = 1;
         end
         
 
