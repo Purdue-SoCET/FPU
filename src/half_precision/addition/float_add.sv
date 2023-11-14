@@ -43,13 +43,13 @@ assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : E
 // assign sign_flip = ~A_larger & sign_B; // flip output sign if |float2| > |float1| and float2 is negative
 
 // hardwire internal 'A' to larger of two inputs
-assign sign_A = A_larger ? float1[SIGN] : subtract ? ~float2[SIGN] : float2[SIGN];
+assign sign_A = A_larger ? float1[SIGN] : float2[SIGN];
 assign exponent_A = A_larger ? float1[EXPONENT_MSB : EXPONENT_LSB] : float2[EXPONENT_MSB : EXPONENT_LSB];
 assign normal_A = exponent_A != '0;
 assign fraction_A = A_larger ? { normal_A, float1[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} } : { normal_A, float2[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} };
 
 // hardwire internal 'B' to smaller of two inputs
-assign sign_B = A_larger ? subtract ? ~float2[SIGN] : float2[SIGN] : float1[SIGN];
+assign sign_B = A_larger ? float2[SIGN] : float1[SIGN];
 assign exponent_B = A_larger ? float2[EXPONENT_MSB : EXPONENT_LSB] : float1[EXPONENT_MSB : EXPONENT_LSB];
 assign normal_B = exponent_B != '0;
 assign fraction_B = (A_larger ? { normal_B, float2[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} } : { normal_B, float1[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} }) >> exponent_difference; // bit shift to 'align' float1 and float2
