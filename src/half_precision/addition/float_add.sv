@@ -94,23 +94,25 @@ always_comb begin : SUM_CALC
 	begin
 		// subtracting, need to shift result :skull:
 		fraction_calc = fraction_A - fraction_B;
-		exponent_out = exponent_A - 1'b1;
+		exponent_out = exponent_A;
 
 		// need to shift result over (for underflow to subnormal case)
-		while (~fraction_calc[FRACTION_WIDTH * 2] & (fraction_calc != '0))
+		// don't shift if fraction is '0 (infinite loop)
+		// don't shift if both numbers are already subnormal (will affect result)
+		while (~fraction_calc[FRACTION_WIDTH * 2] & (fraction_calc != '0) & ~(~normal_A & ~normal_B))
 		begin
 			fraction_calc <<= 1;
+			exponent_out -= 1;
 		end
 
-		if (fraction_A[FRACTION_WIDTH * 2] & ~fraction_calc[(FRACTION_WIDTH * 2) - 1])
+		if ((exponent_out == '0) & ~(~normal_A & ~normal_B)) // same check as while loop
 		begin
 			// normal underflow to subnormal
-			exponent_out = 0;
 			fraction_out = fraction_calc >> 1;
 		end
 		else
 		begin
-			// no overflow
+			// no underflow
 			fraction_out = fraction_calc;
 		end
 	end
