@@ -8,10 +8,11 @@ module tb_add_16bit;
     parameter PERIOD = 10;
     logic CLK = 0;
     logic [HALF_FLOAT_W - 1 : 0] tb_float1, tb_float2, tb_sum;
+    logic tb_subtract;
     always #(PERIOD/2) CLK++;
 
-    float_add Zfh (.float1(tb_float1), .float2(tb_float2), .sum(tb_sum));
-    test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_sum(tb_sum));
+    float_add Zfh (.float1(tb_float1), .float2(tb_float2), .subtract(tb_subtract), .sum(tb_sum));
+    test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_subtract(tb_subtract), .tb_sum(tb_sum));
 endmodule
 
 program test
@@ -20,6 +21,7 @@ program test
 
     output logic [HALF_FLOAT_W - 1:0] tb_float1,
     output logic [HALF_FLOAT_W - 1:0] tb_float2,
+    output logic tb_subtract,
 
     input logic [HALF_FLOAT_W - 1:0] tb_sum
 );
@@ -37,6 +39,7 @@ initial begin
     test_num = 0; // case0: 0 + 0
     tb_float1 = '0;
     tb_float2 = '0;
+    tb_subtract = '0;
     #(PERIOD)
     @(negedge CLK);
 
@@ -89,6 +92,50 @@ initial begin
     tb_float1 = 16'h0001;
     tb_float2 = 16'h0401;
     #(PERIOD) // == 0x0402
+    @(negedge CLK);
+
+    test_num += 1; // case2: largest subnormal + largest subnormal
+    tb_float1 = 16'h03FF;
+    tb_float2 = 16'h03FF;
+    #(PERIOD) // == 0x07FE
+    @(negedge CLK);
+
+    test_num += 1; // case2: neg + neg
+    tb_float1 = 16'hC500;
+    tb_float2 = 16'hC900;
+    #(PERIOD) // == 0xCB80
+    @(negedge CLK);
+
+    test_num += 1; // case2: pos + neg
+    tb_float1 = 16'h4900; // 10
+    tb_float2 = 16'hC500; // -5
+    #(PERIOD) // == 0x4500 (5)
+    @(negedge CLK);
+
+    test_num += 1; // case2: pos + neg
+    tb_float1 = 16'h5640; // 100
+    tb_float2 = 16'hC500; // -5
+    #(PERIOD) // == 0x55F0 (95)
+    @(negedge CLK);
+
+    test_num += 1; // case2: pos + neg
+    tb_float1 = 16'h4500; // 5
+    tb_float2 = 16'hC900; // -10
+    #(PERIOD) // == 0xC500 (-5)
+    @(negedge CLK);
+
+    test_num += 1; // case2: pos - pos
+    tb_float1 = 16'h4500;
+    tb_float2 = 16'h4900;
+    tb_subtract = '1;
+    #(PERIOD) // == 0xC500
+    @(negedge CLK);
+
+    test_num += 1; // case2: pos - neg
+    tb_float1 = 16'h4500;
+    tb_float2 = 16'hC900;
+    tb_subtract = '1;
+    #(PERIOD) // == 0x04B80
     @(negedge CLK);
     
     $finish;
