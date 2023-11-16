@@ -23,6 +23,8 @@ module float_add
 	input logic [FLOAT_WIDTH - 1 : 0] float1,
 	input logic [FLOAT_WIDTH - 1 : 0] float2,
 
+	input fpu_rounding_mode_t rounding_mode,
+
 	output logic [FLOAT_WIDTH - 1 : 0] sum
 );
 
@@ -37,6 +39,8 @@ logic [FRACTION_WIDTH * 2 : 0] fraction_A, fraction_B, fraction_calc, fraction_o
 
 logic [EXPONENT_WIDTH - 1 : 0] exponent_difference;
 logic carry_out;
+
+logic rounding_bit, sticky_bit;
 
 // assign statements
 assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : EXPONENT_LSB]) | ((float1[EXPONENT_MSB : EXPONENT_LSB] == float2[EXPONENT_MSB : EXPONENT_LSB]) & (float1[FRACTION_MSB : FRACTION_LSB] >= float2[FRACTION_MSB : FRACTION_LSB])); // A_larger will be 1 if float1 >= float2
@@ -60,12 +64,20 @@ assign exponent_difference =
 	: ~normal_B ? exponent_A - (exponent_B + 1'b1)	// A is not subnormal, but B is subnormal, so adjust exponent difference to account for weird subnormal exponent
 	: exponent_A - exponent_B;						// A and B are normal, so calculate difference as normal
 
+// rounding variables
+// assign rounding_bit = fraction_out[FRACTION_WIDTH - 1];		// next bit after fraction
+// assign sticky_bit = |fraction_out[FRACTION_WIDTH - 2 : 0];	// logical OR of all remaining bits
+
 always_comb begin : SUM_CALC
 
 	// default values
 	carry_out = '0;
 	exponent_out = '0;
 	fraction_out = '0;
+
+	rounding_bit = '0;
+	sticky_bit = '0;
+	sum = '0;
 
 	if (sign_A == sign_B)
 	begin
@@ -172,8 +184,84 @@ always_comb begin : SUM_CALC
 		end
 		else
 		begin
-			// everything normal
-			sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+			// no special cases, assemble final sum
+
+			// rounding bits
+			sticky_bit = |fraction_out;							// logical OR of all remaining bits
+			rounding_bit = fraction_out[FRACTION_WIDTH - 1];	// next bit after fraction
+
+			// handle rounding
+			casez (rounding_mode)
+
+				ROUND_NEAREST_EVEN:
+				begin
+					// normal rounding mode
+					if (~rounding_bit & ~sticky_bit)
+					begin
+						// result is exact, no need for rounding
+						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+					end
+					else if (~rounding_bit & sticky_bit)
+					begin
+						// truncate result by discarding RS
+						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+					end
+					else if (rounding_bit & sticky_bit)
+					begin
+						// increment result
+						sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+					end
+					else
+					begin
+						// tie case
+						if (fraction_out[FRACTION_WIDTH] == 1'b0)
+						begin
+							// truncate result
+							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+						end
+						else
+						begin
+							// increment result
+							sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+						end
+					end
+				end
+
+				ROUND_INF:
+				begin
+					if (~sign_A & (rounding_bit | sticky_bit))
+					begin
+						// increment result
+						sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+					end
+					else
+					begin
+						// truncate result
+						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+					end
+				end
+
+				ROUND_INFN:
+				begin
+					if (sign_A & (rounding_bit | sticky_bit))
+					begin
+						// increment result
+						sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+					end
+					else
+					begin
+						// truncate result
+						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+					end
+				end
+
+				ROUND_ZERO:
+				begin
+					// truncate result
+					sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+				end
+				
+			endcase
 		end
 	end
 end
