@@ -22,7 +22,7 @@ logic [5:0] normalized_exp1;
 logic [6:0] exp_product_temp;
 logic [4:0] shift;
 logic [6:0] shift_back;
-logic check;
+logic check, check2;
 /////////// Initialization ///////////
 assign exp1 = float1[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W]; // all exp(s) are signed to represent float between 1 and 2
 assign exp2 = float2[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W];
@@ -60,6 +60,7 @@ always_comb begin : mult
     shift = '0;
     shift_back = '0;
     check = 0;
+    check2 = 0;
     /////////// Zero ///////////
     if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0))) begin
         exp_product = '0;
@@ -134,12 +135,14 @@ always_comb begin : mult
         
         
         //-----------------------------------------------------------------
-        exp_product_temp = exp_product_temp + {6'b0, mant_product_full[1]} - 7'd15;
+        check2 = mant_product_full[1];
+        // exp_product_temp = exp_product_temp + {6'b0, mant_product_full[1]} - 7'd15;
+        exp_product_temp = exp_product_temp - 7'd15;
         if ($signed(exp_product_temp) < $signed(-7'd13) && $signed(exp_product_temp) > $signed(-7'd25)) begin
             shift_back = -7'd14 - exp_product_temp; 
             mant_product_full = mant_product_full >> shift_back;
             exp_product = '0;
-            // check = 1;
+            check = 1;
         end
         else if ($signed(exp_product_temp) < $signed(-7'd24)) begin
             exp_product = '0;
@@ -150,23 +153,27 @@ always_comb begin : mult
         //-----------------------------------------------------------------
         // exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
         
-        if (exp_overflow) begin //overflow in exp, product = SNaN
+        if (exp_overflow) begin //overflow in exp, product = +/-inf
             exp_product = '1;
-            mant_product = 10'b0111111111;
+            mant_product = '0;
             sign_product = '1;
         end else if (s_s == 1) begin //sub * sub guaranteed to be sub
             mant_product = '0;
         end else if (mant_product_full[21])begin //mant carry 2 or 3
             carry = 1;
-            if (exp_product == '1) begin //ovf
-                exp_overflow = 1;
-                exp_product = '1;
-                mant_product = 10'b0111111111;
-                sign_product = '1;
-            end else begin
+            // if (exp_product == '1) begin //ovf
+            //     exp_overflow = 1;
+            //     exp_product = '1;
+            //     mant_product = 10'b0111111111;
+            //     sign_product = '1;
+            // end else begin
+            //     exp_product += 1;
+            //     mant_product = mant_product_full[20:11];
+            // end
+            if(!check) begin
                 exp_product += 1;
-                mant_product = mant_product_full[20:11];
             end
+                mant_product = mant_product_full[20:11];
         end else begin //mant carry 1
             no_carry = 1;
             mant_product = mant_product_full[19:10];

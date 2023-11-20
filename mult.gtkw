@@ -1,21 +1,21 @@
 [*]
 [*] GTKWave Analyzer v3.3.111 (w)1999-2020 BSI
-[*] Sat Nov 11 23:30:22 2023
+[*] Mon Nov 20 08:27:40 2023
 [*]
 [dumpfile] "/home/asicfab/a/socet113/FPU/build/socet_aft_fpu_0.1.0/sim_multiply-verilator/waveform_multiply.fst"
-[dumpfile_mtime] "Sat Nov 11 23:30:05 2023"
-[dumpfile_size] 2227
+[dumpfile_mtime] "Mon Nov 20 08:26:34 2023"
+[dumpfile_size] 2395
 [savefile] "/home/asicfab/a/socet113/FPU/mult.gtkw"
 [timestart] 0
 [size] 1920 908
-[pos] -915 -1
-*-6.804321 360 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1 -1
+*-6.804321 452 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_multiply.
 [treeopen] TOP.tb_multiply.Zfh.
 [treeopen] TOP.tb_multiply.Zfh.mult.
 [sst_width] 267
-[signals_width] 240
+[signals_width] 297
 [sst_expanded] 1
 [sst_vpaned_height] 526
 @28
@@ -61,5 +61,7 @@ TOP.tb_multiply.Zfh.exp_product_temp[6:0]
 @28
 TOP.tb_multiply.Zfh.exp_overflow
 TOP.tb_multiply.Zfh.check
+@22
+TOP.tb_multiply.Zfh.mant_product_full[21:0]
 [pattern_trace] 1
 [pattern_trace] 0

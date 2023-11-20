@@ -158,12 +158,35 @@ initial begin
     @(negedge CLK);
     check_ans(tb_product, 16'h0001,test_num);  
 
-    test_num += 1; // case19: normal * normal (result is underflow)
-    tb_float1 = 16'b0_00100_0001000000;
-    tb_float2 = 16'b0_00001_0000000000;
+    test_num += 1; // case19: normal * normal ((result is subnormal))
+    tb_float1 = 16'b0_00111_0000001010;
+    tb_float2 = 16'b0_00001_0000100100;
     #(PERIOD)
     @(negedge CLK);
-    check_ans(tb_product, 16'b0,test_num);  
+    check_ans(tb_product, 16'b0_00000_0000000100,test_num);  
+
+
+    test_num += 1; // case20: UVM
+    tb_float1 = 16'b0_00000_0101111011;
+    tb_float2 = 16'b0_01010_0011111100;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0_00000_0000001111,test_num);  
+
+    test_num += 1; // case21: UVM
+    tb_float1 = 16'b0_01010_1000010111;
+    tb_float2 = 16'b1_00000_1100011101;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1_00000_0000100110,test_num);  
+
+    test_num += 1; // case22: UVM
+    tb_float1 = 16'b0_01001_0110000011;
+    tb_float2 = 16'b1_00010_1100001001;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1000000001001110,test_num); 
+    
     $finish;
 end
 
