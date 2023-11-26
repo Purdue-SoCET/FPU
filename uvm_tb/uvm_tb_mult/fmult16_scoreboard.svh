@@ -234,7 +234,8 @@ class fmult16_scoreboard extends uvm_scoreboard;
             return final_binary_output;
         end
 
-        final_binary_output = {S, biased_exponent[4:0], F};
+        binary_output = {S, biased_exponent[4:0], F};
+        final_binary_output = check_margin_err(float_product,binary_output);
 
         return final_binary_output;
     endfunction // float_to_binary
