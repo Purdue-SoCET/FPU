@@ -46,8 +46,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
             // print the input float for visulization
             num1 = binary_to_float(actual_txn.float1);
             num2 = binary_to_float(actual_txn.float2);
-            uvm_report_info("Input float", $sformatf("%16b + %16b => %.8f + %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
-
+            
             // calculate the expected output
             expected_output = compute_expected_output(actual_txn.float1,actual_txn.float2);
             // uvm_report_info("Sum", $sformatf("%16b",expected_output), UVM_LOW);
@@ -57,6 +56,8 @@ class fadd16_scoreboard extends uvm_scoreboard;
             // compare
             if (actual_output != expected_output) begin
                 MISMATCH++;
+                uvm_report_info("Input float", $sformatf("%16b + %16b => %.8f + %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
+                uvm_report_info("Sum", $sformatf("%.8f",num1+num2), UVM_LOW);
                 `uvm_error("fadd16_Scoreboard", $sformatf("\nOUTPUT MISMATCH \nExpected output: %16b(%.8f)\n  Actual output: %16b(%.8f)", expected_output, 
                                                                             binary_to_float(expected_output), actual_output,binary_to_float(actual_output)))
             end
@@ -99,7 +100,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         end
 
         float_output = binary_to_float(binary_float1) + binary_to_float(binary_float2);
-        uvm_report_info("Sum", $sformatf("%.8f",float_output), UVM_LOW);
+        //uvm_report_info("Sum", $sformatf("%.8f",float_output), UVM_LOW);
 
         //calculate signed bit
         if(float_output < 0) begin
@@ -264,7 +265,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         binary_output_add1 = binary_output +1'd1;
         temp1 = binary_to_float(binary_output);
         temp2 = binary_to_float(binary_output_add1);
-        if ((abs(out-temp1)) <= (abs(out-temp2))) begin
+        if ((abs(out-temp1)) < (abs(out-temp2))) begin
             return binary_output;
         end
         else begin
