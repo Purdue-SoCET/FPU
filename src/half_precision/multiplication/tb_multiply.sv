@@ -187,6 +187,48 @@ initial begin
     @(negedge CLK);
     check_ans(tb_product, 16'b1000000001001110,test_num); 
     
+    test_num += 1; // case23: UVM ovf
+    tb_float1 = 16'b0110111101101101;
+    tb_float2 = 16'b0110010001010111;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0111110000000000,test_num); 
+
+    test_num += 1; // case24: UVM ovf
+    tb_float1 = 16'b0110111101101101;
+    tb_float2 = 16'b1110010001010111;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1111110000000000,test_num); 
+
+    test_num += 1; // case25: UVM ovf
+    tb_float1 = 16'b1110111101101101;
+    tb_float2 = 16'b1110010001010111;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0111110000000000,test_num); 
+    
+    test_num += 1; // case26: UVM n*n
+    tb_float1 = 16'b0_00001_1011111110;
+    tb_float2 = 16'b0_01110_1110111000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0_00001_1010111111,test_num); 
+    
+    test_num += 1; // case27: UVM n*n
+    tb_float1 = 16'b0_01001_0001001111;
+    tb_float2 = 16'b1_00111_1101101111;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1_00010_0000000001,test_num); 
+    
+    test_num += 1; // case28: UVM n*n
+    tb_float1 = 16'b1_00101_1010011011;
+    tb_float2 = 16'b0_01010_1000110110;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1_00001_0100100001,test_num); 
+    
     $finish;
 end
 
