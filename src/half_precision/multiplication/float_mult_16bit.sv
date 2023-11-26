@@ -16,6 +16,7 @@ logic [21: 0] mant_product_full;
 logic [53:0] numerical_54;
 logic [31:0] numerical, temp;
 logic [5:0] left_shift;
+logic [11:0] mant_product_full2;
 logic zero, qnan, snan, inf, n_n, n_s, s_s; //test signals
 logic carry, no_carry;
 logic [5:0] normalized_exp1;
@@ -45,6 +46,7 @@ always_comb begin : mult
     numerical_54 = '0;
     numerical = '0;
     left_shift = '0;
+    mant_product_full2 = '0;
     //test signals (can be removed later)
     zero = 0;
     snan = 0;
@@ -151,7 +153,7 @@ always_comb begin : mult
         
 
         //-----------------------------------------------------------------
-        // exp_overflow = (exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]);
+        exp_overflow = !n_s && ((exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]));
         
         if (exp_overflow) begin //overflow in exp, product = +/-inf
             exp_product = '1;
@@ -159,25 +161,54 @@ always_comb begin : mult
             sign_product = '1;
         end else if (s_s == 1) begin //sub * sub guaranteed to be sub
             mant_product = '0;
-        end else if (mant_product_full[21])begin //mant carry 2 or 3
-            carry = 1;
-            // if (exp_product == '1) begin //ovf
-            //     exp_overflow = 1;
-            //     exp_product = '1;
-            //     mant_product = 10'b0111111111;
-            //     sign_product = '1;
-            // end else begin
-            //     exp_product += 1;
-            //     mant_product = mant_product_full[20:11];
-            // end
-            if(!check) begin
-                exp_product += 1;
+        end else begin
+            mant_product_full2 = mant_product_full[21:10];
+            if (mant_product_full[9]) begin
+                mant_product_full2 += 1;
             end
-                mant_product = mant_product_full[20:11];
-        end else begin //mant carry 1
-            no_carry = 1;
-            mant_product = mant_product_full[19:10];
-        end 
+
+            if (mant_product_full2[11])begin //mant carry 2 or 3
+                carry = 1;
+                if (exp_product == '1) begin //ovf
+                    exp_product = '1;
+                    mant_product = '0;
+                    sign_product = '1;
+                end else begin
+                    if(!check) begin
+                        exp_product += 1;
+                    end
+                    mant_product = mant_product_full2[10:1];
+                end
+            end else begin //mant carry 1
+                no_carry = 1;
+                mant_product = mant_product_full2[9:0];
+            end 
+            
+        end
+        // end else if (mant_product_full[21])begin //mant carry 2 or 3
+        //     carry = 1;
+        //     if (exp_product == '1) begin //ovf
+        //         exp_product = '1;
+        //         mant_product = '0;
+        //         sign_product = '1;
+        //     end else begin
+        //         if(!check) begin
+        //             exp_product += 1;
+        //         end
+        //         mant_product = mant_product_full[20:11];
+        //         //rounding
+        //         if (mant_product_full[10]) begin
+        //             mant_product += 1;
+        //         end
+        //     end
+        // end else begin //mant carry 1
+        //     no_carry = 1;
+        //     mant_product = mant_product_full[19:10];
+        //     //rounding
+        //     if (mant_product_full[9]) begin
+        //         mant_product += 1;
+        //     end
+        // end 
         //-----------------------------------------------------------------
          
     end
