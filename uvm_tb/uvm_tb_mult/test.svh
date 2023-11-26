@@ -102,6 +102,25 @@ class NaN_test extends base_test;
 
 endclass: NaN_test
 
+class norm_norm_test extends base_test;
+    `uvm_component_utils(norm_norm_test)
+
+    function new(string name = "norm_norm_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        norm_norm_seq seq = norm_norm_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: norm_norm_test
 
 class sub_sub_test extends base_test;
     `uvm_component_utils(sub_sub_test)
@@ -143,6 +162,25 @@ class norm_sub_test extends base_test;
 
 endclass: norm_sub_test
 
+class Zero_test extends base_test;
+    `uvm_component_utils(Zero_test)
+
+    function new(string name = "Zero_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        Zero_seq seq = Zero_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Zero_test
 class Inf_test extends base_test;
     `uvm_component_utils(Inf_test)
 
@@ -162,3 +200,23 @@ class Inf_test extends base_test;
     endtask
 
 endclass: Inf_test
+
+class Inf_Inf_test extends base_test;
+    `uvm_component_utils(Inf_Inf_test)
+
+    function new(string name = "Inf_Inf_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        Inf_Inf_seq seq = Inf_Inf_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Inf_Inf_test

@@ -1,5 +1,5 @@
-# make -f uvm_fmult16.mk build
-# make -f uvm_fmult16.mk <test_case>
+# step1: make -f uvm_fmult16.mk build
+# step2: make -f uvm_fmult16.mk <test_case>
 
 TB = uvm_tb/uvm_tb_mult
 TOP = $(TB)/tb_float_mult_16bit.sv
@@ -51,7 +51,16 @@ run_neg_neg_test: build
 	+UVM_TESTNAME="neg_neg_test" \
 	+UVM_VERBOSITY=UVM_LOW \
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" &	
-		
+
+run_norm_norm_test: build
+	vsim -c tb_float_mult_16bit -L \
+	$$QUESTA_HOME/uvm-1.2 \
+	-voptargs=+acc \
+	-coverage \
+	+UVM_TESTNAME="norm_norm_test" \
+	+UVM_VERBOSITY=UVM_LOW \
+	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" &
+
 run_sub_sub_test: build
 	vsim -c tb_float_mult_16bit -L \
 	$$QUESTA_HOME/uvm-1.2 \
@@ -70,6 +79,15 @@ run_norm_sub_test: build
 	+UVM_VERBOSITY=UVM_LOW \
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" &	
 
+run_Zero_test: build
+	vsim -c tb_float_add_16bit -L \
+	$$QUESTA_HOME/uvm-1.2 \
+	-voptargs=+acc \
+	-coverage \
+	+UVM_TESTNAME="Zero_test" \
+	+UVM_VERBOSITY=UVM_LOW \
+	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &		
+
 run_Inf_test: build
 	vsim -c tb_float_mult_16bit -L \
 	$$QUESTA_HOME/uvm-1.2 \
@@ -78,6 +96,15 @@ run_Inf_test: build
 	+UVM_TESTNAME="Inf_test" \
 	+UVM_VERBOSITY=UVM_LOW \
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" &	
+
+run_Inf_Inf_test: build
+	vsim -c tb_float_add_16bit -L \
+	$$QUESTA_HOME/uvm-1.2 \
+	-voptargs=+acc \
+	-coverage \
+	+UVM_TESTNAME="Inf_Inf_test" \
+	+UVM_VERBOSITY=UVM_LOW \
+	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_gui:
 	vsim -i tb_float_mult_16bit -L \

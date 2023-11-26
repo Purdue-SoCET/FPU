@@ -56,8 +56,10 @@ class fmult16_scoreboard extends uvm_scoreboard;
             // compare
             if (actual_product != expected_product) begin
                 MISMATCH++;
-                `uvm_error("fmult16_Scoreboard", $sformatf("\nPRODUCT MISMATCH \nExpected product: %16b(%.8f)\n  Actual product: %16b(%.8f)", expected_product, 
-                                                                            binary_to_float(expected_product), actual_product,binary_to_float(actual_product)))
+                // `uvm_error("fmult16_Scoreboard", $sformatf("\nPRODUCT MISMATCH: %16b * %16b => %.8f * %.8f \nExpected product: %16b(%.8f)\n  Actual product: %16b(%.8f)", 
+                // actual_txn.float1, actual_txn.float2,num1,num2, expected_product,binary_to_float(expected_product), actual_product,binary_to_float(actual_product)))
+                `uvm_error("fmult16_Scoreboard", $sformatf("\nPRODUCT MISMATCH: \nExpected product: %16b(%.8f)\n  Actual product: %16b(%.8f)", 
+                 expected_product,binary_to_float(expected_product), actual_product,binary_to_float(actual_product)))
             end
             else begin
                 PASSED ++;
@@ -144,8 +146,8 @@ class fmult16_scoreboard extends uvm_scoreboard;
         // uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
         // Special cases
         if (E == 5'b11111 && F != 0) return $realtobits(0.0/0.0);
-        if (E == 5'b11111 && F == 0 && S) return -$realtobits($realtime());
-        if (E == 5'b11111 && F == 0 && ~S) return $realtobits($realtime());
+        if (E == 5'b11111 && F == 0 && S) return (-1.0/0.0);
+        if (E == 5'b11111 && F == 0 && ~S) return (1.0/0.0);;
         // Denormalized
         if (E == 0) begin
             float_result = $pow(-1,S)*$pow(2.0,-14)*(F/($pow(2.0,10)));

@@ -14,7 +14,7 @@ class environment extends uvm_env;
   
     fmult16_agent agt; // contains monitor and driver and sequencer
     fmult16_scoreboard scrb; // scoreboard
-    coverage cov;
+    // coverage cov;
 
     function new(string name = "env", uvm_component parent = null);
 		super.new(name, parent);
@@ -24,14 +24,14 @@ class environment extends uvm_env;
     function void build_phase(uvm_phase phase);
         agt = fmult16_agent::type_id::create("agt", this);
         scrb = fmult16_scoreboard::type_id::create("scrb", this);
-        cov = coverage::type_id::create("cov",this);
+        // cov = coverage::type_id::create("cov",this);
         //`uvm_info("environment","environment build",UVM_LOW);
     endfunction
 
     function void connect_phase(uvm_phase phase);
         agt.mon.result_ap.connect(scrb.actual_result);
 
-        agt.mon.result_ap.connect(cov.analysis_imp_outp);
+        // agt.mon.result_ap.connect(cov.analysis_imp_outp);
         //`uvm_info("environment","environment connect",UVM_LOW);
     endfunction
 

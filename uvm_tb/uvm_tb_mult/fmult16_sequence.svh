@@ -18,8 +18,8 @@ class fmult16_sequence extends uvm_sequence #(transaction);
         req_item = transaction::type_id::create("req_item");
         //`uvm_info("fmult16_sequence","start sequence ",UVM_LOW);
 
-        //repeat ten randomized test cases
-        repeat(1000) begin
+        //repeat randomized test cases
+        repeat(10000) begin
             #20ns;
             //`uvm_info("fmult16_sequence","before start item ",UVM_LOW);
             start_item(req_item);
@@ -38,14 +38,14 @@ endclass: fmult16_sequence
 class pos_pos_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(pos_pos_seq)
 
-    function new(string name = "zero_seq");
+    function new(string name = "pos_pos_seq");
         super.new(name);
     endfunction
 
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
@@ -65,14 +65,14 @@ endclass:pos_pos_seq
 class neg_neg_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(neg_neg_seq)
 
-    function new(string name = "zero_seq");
+    function new(string name = "neg_neg_seq");
         super.new(name);
     endfunction
 
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
@@ -92,14 +92,14 @@ endclass:neg_neg_seq
 class pos_neg_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(pos_neg_seq)
 
-    function new(string name = "zero_seq");
+    function new(string name = "pos_neg_seq");
         super.new(name);
     endfunction
 
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
@@ -126,13 +126,13 @@ class NaN_seq extends uvm_sequence#(transaction);
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
                 req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] == 5'b11111;
+                req_item.float1[14:10] == 5'b11111;   //exp = '1 => NaN
                 req_item.float2[14:10] != 5'b11111;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("NaN_seq", "Failed to randomize transaction")
@@ -141,6 +141,37 @@ class NaN_seq extends uvm_sequence#(transaction);
         end
     endtask
 endclass:NaN_seq
+
+class norm_norm_seq extends uvm_sequence#(transaction);
+    `uvm_object_param_utils(norm_norm_seq)
+
+    function new(string name = "norm_norm_seq");
+        super.new(name);
+    endfunction
+
+    task body();
+        transaction req_item;
+        req_item = transaction::type_id::create("req_item");
+        //repeat randomized test cases
+        repeat(1000) begin
+            #20ns;
+            start_item(req_item);
+            if(!req_item.randomize() with {
+                // float1
+                req_item.float1[9:0] != '0;    
+                req_item.float1[14:10] != '0;
+                req_item.float1[14:10] != '1;
+                // float2
+                req_item.float2[14:10] != '0;
+                req_item.float2[14:10] != '1;     
+                req_item.float2[9:0] != '0;  
+            }) begin
+                `uvm_error("norm_norm_seq", "Failed to randomize transaction")
+            end
+            finish_item(req_item);     
+        end
+    endtask
+endclass:norm_norm_seq
 
 class sub_sub_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(sub_sub_seq)
@@ -152,15 +183,17 @@ class sub_sub_seq extends uvm_sequence#(transaction);
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] == '0;
-                req_item.float2[14:10] == '0;   //exp<15 => fracion <1
-                req_item.float2[9:0] != '0;  
+                // float1
+                req_item.float1[9:0] != '0;    //mantissa != 0
+                req_item.float1[14:10] == '0;   //exp = '0
+                // float2
+                req_item.float2[9:0] != '0;     //mantissa != 0
+                req_item.float2[14:10] == '0;   //exp = '0
             }) begin
                 `uvm_error("sub_sub_seq", "Failed to randomize transaction")
             end
@@ -179,13 +212,14 @@ class norm_sub_seq extends uvm_sequence#(transaction);
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
                 req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] != '0;
+                req_item.float1[14:10] != '0;   //exp!='0 => != sub
+                req_item.float1[14:10] != '1;  //exp!='1 => != inf nor NaN
                 req_item.float2[14:10] == '0;   
                 req_item.float2[9:0] != '0;  
             }) begin
@@ -195,6 +229,33 @@ class norm_sub_seq extends uvm_sequence#(transaction);
         end
     endtask
 endclass:norm_sub_seq
+
+class Zero_seq extends uvm_sequence#(transaction);
+    `uvm_object_param_utils(Zero_seq)
+
+    function new(string name = "Zero_seq");
+        super.new(name);
+    endfunction
+
+    task body();
+        transaction req_item;
+        req_item = transaction::type_id::create("req_item");
+        //repeat randomized test cases
+        repeat(1000) begin
+            #20ns;
+            start_item(req_item);
+            if(!req_item.randomize() with {
+                // float1
+                req_item.float1 == '0;    
+                // float2
+                req_item.float2[14:10] != 5'b11111;   //exp!='1 => != inf nor NaN
+            }) begin
+                `uvm_error("Zero_seq", "Failed to randomize transaction")
+            end
+            finish_item(req_item);     
+        end
+    endtask
+endclass:Zero_seq
 
 class Inf_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(Inf_seq)
@@ -206,15 +267,17 @@ class Inf_seq extends uvm_sequence#(transaction);
     task body();
         transaction req_item;
         req_item = transaction::type_id::create("req_item");
-        //repeat ten randomized test cases
+        //repeat randomized test cases
         repeat(1000) begin
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
+                // float1
                 req_item.float1[9:0] == '0;     //Inf
                 req_item.float1[14:10] == '1;
+                // float2
+                req_item.float2[9:0] != '0; 
                 req_item.float2[14:10] != '0;   //!= inf nor NaN
-                req_item.float2[9:0] != '0;  
             }) begin
                 `uvm_error("Inf_seq", "Failed to randomize transaction")
             end
@@ -223,4 +286,33 @@ class Inf_seq extends uvm_sequence#(transaction);
     endtask
 endclass:Inf_seq
 
+// (+/-)Inf*(+/-)Inf
+class Inf_Inf_seq extends uvm_sequence#(transaction);
+    `uvm_object_param_utils(Inf_Inf_seq)
+
+    function new(string name = "Inf_Inf_seq");
+        super.new(name);
+    endfunction
+
+    task body();
+        transaction req_item;
+        req_item = transaction::type_id::create("req_item");
+        //repeat randomized test cases
+        repeat(4) begin
+            #20ns;
+            start_item(req_item);
+            if(!req_item.randomize() with {
+                // float1
+                req_item.float1[9:0] == '0;     //Inf
+                req_item.float1[14:10] == '1;
+                // float2
+                req_item.float2[9:0] == '0;  
+                req_item.float2[14:10] == '1;   //Inf
+            }) begin
+                `uvm_error("Inf_Inf_seq", "Failed to randomize transaction")
+            end
+            finish_item(req_item);     
+        end
+    endtask
+endclass:Inf_Inf_seq
 `endif
