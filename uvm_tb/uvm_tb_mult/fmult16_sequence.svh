@@ -19,7 +19,7 @@ class fmult16_sequence extends uvm_sequence #(transaction);
         //`uvm_info("fmult16_sequence","start sequence ",UVM_LOW);
 
         //repeat randomized test cases
-        repeat(10000) begin
+        repeat(100000) begin
             #20ns;
             //`uvm_info("fmult16_sequence","before start item ",UVM_LOW);
             start_item(req_item);
@@ -286,11 +286,10 @@ class Inf_seq extends uvm_sequence#(transaction);
     endtask
 endclass:Inf_seq
 
-// (+/-)Inf*(+/-)Inf
-class Inf_Inf_seq extends uvm_sequence#(transaction);
-    `uvm_object_param_utils(Inf_Inf_seq)
+class Zero_Inf_seq extends uvm_sequence#(transaction);
+    `uvm_object_param_utils(Zero_Inf_seq)
 
-    function new(string name = "Inf_Inf_seq");
+    function new(string name = "Zero_Inf_seq");
         super.new(name);
     endfunction
 
@@ -303,16 +302,16 @@ class Inf_Inf_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // float1
-                req_item.float1[9:0] == '0;     //Inf
-                req_item.float1[14:10] == '1;
+                req_item.float1[9:0] == '0;     //0
+                req_item.float1[14:10] == '0;
                 // float2
                 req_item.float2[9:0] == '0;  
                 req_item.float2[14:10] == '1;   //Inf
             }) begin
-                `uvm_error("Inf_Inf_seq", "Failed to randomize transaction")
+                `uvm_error("Zero_Inf_seq", "Failed to randomize transaction")
             end
             finish_item(req_item);     
         end
     endtask
-endclass:Inf_Inf_seq
+endclass:Zero_Inf_seq
 `endif

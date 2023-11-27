@@ -201,15 +201,15 @@ class Inf_test extends base_test;
 
 endclass: Inf_test
 
-class Inf_Inf_test extends base_test;
-    `uvm_component_utils(Inf_Inf_test)
+class Zero_Inf_test extends base_test;
+    `uvm_component_utils(Zero_Inf_test)
 
-    function new(string name = "Inf_Inf_test", uvm_component parent = null);
+    function new(string name = "Zero_Inf_test", uvm_component parent = null);
             super.new(name, parent);
     endfunction: new
 
     task run_phase(uvm_phase phase);
-        Inf_Inf_seq seq = Inf_Inf_seq::type_id::create("seq",this);
+        Zero_Inf_seq seq = Zero_Inf_seq::type_id::create("seq",this);
         
         phase.raise_objection( this, "Starting sequence in run phase" );
         $display("%t Starting sequence run_phase",$time);
@@ -219,4 +219,4 @@ class Inf_Inf_test extends base_test;
     
     endtask
 
-endclass: Inf_Inf_test
+endclass: Zero_Inf_test
