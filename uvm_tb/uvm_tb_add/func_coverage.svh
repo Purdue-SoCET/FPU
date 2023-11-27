@@ -3,15 +3,15 @@
 // `include "transaction.svh"
 
 // `uvm_analysis_imp_decl(_port_outp)
-// class coverage extends uvm_subscriber#(transaction);
-//     `uvm_component_utils(coverage)
+// class func_coverage extends uvm_subscriber#(transaction);
+//     `uvm_component_utils(func_coverage)
     
-//     uvm_analysis_imp_port_outp#(transaction,coverage) analysis_imp_outp;
+//     uvm_analysis_imp_port_outp#(transaction,func_coverage) analysis_imp_outp;
 //     uvm_analysis_port#(transaction) cov_ap;
 //     transaction txn;
-//     real cov_float1;
-//     real cov_float2;
-//     real cov_sum;
+//     int cov_float1;
+//     int cov_float2;
+//     int cov_sum;
 //     covergroup float1_in;
 //         cov_float1: coverpoint txn.float1 {
 //             bins zero = {16'b0};

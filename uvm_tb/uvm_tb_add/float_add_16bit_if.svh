@@ -11,9 +11,10 @@ interface float_add_16bit_if (input logic clk);
     logic [15:0] float2;
     //output
     logic [15:0] sum;
+    fpu_rounding_mode_t rounding_mode;
 
 modport fadd16 (
-    input clk, n_rst, float1, float2,
+    input clk, n_rst, float1, float2, rounding_mode,
     output sum
 );
 

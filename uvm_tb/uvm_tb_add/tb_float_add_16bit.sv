@@ -1,4 +1,4 @@
-//`include "fpu_types_pkg.vh"
+`include "fpu_types_pkg.vh"
 `include "float_add.sv" 
 
 // interface file
@@ -14,7 +14,7 @@ module tb_float_add_16bit ();
 
     // import uvm packages
     import uvm_pkg::*;
-    //import fpu_types_pkg::*;
+    import fpu_types_pkg::*;
     logic clk;
     // generate clock
     initial begin
@@ -26,7 +26,7 @@ module tb_float_add_16bit ();
     float_add_16bit_if fadd16_if(clk);
     
     // instantiate the DUT
-    float_add DUT(.float1(fadd16_if.float1),.float2(fadd16_if.float2), .sum(fadd16_if.sum));
+    float_add DUT(.float1(fadd16_if.float1),.float2(fadd16_if.float2), .sum(fadd16_if.sum), .rounding_mode(ROUND_NEAREST_EVEN));
     
     initial begin
         // configure the interface into the database, so that it can be accessed throughout the hierachy

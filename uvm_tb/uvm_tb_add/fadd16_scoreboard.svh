@@ -49,7 +49,6 @@ class fadd16_scoreboard extends uvm_scoreboard;
             
             // calculate the expected output
             expected_output = compute_expected_output(actual_txn.float1,actual_txn.float2);
-            // uvm_report_info("Sum", $sformatf("%16b",expected_output), UVM_LOW);
             // get actual output
             actual_output = actual_txn.sum;
 
@@ -143,7 +142,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         int E = binary_float[14:10];
         int F = binary_float[9:0];
         real float_result;
-        // uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
+        //uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
         // Special cases
         if (E == 5'b11111 && F != '0) return $realtobits(0.0/0.0);
         if (E == 5'b11111 && F == '0 && S) return (-1.0/0.0);
@@ -185,7 +184,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         normalized_num = float_output;
         biased_exponent = 0;
 
-        // get abs(normalized_num) to help calculating since we already get the S bit
+        // get abs(normalized_num) to help calculating since we already get the Signed bit
         normalized_num = abs(normalized_num);
 
         // CASE 1: if output >= 2.0, divided until it become (1.mantissa) and get the exponent
@@ -193,7 +192,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
             normalized_num = normalized_num / 2.0;
             biased_exponent = biased_exponent + 1;
         end
-        // CASE 2: if output < 1.0, addiplied until it become (1.mantissa) and get the exponent
+        // CASE 2: if output < 1.0, muliplied until it become (1.mantissa) and get the exponent
         //Subnormal num: if the biased_exponent is exceed the maximum number it can represent, just stop and stay (0.mantissa)
         while (normalized_num < 1.0 && biased_exponent > -14) begin
             normalized_num = normalized_num * 2.0;
@@ -229,7 +228,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         // Handle subnorms (if the number is too small to be represented with the biased exponent)
         if (subnorm_flag) begin
             F = F >> (-biased_exponent + 1);
-            biased_exponent = 0;
+            biased_exponent = 0; 
             binary_output = {S, biased_exponent[4:0], F};
             final_binary_output = check_margin_err(float_output,binary_output);
             return final_binary_output;
