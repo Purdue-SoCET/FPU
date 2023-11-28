@@ -220,3 +220,23 @@ class Zero_Inf_test extends base_test;
     endtask
 
 endclass: Zero_Inf_test
+
+class overflow_test extends base_test;
+    `uvm_component_utils(overflow_test)
+
+    function new(string name = "overflow_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        overflow_seq seq = overflow_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: overflow_test
