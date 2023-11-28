@@ -3,7 +3,7 @@ Command to run UVM:
 Step1 : make -f uvm_fadd16.mk build
 Step2 : make -f uvm_fadd16.mk <test_case> (replace test_case in following test_case list, no need <> when running)
 
-test_case list(every case repeat 100000 now):
+test_case list(every case repeat 100000 now except Case11):
 1. run: 100000 random testcases
 2. run_NaN_test: NaN +/- finite num
 3. run_pos_pos_test: Postive finite +/- Postive finite 
@@ -14,7 +14,7 @@ test_case list(every case repeat 100000 now):
 8. run_norm_sub_test: Normal  +/- Subnormal
 9. run_Zero_test: Zero +/- finite
 10. run_Inf_test: Inf +/- finite
-11. run_Inf_Inf_test: Inf +/- Inf
+11. run_Inf_Inf_test: Inf +/- Inf	(repeat 4)
 12. run_self_test: Self +/- Self
 13. run_overflow_test: Maximum Normal +/- finite
 
