@@ -323,12 +323,11 @@ class self_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                // float1
-                req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] != '1;
+                // float1  
+                req_item.float1[14:10] != '1;       //exp != '1 => != NaN nor Inf
                 // float2
-                req_item.float2[14:10] == req_item.float1[14:10];   
                 req_item.float2[9:0] == req_item.float1[9:0];
+                req_item.float2[14:10] == req_item.float1[14:10];   
                 req_item.float2[15] == ~req_item.float1[15];        //different sign
             }) begin
                 `uvm_error("self_seq", "Failed to randomize transaction")
