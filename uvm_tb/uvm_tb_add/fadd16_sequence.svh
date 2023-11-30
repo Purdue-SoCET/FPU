@@ -325,7 +325,7 @@ class self_seq extends uvm_sequence#(transaction);
             if(!req_item.randomize() with {
                 // float1
                 req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] != '0;
+                req_item.float1[14:10] != '1;
                 // float2
                 req_item.float2[14:10] == req_item.float1[14:10];   
                 req_item.float2[9:0] == req_item.float1[9:0];
