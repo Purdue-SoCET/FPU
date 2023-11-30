@@ -46,7 +46,7 @@ class fmult16_scoreboard extends uvm_scoreboard;
             // print the input float for visulization
             num1 = binary_to_float(actual_txn.float1);
             num2 = binary_to_float(actual_txn.float2);
-            uvm_report_info("Input float", $sformatf("%16b * %16b => %.8f * %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
+            // uvm_report_info("Input float", $sformatf("%16b * %16b => %.8f * %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
 
             // calculate the expected product
             expected_product = compute_expected_product(actual_txn.float1,actual_txn.float2);
@@ -56,8 +56,8 @@ class fmult16_scoreboard extends uvm_scoreboard;
             // compare
             if (actual_product != expected_product) begin
                 MISMATCH++;
-                // `uvm_error("fmult16_Scoreboard", $sformatf("\nPRODUCT MISMATCH: %16b * %16b => %.8f * %.8f \nExpected product: %16b(%.8f)\n  Actual product: %16b(%.8f)", 
-                // actual_txn.float1, actual_txn.float2,num1,num2, expected_product,binary_to_float(expected_product), actual_product,binary_to_float(actual_product)))
+                uvm_report_info("Input float", $sformatf("%16b * %16b => %.8f * %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
+                uvm_report_info("Product", $sformatf("%.8f",num1*num2), UVM_LOW);
                 `uvm_error("fmult16_Scoreboard", $sformatf("\nPRODUCT MISMATCH: \nExpected product: %16b(%.8f)\n  Actual product: %16b(%.8f)", 
                  expected_product,binary_to_float(expected_product), actual_product,binary_to_float(actual_product)))
             end
@@ -113,7 +113,7 @@ class fmult16_scoreboard extends uvm_scoreboard;
         end
 
         float_product = binary_to_float(binary_float1)*binary_to_float(binary_float2);
-        uvm_report_info("Product", $sformatf("%.8f",float_product), UVM_LOW);
+        // uvm_report_info("Product", $sformatf("%.8f",float_product), UVM_LOW);
 
         // Handling Underflow case
         if((float_product < (subnorm_bound) && float_product > (-subnorm_bound))) begin
