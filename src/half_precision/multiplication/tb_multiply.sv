@@ -228,6 +228,13 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'b1_00001_0100100001,test_num); 
+
+    test_num += 1; // case28: UVM inf
+    tb_float1 = 16'b0_11100_0011100001;
+    tb_float2 = 16'b1_10001_1010101011;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1111110000000000,test_num); 
     
     $finish;
 end

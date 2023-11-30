@@ -189,7 +189,6 @@ always_comb begin : mult
             if (exp_product == '1) begin //ovf
                 exp_product = '1;
                 mant_product = '0;
-                sign_product = '1;
             end else begin
                 if(!check) begin
                     exp_product += 1;
@@ -209,7 +208,9 @@ always_comb begin : mult
             end
         end 
         //-----------------------------------------------------------------
-         
+         if (exp_product == '1) begin
+            mant_product = '0;
+         end
     end
 end
 endmodule
