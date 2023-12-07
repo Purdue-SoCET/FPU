@@ -3,17 +3,17 @@
 
 import uvm_pkg::*;
 `include "uvm_macros.svh"
-`include "float_add_16bit_if.svh"
-`include "fadd16_agent.svh"
-`include "fadd16_scoreboard.svh" // uvm_scoreboard
+`include "float_add_if.svh"
+`include "fadd_agent.svh"
+`include "fadd_scoreboard.svh" // uvm_scoreboard
 `include "transaction.svh" // uvm_sequence_item
 `include "func_coverage.svh"
 
 class environment extends uvm_env;
   `uvm_component_utils(environment)
   
-    fadd16_agent agt; // contains monitor and driver and sequencer
-    fadd16_scoreboard scrb; // scoreboard
+    fadd_agent agt; // contains monitor and driver and sequencer
+    fadd_scoreboard scrb; // scoreboard
     // func_coverage cov;
 
     function new(string name = "env", uvm_component parent = null);
@@ -22,8 +22,8 @@ class environment extends uvm_env;
 	endfunction
 
     function void build_phase(uvm_phase phase);
-        agt = fadd16_agent::type_id::create("agt", this);
-        scrb = fadd16_scoreboard::type_id::create("scrb", this);
+        agt = fadd_agent::type_id::create("agt", this);
+        scrb = fadd_scoreboard::type_id::create("scrb", this);
         // cov = func_coverage::type_id::create("cov",this);
         //`uvm_info("environment","environment build",UVM_LOW);
     endfunction

@@ -1,12 +1,14 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 `include "environment.svh"
+`include "uvm_fpu_pkg.vh"
+import uvm_fpu_pkg::*;
 
 class base_test extends uvm_test;
     `uvm_component_utils(base_test)
 
     environment env;
-    virtual float_add_16bit_if vif;
+    virtual float_add_if#(.WIDTH(WIDTH)) vif;
     
     function new(string name = "base_test", uvm_component parent = null);
         super.new(name, parent);
@@ -17,17 +19,17 @@ class base_test extends uvm_test;
         super.build_phase(phase);
         env = environment::type_id::create("env",this);
         // send the interface down
-        if (!uvm_config_db#(virtual float_add_16bit_if)::get(this, "", "float_add_16bit_vif", vif)) begin 
+        if (!uvm_config_db#(virtual float_add_if#(.WIDTH(WIDTH)))::get(this, "", "float_add_vif", vif)) begin 
         // check if interface is correctly set in testbench top level
             `uvm_fatal("base_test", "No virtual interface specified for this test instance")
         end 
 
-        uvm_config_db#(virtual float_add_16bit_if)::set(this, "env.agt*", "float_add_16bit_vif", vif);
+        uvm_config_db#(virtual float_add_if#(.WIDTH(WIDTH)))::set(this, "env.agt*", "float_add_vif", vif);
         //`uvm_info("base_test","base_test build phase",UVM_LOW);
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        fadd16_sequence seq = fadd16_sequence::type_id::create("seq",this);
+        fadd_sequence seq = fadd_sequence::type_id::create("seq",this);
 
         phase.raise_objection( this, "Starting sequence in run phase" );
         //`uvm_info("base_test"," base_test run_phase.raise",UVM_LOW);

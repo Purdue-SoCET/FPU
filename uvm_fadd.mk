@@ -1,7 +1,7 @@
 ifeq (0,1)
 Command to run UVM:
-Step1 : make -f uvm_fadd16.mk build
-Step2 : make -f uvm_fadd16.mk <test_case> (replace test_case in following test_case list, no need <> when running)
+Step1 : make -f uvm_fadd.mk build
+Step2 : make -f uvm_fadd.mk <test_case> (replace test_case in following test_case list, no need <> when running)
 
 test_case list(every case repeat 100000 now except Case11):
 1. run: 100000 random testcases
@@ -19,13 +19,13 @@ test_case list(every case repeat 100000 now except Case11):
 13. run_overflow_test: Maximum Normal +/- finite
 
 After running, see transcript for the result will be more clear
-(If there are some Make error, try: make -f uvm_fadd16.mk clean)
+(If there are some Make error, try: make -f uvm_fadd.mk clean)
 endif
 
 # Makefile
 TB = uvm_tb/uvm_tb_add
-TOP = $(TB)/tb_float_add_16bit.sv
-AGENT = $(TB)/fadd16_agent
+TOP = $(TB)/tb_float_add.sv
+AGENT = $(TB)/fadd_agent
 RTL = src/half_precision/addition/float_add.sv
 
 build:
@@ -34,13 +34,13 @@ build:
 	+incdir+$(AGENT) \
 	+acc \
 	+cover \
-	-L $$QUESTA_HOME/uvm-1.2 $(FADD16) $(TOP) \
+	-L $$QUESTA_HOME/uvm-1.2 $(FADD) $(TOP) \
 	-logfile tb_compile.log \
 	-printinfilenames=file_search.log
 
 # run for 100000 random testcases now
 run: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -51,7 +51,7 @@ run: build
 #-do "do uvm_tb/fadd.do"
 
 run_NaN_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -60,7 +60,7 @@ run_NaN_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_pos_pos_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -69,7 +69,7 @@ run_pos_pos_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_neg_neg_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -78,7 +78,7 @@ run_neg_neg_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 	
 run_pos_neg_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -87,7 +87,7 @@ run_pos_neg_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_norm_norm_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -96,7 +96,7 @@ run_norm_norm_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_sub_sub_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -105,7 +105,7 @@ run_sub_sub_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_norm_sub_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -114,7 +114,7 @@ run_norm_sub_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_Zero_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -123,7 +123,7 @@ run_Zero_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &		
 
 run_Inf_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -132,7 +132,7 @@ run_Inf_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_Inf_Inf_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -141,7 +141,7 @@ run_Inf_Inf_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_self_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -150,7 +150,7 @@ run_self_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_overflow_test: build
-	vsim -c tb_float_add_16bit -L \
+	vsim -c tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -159,7 +159,7 @@ run_overflow_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_gui:
-	vsim -i tb_float_add_16bit -L \
+	vsim -i tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \

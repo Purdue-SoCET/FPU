@@ -1,18 +1,21 @@
-`ifndef FADD16_SCOREBOARD_SVH
-`define FADD16_SCOREBOARD_SVH
+`ifndef FADD_SCOREBOARD_SVH
+`define FADD_SCOREBOARD_SVH
 
 import uvm_pkg::*;
+`include "uvm_fpu_pkg.vh"
 `include "uvm_macros.svh"
+import uvm_fpu_pkg::*;
+// import "DPI-C" function shortint f16_compute(shortint a, shortint b);
 
-class fadd16_scoreboard extends uvm_scoreboard;
-    `uvm_component_utils(fadd16_scoreboard)
+class fadd_scoreboard extends uvm_scoreboard;
+    `uvm_component_utils(fadd_scoreboard)
 
     // Declare actual result transactions
     uvm_analysis_export#(transaction) actual_result; //from monitor
     uvm_tlm_analysis_fifo #(transaction) actual_fifo;
-    
-    logic [15:0] expected_output;
-    logic [15:0] actual_output;
+
+    logic [WIDTH-1:0] expected_output;
+    logic [WIDTH-1:0] actual_output;
     int PASSED, MISMATCH, txn_num;
     real num1, num2;
     function new(string name, uvm_component parent = null);
@@ -22,24 +25,24 @@ class fadd16_scoreboard extends uvm_scoreboard;
         txn_num = 0;
         num1 = 0.0;
         num2 = 0.0;
-        //`uvm_info("fadd16_scoreboard","scoreboard construct",UVM_LOW);
+        //`uvm_info("fadd_scoreboard","scoreboard construct",UVM_LOW);
     endfunction
 
     function void build_phase(uvm_phase phase);
         actual_result = new("actual_result", this);
         actual_fifo = new("actual_fifo", this);
-        //`uvm_info("fadd16_scoreboard","scoreboard build",UVM_LOW);
+        //`uvm_info("fadd_scoreboard","scoreboard build",UVM_LOW);
     endfunction
 
     function void connect_phase (uvm_phase phase);
         actual_result.connect(actual_fifo.analysis_export);
-        //`uvm_info("fadd16_scoreboard","scoreboard connect",UVM_LOW);
+        //`uvm_info("fadd_scoreboard","scoreboard connect",UVM_LOW);
     endfunction
 
     task run_phase(uvm_phase phase);
         
         transaction actual_txn;
-        //`uvm_info("fadd16_scoreboard","scoreboard run",UVM_LOW);
+        //`uvm_info("fadd_scoreboard","scoreboard run",UVM_LOW);
         forever begin
             actual_fifo.get(actual_txn);
             txn_num++;
@@ -55,10 +58,10 @@ class fadd16_scoreboard extends uvm_scoreboard;
             // compare
             if (actual_output != expected_output) begin
                 MISMATCH++;
-                uvm_report_info("Input float", $sformatf("%16b + %16b => %.8f + %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
-                uvm_report_info("Sum", $sformatf("%.8f",num1+num2), UVM_LOW);
-                `uvm_error("fadd16_Scoreboard", $sformatf("\nOUTPUT MISMATCH \nExpected output: %16b(%.8f)\n  Actual output: %16b(%.8f)", expected_output, 
-                                                                            binary_to_float(expected_output), actual_output,binary_to_float(actual_output)))
+                uvm_report_info("Input float", $sformatf("%b + %b => %e + %e", actual_txn.float1[WIDTH-1:0], actual_txn.float2[WIDTH-1:0] ,num1,num2), UVM_LOW);
+                uvm_report_info("Sum", $sformatf("%e",num1+num2), UVM_LOW);
+                `uvm_error("fadd_Scoreboard", $sformatf("\nOUTPUT MISMATCH \nExpected output: %b(%e)\n  Actual output: %b(%e)", expected_output[WIDTH-1:0] , 
+                                                                            binary_to_float(expected_output), actual_output[WIDTH-1:0] ,binary_to_float(actual_output)))
             end
             else begin
                 PASSED ++;
@@ -67,35 +70,31 @@ class fadd16_scoreboard extends uvm_scoreboard;
     endtask
 
     function void report_phase(uvm_phase phase);
-        `uvm_info("fadd16_SB", $sformatf("\nTotal number of transactions: %0d\nTotal number of MISMATCH: %0d\n", txn_num, MISMATCH), UVM_LOW)
+        `uvm_info("fadd_SB", $sformatf("\nTotal number of transactions: %0d\nTotal number of MISMATCH: %0d\n", txn_num, MISMATCH), UVM_LOW)
        
     endfunction
 
-    function logic [15:0] compute_expected_output(logic [15:0] binary_float1, logic [15:0] binary_float2);
+    function logic [WIDTH-1:0] compute_expected_output(logic [WIDTH-1:0] binary_float1, logic [WIDTH-1:0] binary_float2);
         logic sign_output;
-        logic [15:0]qNaN,sNaN,Inf,nInf;
+        // logic [WIDTH-1:0]QNAN,sNaN,Inf,nInf,max_norm,mini_sub;
         real float_output;
-        logic [15:0] binary_output;
+        logic [WIDTH-1:0] binary_output;
         int exp_overflow;
         real norm_bound;
         real subnorm_bound;
-        // Default values
-        qNaN = {1'b1, 5'b11111, 10'b1111111111};
-        sNaN = {1'b1, 5'b11111, 10'b0111111111};
-        Inf = {1'b0, 5'b11111, 10'b0};
-        nInf = {1'b1, 5'b11111, 10'b0};
-        norm_bound = binary_to_float(16'b0111101111111111);  //maximum normalize number
-        subnorm_bound = binary_to_float(16'b0000000000000001); //smallest subnormal number
+
+        norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number
+        subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number
 
         // Handling NaN case
-        // Any calculation involved NaN {exp = 5'b11111, mant != 0} => qNaN
+        // Any calculation involved NaN {exp = 5'b11111, mant != 0} => QNAN
         if (isNaN(binary_float1) || isNaN(binary_float2)) begin
-            return qNaN; 
+            return QNAN; 
         end
         
         // Handling Inf case
-        if ((binary_float1[15] ^ binary_float2[15]) && (isInf(binary_float1) && isInf(binary_float2))) begin
-            return qNaN;  // Inf + (-Inf) -> qNaN
+        if ((binary_float1[WIDTH-1] ^ binary_float2[WIDTH-1]) && (isInf(binary_float1) && isInf(binary_float2))) begin
+            return QNAN;  // Inf + (-Inf) -> QNAN
         end
 
         float_output = binary_to_float(binary_float1) + binary_to_float(binary_float2);
@@ -111,21 +110,21 @@ class fadd16_scoreboard extends uvm_scoreboard;
 
         // Handling Inf case
         if (isInf(binary_float1) || isInf(binary_float2)) begin
-            return {sign_output, 5'b11111, 10'b0};  // Inf
+            return {sign_output, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b0}}};  // Inf
         end
 
         // Handling Underflow case
         if((float_output < (subnorm_bound) && float_output > (-subnorm_bound))) begin
-            return {sign_output,15'b0};    //underflow-> flush to 0
+            return {sign_output,{EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};    //underflow-> flush to 0
         end
         
         // Handling Overflow case
         if ((float_output > norm_bound) || (float_output < (-norm_bound))) begin
             if(sign_output) begin 
-                return nInf; //Overflow-> -Inf
+                return NINF; //Overflow-> -Inf
             end
             else begin 
-                return Inf;  //Overflow-> Inf
+                return INF;  //Overflow-> Inf
             end
         end
         
@@ -137,40 +136,42 @@ class fadd16_scoreboard extends uvm_scoreboard;
     endfunction
 
 
-    function real binary_to_float(logic [15:0] binary_float);
-        int signed S = binary_float[15];
-        int E = binary_float[14:10];
-        int F = binary_float[9:0];
+    function real binary_to_float(logic [WIDTH-1:0] binary_float);
+        int signed S = binary_float[WIDTH-1];
+        int E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
+        int F = binary_float[FRACTION_MSB:FRACTION_LSB];
+        int bias = $pow(2,EXPONENT_WIDTH-1)-1;
         real float_result;
-        //uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
+        // uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
         // Special cases
-        if (E == 5'b11111 && F != '0) return $realtobits(0.0/0.0);
-        if (E == 5'b11111 && F == '0 && S) return (-1.0/0.0);
-        if (E == 5'b11111 && F == '0 && ~S) return (1.0/0.0);
+        if (binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1 && F != '0) return $realtobits(0.0/0.0);
+        if (binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1 && F == '0 && S) return (-1.0/0.0);
+        if (binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1 && F == '0 && ~S) return (1.0/0.0);
         // Denormalized
         if (E == 0) begin
-            float_result = $pow(-1,S)*$pow(2.0,-14)*(F/($pow(2.0,10)));
+            float_result = $pow(-1,S)*$pow(2.0,-(bias-1))*(F/($pow(2.0,FRACTION_WIDTH)));
         end
         // Normalized
         else begin
-            float_result = $pow(-1,S)*$pow(2.0,E-15)*(1+(F/($pow(2.0,10))));
+            float_result = $pow(-1,S)*$pow(2.0,E-bias)*(1+(F/($pow(2.0,FRACTION_WIDTH))));
         end
         return float_result;
     endfunction //binary_to_float
 
-    function logic [15:0] float_to_binary(real float_output);
+    function logic [WIDTH-1:0] float_to_binary(real float_output);
         logic S;
-        logic [4:0] E;
-        logic [9:0] F;
-        logic [15:0] binary_output;
-        logic [15:0] final_binary_output;
+        logic [EXPONENT_WIDTH-1:0] E;
+        logic [FRACTION_WIDTH-1:0] F;
+        logic [WIDTH-1:0] binary_output;
+        logic [WIDTH-1:0] final_binary_output;
         real normalized_num;
-        integer int_part;
+        int int_part;
         real frac_part;
-        integer biased_exponent;
-        integer d;
+        int biased_exponent;
+        int d;
         real temp;
         int subnorm_flag;
+        int bias = $pow(2,EXPONENT_WIDTH-1)-1;
         // uvm_report_info("CONVERT",$sformatf("\nS: %d\nE: %d\nF: %d\n",S,E,F),UVM_LOW);
 
         //define the sign bit S
@@ -194,7 +195,7 @@ class fadd16_scoreboard extends uvm_scoreboard;
         end
         // CASE 2: if output < 1.0, muliplied until it become (1.mantissa) and get the exponent
         //Subnormal num: if the biased_exponent is exceed the maximum number it can represent, just stop and stay (0.mantissa)
-        while (normalized_num < 1.0 && biased_exponent > -14) begin
+        while (normalized_num < 1.0 && biased_exponent > -(bias-1)) begin
             normalized_num = normalized_num * 2.0;
             biased_exponent = biased_exponent - 1;
         end
@@ -206,59 +207,58 @@ class fadd16_scoreboard extends uvm_scoreboard;
         end
 
         // print messages for debug
-        // uvm_report_info("normalized_num", $sformatf("%.8f", normalized_num), UVM_LOW);
+        // uvm_report_info("normalized_num", $sformatf("%e", normalized_num), UVM_LOW);
         // uvm_report_info("biased_exponent", $sformatf("%0d", biased_exponent), UVM_LOW);
 
         // convert mantissa into 10 bits binary
-        F = 10'b0;
+        F = {FRACTION_WIDTH{1'b0}};
         int_part = $floor(normalized_num);
         frac_part = normalized_num-int_part;
         temp = frac_part;
-        for (int i = 9; i >=0; i--) begin
-            temp = temp * 2;
+        for (int i = (FRACTION_WIDTH-1); i >=0; i--) begin
+            temp = temp * 2.0;
             F[i] = $floor(temp);
             temp = temp - $floor(temp);
         end
-        // uvm_report_info("F", $sformatf("%.10b", F), UVM_LOW);
+        // uvm_report_info("F", $sformatf("%b", F[FRACTION_WIDTH-1:0]), UVM_LOW);
 
         // Normalized number in the form: 1.mantissa x 2^biased_exponent
-        // Bias is 15 for half-precision
-        biased_exponent = biased_exponent + 5'd15;
+        // Bias is WIDTH-1 for half-precision
+        biased_exponent = biased_exponent + bias;
 
         // Handle subnorms (if the number is too small to be represented with the biased exponent)
         if (subnorm_flag) begin
             F = F >> (-biased_exponent + 1);
             biased_exponent = 0; 
-            binary_output = {S, biased_exponent[4:0], F};
+            binary_output = {S, biased_exponent[EXPONENT_WIDTH-1:0], F};
             final_binary_output = check_margin_err(float_output,binary_output);
             return final_binary_output;
         end
 
-        binary_output = {S, biased_exponent[4:0], F};
+        binary_output = {S, biased_exponent[EXPONENT_WIDTH-1:0], F};
         final_binary_output = check_margin_err(float_output,binary_output);
 
         return final_binary_output;
     endfunction // float_to_binary
 
     //some helper functions
-    function int isNaN(logic [15:0] binary_float);
-        int signed S = binary_float[15];
-        int E = binary_float[14:10];
-        int F = binary_float[9:0];
-        if ((E == 5'b11111) && (F != '0)) return 1;
+    function int isNaN(logic [WIDTH-1:0] binary_float);
+        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
+        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
+        if ((binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1) && (F != '0)) return 1;
         else return 0;
     endfunction
 
-    function int isInf(logic [15:0] binary_float);
-        int E = binary_float[14:10];
-        int F = binary_float[9:0];
-        if ((E == 5'b11111) && (F == '0)) return 1;
+    function int isInf(logic [WIDTH-1:0] binary_float);
+        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
+        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
+        if ((E == '1) && (F == '0)) return 1;
         else return 0;
     endfunction
 
-    function logic [15:0] check_margin_err(real out, logic [15:0] binary_output);
-        logic [15:0] binary_output_add1;
-        logic [15:0] final_output;
+    function logic [WIDTH-1:0] check_margin_err(real out, logic [WIDTH-1:0] binary_output);
+        logic [WIDTH-1:0] binary_output_add1;
+        logic [WIDTH-1:0] final_output;
         real temp1;
         real temp2;
         binary_output_add1 = binary_output +1'd1;

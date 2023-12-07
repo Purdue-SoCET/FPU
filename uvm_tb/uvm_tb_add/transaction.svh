@@ -1,13 +1,17 @@
 `ifndef TRANSACTION_SVH
 `define TRANSACTION_SVH
 import uvm_pkg::*;
+
 `include "uvm_macros.svh"
-`include "fpu_types_pkg.vh"
-import fpu_types_pkg::*;
+`include "uvm_fpu_pkg.vh"
+
+import uvm_fpu_pkg::*;
+
 class transaction extends uvm_sequence_item;
-    rand logic [15:0]float1;
-    rand logic [15:0]float2;
-    logic [15:0]sum;
+
+    rand logic [WIDTH-1:0]float1;
+    rand logic [WIDTH-1:0]float2;
+    logic [WIDTH-1:0]sum;
     fpu_rounding_mode_t rounding_mode;
 
      `uvm_object_utils_begin(transaction)

@@ -1,22 +1,23 @@
-`ifndef FADD16_SEQUENCE_SVH
-`define FADD16_SEQUENCE_SVH
+`ifndef FADD_SEQUENCE_SVH
+`define FADD_SEQUENCE_SVH
 import uvm_pkg::*;
+`include "uvm_fpu_pkg.vh"
 `include "uvm_macros.svh"
 `include "transaction.svh"
-
-class fadd16_sequence extends uvm_sequence #(transaction);
-    `uvm_object_utils(fadd16_sequence)
+import uvm_fpu_pkg::*;
+class fadd_sequence extends uvm_sequence #(transaction);
+    `uvm_object_utils(fadd_sequence)
 
     function new(string name = "");    
         super.new(name);
-        //`uvm_info("fadd16_sequence","sequence construct",UVM_LOW);
+        //`uvm_info("fadd_sequence","sequence construct",UVM_LOW);
     endfunction: new
 
     task body();
         transaction req_item;
         // Create the transaction
         req_item = transaction::type_id::create("req_item");
-        //`uvm_info("fadd16_sequence","start sequence ",UVM_LOW);
+        //`uvm_info("fadd_sequence","start sequence ",UVM_LOW);
 
         //repeat randomized test cases
         repeat(100000) begin
@@ -24,14 +25,14 @@ class fadd16_sequence extends uvm_sequence #(transaction);
             start_item(req_item);
 
             if(!req_item.randomize()) begin
-                `uvm_error("fadd16_sequence", "Failed to randomize transaction")
+                `uvm_error("fadd_sequence", "Failed to randomize transaction")
             end
             finish_item(req_item);
-            //`uvm_info("fadd16_sequence","finish item",UVM_LOW);
+            //`uvm_info("fadd_sequence","finish item",UVM_LOW);
         end
     endtask: body
 
-endclass: fadd16_sequence
+endclass: fadd_sequence
 
 class pos_pos_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(pos_pos_seq)
@@ -48,10 +49,10 @@ class pos_pos_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[15] == 1'b0;    //pos
-                req_item.float2[15] == 1'b0;    //pos
-                req_item.float1[14:10] != '1;   //exp!='1 => != inf nor NaN
-                req_item.float2[14:10] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float1[SIGN] == 1'b0;    //pos
+                req_item.float2[SIGN] == 1'b0;    //pos
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("pos_pos_seq", "Failed to randomize transaction")
             end
@@ -75,10 +76,10 @@ class neg_neg_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[15] == 1'b1;    //neg
-                req_item.float2[15] == 1'b1;    //neg
-                req_item.float1[14:10] != '1;   //exp!='1 => != inf nor NaN
-                req_item.float2[14:10] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float1[SIGN] == 1'b1;    //neg
+                req_item.float2[SIGN] == 1'b1;    //neg
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("neg_neg_seq", "Failed to randomize transaction")
             end
@@ -102,10 +103,10 @@ class pos_neg_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[15] == 1'b0;    //pos
-                req_item.float2[15] == 1'b1;    //neg
-                req_item.float1[14:10] != '1;   //exp!='1 => != inf nor NaN
-                req_item.float2[14:10] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float1[SIGN] == 1'b0;    //pos
+                req_item.float2[SIGN] == 1'b1;    //neg
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("pos_neg_seq", "Failed to randomize transaction")
             end
@@ -130,10 +131,10 @@ class NaN_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // float1 exp = 5'b11111 and mantissa is not 0 => NaN
-                req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] == 5'b11111;
+                req_item.float1[FRACTION_MSB:FRACTION_LSB] != '0;    
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] == '1;
                 // float2 
-                req_item.float2[14:10] != 5'b11111;   //exp!='1 => != inf nor NaN
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("NaN_seq", "Failed to randomize transaction")
             end
@@ -158,11 +159,11 @@ class norm_norm_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // float1  
-                req_item.float1[14:10] != '0;
-                req_item.float1[14:10] != '1;
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '0;
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '1;
                 // float2
-                req_item.float2[14:10] != '0;
-                req_item.float2[14:10] != '1;     
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '0;
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;     
             }) begin
                 `uvm_error("norm_norm_seq", "Failed to randomize transaction")
             end
@@ -187,11 +188,11 @@ class sub_sub_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // float1
-                req_item.float1[9:0] != '0;    
-                req_item.float1[14:10] == '0;
+                req_item.float1[FRACTION_MSB:FRACTION_LSB] != '0;    
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] == '0;
                 // float2
-                req_item.float2[9:0] != '0;
-                req_item.float2[14:10] == '0;   
+                req_item.float2[FRACTION_MSB:FRACTION_LSB] != '0;
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] == '0;   
             }) begin
                 `uvm_error("sub_sub_seq", "Failed to randomize transaction")
             end
@@ -216,11 +217,11 @@ class norm_sub_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // flaot1
-                req_item.float1[14:10] != '0;
-                req_item.float1[9:0] != '0; 
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '0;
+                req_item.float1[FRACTION_MSB:FRACTION_LSB] != '0; 
                 // flaot2
-                req_item.float2[14:10] == '0;   
-                req_item.float2[9:0] != '0;  
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] == '0;   
+                req_item.float2[FRACTION_MSB:FRACTION_LSB] != '0;  
             }) begin
                 `uvm_error("norm_sub_seq", "Failed to randomize transaction")
             end
@@ -245,7 +246,7 @@ class Zero_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 req_item.float1 == '0;    
-                req_item.float2[14:10] != 5'b11111;   //exp!='1 => != inf nor NaN
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //exp!='1 => != inf nor NaN
             }) begin
                 `uvm_error("Zero_seq", "Failed to randomize transaction")
             end
@@ -269,10 +270,10 @@ class Inf_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[9:0] == '0;     //Inf
-                req_item.float1[14:10] == '1;
-                req_item.float2[14:10] != '1;   //!= inf nor NaN
-                req_item.float2[9:0] != '0;  
+                req_item.float1[FRACTION_MSB:FRACTION_LSB] == '0;     //Inf
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] == '1;
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] != '1;   //!= inf nor NaN
+                req_item.float2[FRACTION_MSB:FRACTION_LSB] != '0;  
             }) begin
                 `uvm_error("Inf_seq", "Failed to randomize transaction")
             end
@@ -296,10 +297,10 @@ class Inf_Inf_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                req_item.float1[9:0] == '0;     //Inf
-                req_item.float1[14:10] == '1;
-                req_item.float2[14:10] == '1;   //Inf
-                req_item.float2[9:0] == '0;  
+                req_item.float1[FRACTION_MSB:FRACTION_LSB] == '0;     //Inf
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] == '1;
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] == '1;   //Inf
+                req_item.float2[FRACTION_MSB:FRACTION_LSB] == '0;  
             }) begin
                 `uvm_error("Inf_Inf_seq", "Failed to randomize transaction")
             end
@@ -324,11 +325,11 @@ class self_seq extends uvm_sequence#(transaction);
             start_item(req_item);
             if(!req_item.randomize() with {
                 // float1  
-                req_item.float1[14:10] != '1;       //exp != '1 => != NaN nor Inf
+                req_item.float1[EXPONENT_MSB:EXPONENT_LSB] != '1;       //exp != '1 => != NaN nor Inf
                 // float2
-                req_item.float2[9:0] == req_item.float1[9:0];
-                req_item.float2[14:10] == req_item.float1[14:10];   
-                req_item.float2[15] == ~req_item.float1[15];        //different sign
+                req_item.float2[FRACTION_MSB:FRACTION_LSB] == req_item.float1[FRACTION_MSB:FRACTION_LSB];
+                req_item.float2[EXPONENT_MSB:EXPONENT_LSB] == req_item.float1[EXPONENT_MSB:EXPONENT_LSB];   
+                req_item.float2[SIGN] == ~req_item.float1[SIGN];        //different sign
             }) begin
                 `uvm_error("self_seq", "Failed to randomize transaction")
             end
@@ -352,11 +353,10 @@ class overflow_seq extends uvm_sequence#(transaction);
             #20ns;
             start_item(req_item);
             if(!req_item.randomize() with {
-                // float1 = 65504
-                req_item.float1[9:0] == '1;    
-                req_item.float1[14:10] == 5'b11110; 
+                // float1 = max/mini normal
+                req_item.float1[EXPONENT_MSB:FRACTION_LSB] == {{EXPONENT_WIDTH-1{1'b1}},1'b0,{FRACTION_WIDTH{1'b1}}};    
                 // float 2
-                req_item.float2[15] == req_item.float1[15];     //same sign with float1
+                req_item.float2[SIGN] == req_item.float1[SIGN];     //same sign with float1
             }) begin
                 `uvm_error("overflow_seq", "Failed to randomize transaction")
             end
