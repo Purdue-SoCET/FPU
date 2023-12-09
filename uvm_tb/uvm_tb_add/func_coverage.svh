@@ -15,24 +15,24 @@
 //     int cov_sum;
 //     covergroup float1_in;
 //         cov_float1: coverpoint txn.float1 {
-//             bins zero_cov = {zero};
+//             bins zero_cov = {ZERO};
 //             //pos_normal_cov {[16'b0011110000000000 : 16'b0111101111111111]};
-//             bins pos_normal_cov = {{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_normal_cov = {[{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_normal_cov {[16'b1011110000000000 : 16'b1111101111111111]};
-//             bins neg_normal_cov = {{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_normal_cov = {[{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_subnormal_cov {[16'b0000000000000001 : 16'b0000001111111111]};
-//             bins pos_subnormal_cov = {{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_subnormal_cov = {[{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_subnormal_cov {[16'b1000000000000001 : 16'b1000001111111111]};
-//             bins neg_subnormal_cov = {{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_subnormal_cov = {[{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_NaN_cov {[16'b0111110000000001 : 16'b0111111111111111]};
-//             bins pos_NaN_cov= {{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_NaN_cov= {[{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_NaN_cov {[16'b1111110000000001 : 16'b1111111111111111]};
-//             bins neg_NaN_cov = {{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_NaN_cov = {[{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             bins Inf_cov = {INF};
 //             bins nInf_cov = {NINF};
@@ -41,24 +41,24 @@
 
 //     covergroup float2_in;
 //         cov_float2: coverpoint txn.float2 {
-//             bins zero_cov = {zero};
+//             bins zero_cov = {ZERO};
 //             //pos_normal_cov {[16'b0011110000000000 : 16'b0111101111111111]};
-//             bins pos_normal_cov = {{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_normal_cov = {[{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_normal_cov {[16'b1011110000000000 : 16'b1111101111111111]};
-//             bins neg_normal_cov = {{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_normal_cov = {[{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_subnormal_cov {[16'b0000000000000001 : 16'b0000001111111111]};
-//             bins pos_subnormal_cov = {{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_subnormal_cov = {[{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_subnormal_cov {[16'b1000000000000001 : 16'b1000001111111111]};
-//             bins neg_subnormal_cov = {{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_subnormal_cov = {[{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_NaN_cov {[16'b0111110000000001 : 16'b0111111111111111]};
-//             bins pos_NaN_cov= {{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_NaN_cov= {[{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_NaN_cov {[16'b1111110000000001 : 16'b1111111111111111]};
-//             bins neg_NaN_cov = {{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_NaN_cov = {[{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             bins Inf_cov = {INF};
 //             bins nInf_cov = {NINF};
@@ -67,24 +67,24 @@
 
 //     covergroup sum_out;
 //         real cov_sum: coverpoint txn.sum {
-//             bins zero_cov = {zero};
+//             bins zero_cov = {ZERO};
 //             //pos_normal_cov {[16'b0011110000000000 : 16'b0111101111111111]};
-//             bins pos_normal_cov = {{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_normal_cov = {[{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b0, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_normal_cov {[16'b1011110000000000 : 16'b1111101111111111]};
-//             bins neg_normal_cov = {{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_normal_cov = {[{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b0}}}:{1'b1, {EXPONENT_WIDTH-1{1'b1}},1'b0, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_subnormal_cov {[16'b0000000000000001 : 16'b0000001111111111]};
-//             bins pos_subnormal_cov = {{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_subnormal_cov = {[{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_subnormal_cov {[16'b1000000000000001 : 16'b1000001111111111]};
-//             bins neg_subnormal_cov = {{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_subnormal_cov = {[{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //pos_NaN_cov {[16'b0111110000000001 : 16'b0111111111111111]};
-//             bins pos_NaN_cov= {{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins pos_NaN_cov= {[{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b0, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             //neg_NaN_cov {[16'b1111110000000001 : 16'b1111111111111111]};
-//             bins neg_NaN_cov = {{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0},1'b1}}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}};
+//             bins neg_NaN_cov = {[{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH-1{1'b0}},1'b1}:{1'b1, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b1}}}]};
 
 //             bins Inf_cov = {INF};
 //             bins nInf_cov = {NINF};
