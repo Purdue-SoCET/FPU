@@ -1,39 +1,39 @@
-`ifndef FMULT16_SEQUENCE_SVH
-`define FMULT16_SEQUENCE_SVH
+`ifndef FMULT_SEQUENCE_SVH
+`define FMULT_SEQUENCE_SVH
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 `include "transaction.svh"
 
-class fmult16_sequence extends uvm_sequence #(transaction);
-    `uvm_object_utils(fmult16_sequence)
+class fmult_sequence extends uvm_sequence #(transaction);
+    `uvm_object_utils(fmult_sequence)
 
     function new(string name = "");    
         super.new(name);
-        //`uvm_info("fmult16_sequence","sequence construct",UVM_LOW);
+        //`uvm_info("fmult_sequence","sequence construct",UVM_LOW);
     endfunction: new
 
     task body();
         transaction req_item;
         // Create the transaction
         req_item = transaction::type_id::create("req_item");
-        //`uvm_info("fmult16_sequence","start sequence ",UVM_LOW);
+        //`uvm_info("fmult_sequence","start sequence ",UVM_LOW);
 
         //repeat randomized test cases
         repeat(100000) begin
             #20ns;
-            //`uvm_info("fmult16_sequence","before start item ",UVM_LOW);
+            //`uvm_info("fmult_sequence","before start item ",UVM_LOW);
             start_item(req_item);
-            //`uvm_info("fmult16_sequence","finish start item",UVM_LOW);
+            //`uvm_info("fmult_sequence","finish start item",UVM_LOW);
 
             if(!req_item.randomize()) begin
-                `uvm_error("fmult16_sequence", "Failed to randomize transaction")
+                `uvm_error("fmult_sequence", "Failed to randomize transaction")
             end
             finish_item(req_item);
-            //`uvm_info("fmult16_sequence","finish item",UVM_LOW);
+            //`uvm_info("fmult_sequence","finish item",UVM_LOW);
         end
     endtask: body
 
-endclass: fmult16_sequence
+endclass: fmult_sequence
 
 class pos_pos_seq extends uvm_sequence#(transaction);
     `uvm_object_param_utils(pos_pos_seq)

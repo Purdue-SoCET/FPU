@@ -2,11 +2,13 @@
 `define TRANSACTION_SVH
 import uvm_pkg::*;
 `include "uvm_macros.svh"
+`include "uvm_fpu_pkg.vh"
+import uvm_fpu_pkg::*;
 
 class transaction extends uvm_sequence_item;
-    rand logic [15:0]float1;
-    rand logic [15:0]float2;
-    logic [15:0]product;
+    rand logic [WIDTH-1:0]float1;
+    rand logic [WIDTH-1:0]float2;
+    logic [WIDTH-1:0]product;
 
      `uvm_object_utils_begin(transaction)
         `uvm_field_int(float1, UVM_ALL_ON)

@@ -6,7 +6,7 @@ class base_test extends uvm_test;
     `uvm_component_utils(base_test)
 
     environment env;
-    virtual float_mult_16bit_if vif;
+    virtual float_mult_if vif;
     
     function new(string name = "base_test", uvm_component parent = null);
         super.new(name, parent);
@@ -17,17 +17,17 @@ class base_test extends uvm_test;
         super.build_phase(phase);
         env = environment::type_id::create("env",this);
         // send the interface down
-        if (!uvm_config_db#(virtual float_mult_16bit_if)::get(this, "", "float_mult_16bit_vif", vif)) begin 
+        if (!uvm_config_db#(virtual float_mult_if)::get(this, "", "float_mult_vif", vif)) begin 
         // check if interface is correctly set in testbench top level
             `uvm_fatal("base_test", "No virtual interface specified for this test instance")
         end 
 
-        uvm_config_db#(virtual float_mult_16bit_if)::set(this, "env.agt*", "float_mult_16bit_vif", vif);
+        uvm_config_db#(virtual float_mult_if)::set(this, "env.agt*", "float_mult_vif", vif);
         //`uvm_info("base_test","base_test build phase",UVM_LOW);
     endfunction: build_phase
 
     task run_phase(uvm_phase phase);
-        fmult16_sequence seq = fmult16_sequence::type_id::create("seq",this);
+        fmult_sequence seq = fmult_sequence::type_id::create("seq",this);
 
         phase.raise_objection( this, "Starting sequence in run phase" );
         //`uvm_info("base_test"," base_test run_phase.raise",UVM_LOW);
