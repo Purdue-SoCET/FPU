@@ -5,7 +5,6 @@ import uvm_pkg::*;
 `include "uvm_fpu_pkg.vh"
 `include "uvm_macros.svh"
 import uvm_fpu_pkg::*;
-// import "DPI-C" function shortint f16_compute(shortint a, shortint b);
 
 class fadd_scoreboard extends uvm_scoreboard;
     `uvm_component_utils(fadd_scoreboard)
@@ -74,6 +73,7 @@ class fadd_scoreboard extends uvm_scoreboard;
        
     endfunction
 
+    //ALL FUNCTION ALSO in dpi.c 
     function logic [WIDTH-1:0] compute_expected_output(logic [WIDTH-1:0] binary_float1, logic [WIDTH-1:0] binary_float2);
         logic sign_output;
         // logic [WIDTH-1:0]QNAN,sNaN,Inf,nInf,max_norm,mini_sub;
@@ -83,8 +83,8 @@ class fadd_scoreboard extends uvm_scoreboard;
         real norm_bound;
         real subnorm_bound;
 
-        norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number
-        subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number
+        norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number, ex: in 16'b{0,11110,1111111111}
+        subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number, ex: in 16'b{0,00000,0000000001}
 
         // Handling NaN case
         // Any calculation involved NaN {exp = 5'b11111, mant != 0} => QNAN
@@ -241,21 +241,6 @@ class fadd_scoreboard extends uvm_scoreboard;
         return final_binary_output;
     endfunction // float_to_binary
 
-    //some helper functions
-    function int isNaN(logic [WIDTH-1:0] binary_float);
-        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
-        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
-        if ((binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1) && (F != '0)) return 1;
-        else return 0;
-    endfunction
-
-    function int isInf(logic [WIDTH-1:0] binary_float);
-        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
-        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
-        if ((E == '1) && (F == '0)) return 1;
-        else return 0;
-    endfunction
-
     function logic [WIDTH-1:0] check_margin_err(real out, logic [WIDTH-1:0] binary_output);
         logic [WIDTH-1:0] binary_output_add1;
         logic [WIDTH-1:0] final_output;
@@ -270,6 +255,21 @@ class fadd_scoreboard extends uvm_scoreboard;
         else begin
             return binary_output_add1;
         end
+    endfunction
+
+    //some helper functions
+    function int isNaN(logic [WIDTH-1:0] binary_float);
+        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
+        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
+        if ((binary_float[EXPONENT_MSB:EXPONENT_LSB] == '1) && (F != '0)) return 1;
+        else return 0;
+    endfunction
+
+    function int isInf(logic [WIDTH-1:0] binary_float);
+        logic [EXPONENT_WIDTH-1:0] E = binary_float[EXPONENT_MSB:EXPONENT_LSB];
+        logic [FRACTION_WIDTH-1:0] F = binary_float[FRACTION_MSB:FRACTION_LSB];
+        if ((E == '1) && (F == '0)) return 1;
+        else return 0;
     endfunction
 
     function real abs(real value);

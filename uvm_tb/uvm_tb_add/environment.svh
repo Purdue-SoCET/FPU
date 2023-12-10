@@ -14,7 +14,7 @@ class environment extends uvm_env;
   
     fadd_agent agt; // contains monitor and driver and sequencer
     fadd_scoreboard scrb; // scoreboard
-    // func_coverage cov;
+    func_coverage cov;
 
     function new(string name = "env", uvm_component parent = null);
 		super.new(name, parent);
@@ -24,7 +24,7 @@ class environment extends uvm_env;
     function void build_phase(uvm_phase phase);
         agt = fadd_agent::type_id::create("agt", this);
         scrb = fadd_scoreboard::type_id::create("scrb", this);
-        // cov = func_coverage::type_id::create("cov",this);
+        cov = func_coverage::type_id::create("cov",this);
         //`uvm_info("environment","environment build",UVM_LOW);
     endfunction
 
@@ -32,7 +32,7 @@ class environment extends uvm_env;
         //connect to scoreboard for compared
         agt.mon.result_ap.connect(scrb.actual_result);
         //connect to generate coverage
-        // agt.mon.result_ap.connect(cov.analysis_imp_outp);
+        agt.mon.result_ap.connect(cov.analysis_imp_outp);
         //`uvm_info("environment","environment connect",UVM_LOW);
     endfunction
 
