@@ -44,7 +44,7 @@ run: build
 	-coverage \
 	+UVM_TESTNAME="base_test" \
 	+UVM_VERBOSITY=UVM_LOW \
-	-do "do uvm_tb/fmult.do" -do "run -all" &
+	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" &
 
 run_NaN_test: build
 	vsim -c tb_float_mult -L \
