@@ -17,7 +17,12 @@ module float_add
 	parameter FLOAT_INF = HALF_INF,
 	parameter FLOAT_INFN = HALF_INFN,
 	parameter FLOAT_NAN = HALF_NAN,
-	parameter FLOAT_ZERO = HALF_ZERO
+	parameter FLOAT_ZERO = HALF_ZERO,
+
+	// internal variables
+	parameter TOP_FRAC_CALC_BIT = FRACTION_WIDTH + (2 ** EXPONENT_WIDTH - 1),
+	parameter TOP_FRAC_OUT_BIT = TOP_FRAC_CALC_BIT - 1,
+	parameter BOTTOM_FRAC_OUT_BIT = TOP_FRAC_CALC_BIT - FRACTION_WIDTH
 )
 (
 	input logic [FLOAT_WIDTH - 1 : 0] float1,
@@ -35,7 +40,7 @@ logic sign_A, sign_B;
 // logic sign_flip;
 logic [EXPONENT_WIDTH - 1 : 0] exponent_A, exponent_B, exponent_out;
 logic normal_A, normal_B;
-logic [FRACTION_WIDTH * 2 : 0] fraction_A, fraction_B, fraction_calc, fraction_out;
+logic [TOP_FRAC_CALC_BIT : 0] fraction_A, fraction_B, fraction_calc, fraction_out;
 
 logic [EXPONENT_WIDTH - 1 : 0] exponent_difference;
 logic carry_out;
@@ -50,13 +55,13 @@ assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : E
 assign sign_A = A_larger ? float1[SIGN] : float2[SIGN];
 assign exponent_A = A_larger ? float1[EXPONENT_MSB : EXPONENT_LSB] : float2[EXPONENT_MSB : EXPONENT_LSB];
 assign normal_A = exponent_A != '0;
-assign fraction_A = A_larger ? { normal_A, float1[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} } : { normal_A, float2[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} };
+assign fraction_A = A_larger ? { normal_A, float1[FRACTION_MSB : FRACTION_LSB], {BOTTOM_FRAC_OUT_BIT{1'b0}} } : { normal_A, float2[FRACTION_MSB : FRACTION_LSB], {BOTTOM_FRAC_OUT_BIT{1'b0}} };
 
 // hardwire internal 'B' to smaller of two inputs
 assign sign_B = A_larger ? float2[SIGN] : float1[SIGN];
 assign exponent_B = A_larger ? float2[EXPONENT_MSB : EXPONENT_LSB] : float1[EXPONENT_MSB : EXPONENT_LSB];
 assign normal_B = exponent_B != '0;
-assign fraction_B = (A_larger ? { normal_B, float2[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} } : { normal_B, float1[FRACTION_MSB : FRACTION_LSB], {FRACTION_WIDTH{1'b0}} }) >> exponent_difference; // bit shift to 'align' float1 and float2
+assign fraction_B = (A_larger ? { normal_B, float2[FRACTION_MSB : FRACTION_LSB], {BOTTOM_FRAC_OUT_BIT{1'b0}} } : { normal_B, float1[FRACTION_MSB : FRACTION_LSB], {BOTTOM_FRAC_OUT_BIT{1'b0}} }) >> exponent_difference; // bit shift to 'align' float1 and float2
 
 // miscellaneous variables
 assign exponent_difference =
@@ -89,7 +94,7 @@ always_comb begin : SUM_CALC
 			exponent_out = exponent_A + 1'b1;
 			fraction_out = fraction_calc >> 1;
 		end
-		else if (~fraction_A[FRACTION_WIDTH * 2] & fraction_calc[FRACTION_WIDTH * 2])
+		else if (~fraction_A[TOP_FRAC_CALC_BIT] & fraction_calc[TOP_FRAC_CALC_BIT])
 		begin
 			// subnormal overflow to normal
 			exponent_out = exponent_A + 1'b1;
@@ -112,7 +117,7 @@ always_comb begin : SUM_CALC
 		// don't shift if fraction is '0 (infinite loop)
 		// don't shift if both numbers are already subnormal (will affect result)
 		// don't shift if exponent is already 0 (will underflow back to 31)
-		while (~fraction_calc[FRACTION_WIDTH * 2] & (fraction_calc != '0) & ~(~normal_A & ~normal_B) & (exponent_out > '0))
+		while (~fraction_calc[TOP_FRAC_CALC_BIT] & (fraction_calc != '0) & ~(~normal_A & ~normal_B) & (exponent_out > '0))
 		begin
 			fraction_calc <<= 1;
 			exponent_out -= 1;
@@ -131,7 +136,7 @@ always_comb begin : SUM_CALC
 	end
 
 	// sum time :)
-	if ((exponent_A == '1 & fraction_A[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] != 0) | (exponent_B == '1 & fraction_B[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] != 0))
+	if ((exponent_A == '1 & fraction_A[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] != 0) | (exponent_B == '1 & fraction_B[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] != 0))
 	begin
 		// carry NaN through
 		sum = FLOAT_NAN;
@@ -188,9 +193,9 @@ always_comb begin : SUM_CALC
 			// no special cases, assemble final sum
 
 			// rounding bits
-			guard_bit = fraction_out[FRACTION_WIDTH - 1];		// MSB rounding bit after fraction
-			rounding_bit = fraction_out[FRACTION_WIDTH - 2];	// LSB rounding bit after fraction
-			sticky_bit = |fraction_out[FRACTION_WIDTH - 3 : 0];	// logical OR of all remaining bits
+			guard_bit = fraction_out[BOTTOM_FRAC_OUT_BIT - 1];		// MSB rounding bit after fraction
+			rounding_bit = fraction_out[BOTTOM_FRAC_OUT_BIT - 2];	// LSB rounding bit after fraction
+			sticky_bit = |fraction_out[BOTTOM_FRAC_OUT_BIT - 3 : 0];	// logical OR of all remaining bits
 
 			// handle rounding
 			casez (rounding_mode)
@@ -201,12 +206,12 @@ always_comb begin : SUM_CALC
 					if (~guard_bit)
 					begin
 						// truncate result
-						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+						sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
 					end
 					else if (rounding_bit | sticky_bit)
 					begin
 						// increment result
-						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
+						if (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] == '1)
 						begin
 							if (exponent_out == '1)
 							begin
@@ -221,23 +226,23 @@ always_comb begin : SUM_CALC
 							end
 							else
 							begin
-								sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+								sum = { sign_A, exponent_out + 1'b1, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
 							end
 						end
 						else
 						begin
-							sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+							sum = { sign_A, exponent_out, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
 						end
 					end
 					else
 					begin
 						// TODO below should be correct, but online calculators don't like it
 						// "halfway" case
-						if (fraction_out[FRACTION_WIDTH])
+						if (fraction_out[BOTTOM_FRAC_OUT_BIT])
 						begin
 							// odd (round up)
 							// increment result
-							if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
+							if (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] == '1)
 							begin
 								if (exponent_out == '1)
 								begin
@@ -252,18 +257,18 @@ always_comb begin : SUM_CALC
 								end
 								else
 								begin
-									sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+									sum = { sign_A, exponent_out + 1'b1, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
 								end
 							end
 							else
 							begin
-								sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+								sum = { sign_A, exponent_out, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
 							end
 						end
 						else
 						begin
 							// even (round down)
-							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+							sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
 						end
 					end
 				end
@@ -281,7 +286,7 @@ always_comb begin : SUM_CALC
 				ROUND_ZERO:
 				begin
 					// truncate result
-					sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+					sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
 				end
 				
 			endcase
