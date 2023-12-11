@@ -294,6 +294,7 @@ initial begin
 	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
 	@(negedge CLK);
 
+	$display("ROUND 2");
 	// FAILED ROUND 2
 	test_num = 1;
 	tb_float1 = 16'hF12B;
@@ -411,6 +412,58 @@ initial begin
 	tb_float1 = 16'b1000111101111100;
 	tb_float2 = 16'b0000111101100101;
 	test_result = 16'b1000000001011100;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
+
+	$display("ROUND 4");
+	// FAILED ROUND 4
+	test_num = 1;
+	tb_float1 = 16'hC9EA;
+	tb_float2 = 16'hEBFA;
+	test_result = 16'hEC00;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
+
+	test_num += 1;
+	tb_float1 = 16'b0101010001000011;
+	tb_float2 = 16'b1100010000110010;
+	test_result = 16'b0101010000000000;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
+
+	test_num += 1;
+	tb_float1 = 16'b0010001101100101;
+	tb_float2 = 16'b1111000000000000;
+	test_result = 16'b1111000000000000;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
+
+	test_num += 1;
+	tb_float1 = 16'b0100010000000000;
+	tb_float2 = 16'b1000101011110010;
+	test_result = 16'b0100010000000000;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
+
+	test_num += 1;
+	tb_float1 = 16'b1110110000000000;
+	tb_float2 = 16'b0010100100011110;
+	test_result = 16'b1110110000000000;
 	$display("Test case %d", test_num);
 	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
 	#(PERIOD) // == 0xB34D
