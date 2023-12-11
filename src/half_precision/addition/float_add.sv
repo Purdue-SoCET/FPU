@@ -111,7 +111,7 @@ always_comb begin : SUM_CALC
 		// need to shift result over (for underflow to subnormal case)
 		// don't shift if fraction is '0 (infinite loop)
 		// don't shift if both numbers are already subnormal (will affect result)
-		while (~fraction_calc[FRACTION_WIDTH * 2] & (fraction_calc != '0) & ~(~normal_A & ~normal_B))
+		while (~fraction_calc[FRACTION_WIDTH * 2] & (fraction_calc != '0) & ~(~normal_A & ~normal_B) & (exponent_out > '0))
 		begin
 			fraction_calc <<= 1;
 			exponent_out -= 1;
