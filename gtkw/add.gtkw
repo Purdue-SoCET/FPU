@@ -1,15 +1,13 @@
 [*]
 [*] GTKWave Analyzer v3.3.117 (w)1999-2023 BSI
-[*] Mon Dec 11 04:31:18 2023
+[*] Mon Dec 11 06:49:29 2023
 [*]
-[dumpfile] "/home/benjaminowen/FPU/build/socet_aft_fpu_0.1.0/sim_add-verilator/waveform_add.fst"
-[dumpfile_mtime] "Mon Dec 11 04:30:51 2023"
-[dumpfile_size] 2901
+[dumpfile] "(null)"
 [savefile] "/home/benjaminowen/FPU/gtkw/add.gtkw"
-[timestart] 647
+[timestart] 747
 [size] 2310 1392
 [pos] -1 -1
-*-4.421749 730 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.421749 850 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.tb_add_16bit.
 [sst_width] 212
@@ -84,6 +82,8 @@ TOP.tb_add_16bit.Zfh.fraction_out[20:0]
 [color] 3
 TOP.tb_add_16bit.Zfh.rounding_mode[31:0]
 @28
+[color] 3
+TOP.tb_add_16bit.Zfh.guard_bit
 [color] 3
 TOP.tb_add_16bit.Zfh.rounding_bit
 [color] 3

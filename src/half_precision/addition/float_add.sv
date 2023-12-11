@@ -198,12 +198,12 @@ always_comb begin : SUM_CALC
 				ROUND_NEAREST_EVEN:
 				begin
 					// normal rounding mode
-					if (~rounding_bit & ~sticky_bit)
+					if (~guard_bit)
 					begin
 						// truncate result
 						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
 					end
-					else if (rounding_bit & sticky_bit)
+					else if (rounding_bit | sticky_bit)
 					begin
 						// increment result
 						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
@@ -231,38 +231,38 @@ always_comb begin : SUM_CALC
 					end
 					else
 					begin
-						// round to even
-						if (guard_bit)
-						begin
-							// odd (round up)
-							// increment result
-							if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
-							begin
-								if (exponent_out == '1)
-								begin
-									if (sign_A)
-									begin
-										sum = FLOAT_INFN;
-									end
-									else
-									begin
-										sum = FLOAT_INF;
-									end
-								end
-								else
-								begin
-									sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-								end
-							end
-							else
-							begin
-								sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-							end
-						end
-						else
+						// TODO below should be correct, but online calculators don't like it
+						// "halfway" case
+						// if (~fraction_out[FRACTION_WIDTH])
+						// begin
+						// 	// odd (round up)
+						// 	// increment result
+						// 	if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
+						// 	begin
+						// 		if (exponent_out == '1)
+						// 		begin
+						// 			if (sign_A)
+						// 			begin
+						// 				sum = FLOAT_INFN;
+						// 			end
+						// 			else
+						// 			begin
+						// 				sum = FLOAT_INF;
+						// 			end
+						// 		end
+						// 		else
+						// 		begin
+						// 			sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+						// 		end
+						// 	end
+						// 	else
+						// 	begin
+						// 		sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+						// 	end
+						// end
+						// else
 						begin
 							// even (round down)
-							// truncate result
 							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
 						end
 					end
@@ -270,72 +270,12 @@ always_comb begin : SUM_CALC
 
 				ROUND_INF:
 				begin
-					if (rounding_bit & ~sticky_bit)
-					begin
-						// increment result
-						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
-						begin
-							if (exponent_out == '1)
-							begin
-								if (sign_A)
-								begin
-									sum = FLOAT_INFN;
-								end
-								else
-								begin
-									sum = FLOAT_INF;
-								end
-							end
-							else
-							begin
-								sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-							end
-						end
-						else
-						begin
-							sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-						end
-					end
-					else
-					begin
-						// truncate result
-						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
-					end
+					// TODO
 				end
 
 				ROUND_INFN:
 				begin
-					if (rounding_bit & sticky_bit)
-					begin
-						// increment result
-						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
-						begin
-							if (exponent_out == '1)
-							begin
-								if (sign_A)
-								begin
-									sum = FLOAT_INFN;
-								end
-								else
-								begin
-									sum = FLOAT_INF;
-								end
-							end
-							else
-							begin
-								sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-							end
-						end
-						else
-						begin
-							sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-						end
-					end
-					else
-					begin
-						// truncate result
-						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
-					end
+					// TODO
 				end
 
 				ROUND_ZERO:
