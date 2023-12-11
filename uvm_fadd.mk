@@ -1,5 +1,6 @@
 ifeq (0,1)
 Command to run UVM:
+step0 : make -f uvm_fadd.mk dpi
 Step1 : make -f uvm_fadd.mk build
 Step2 : make -f uvm_fadd.mk <test_case> (replace test_case in following test_case list, no need <> when running)
 
@@ -37,8 +38,8 @@ SV_DPI = -I$$QUESTA_HOME/include/
 DPI_LIB = dpi_lib
 
 # Compiles the DPI C code into a shared library
-# dpi: 
-# 	$(GCC) -fPIC -shared $(SV_DPI) $(DPI_SRC) -o $(DPI_LIB).so
+dpi: 
+	$(GCC) -fPIC -shared $(SV_DPI) $(DPI_SRC) -o $(DPI_LIB).so
 
 build: 
 	vlog +incdir+src/half_precision/addition \
@@ -50,11 +51,10 @@ build:
 	-logfile tb_compile.log \
 	-printinfilenames=file_search.log 
 	
-
+#vsim -c tb_float_add -L 
 # run for 100000 random testcases now
 run: build
-#vsim -c -sv_lib $(DPI_LIB) tb_float_add -L 
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -186,7 +186,7 @@ clean:
 	rm -rf work
 	rm -rf mitll90_Dec2019_all
 	rm -rf covhtmlreport
-#rm -rf $(DPI_LIB).so
+	rm -rf $(DPI_LIB).so
 	rm *.log
 	rm transcript
 	rm *.ucdb

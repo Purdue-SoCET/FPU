@@ -20,19 +20,19 @@ package uvm_fpu_pkg;
 	// parameter FRACTION_WIDTH = 23;
 
     // -------------------------------------------------------
-    // Double-precision: Scoreboard not output correct: Need to be fixed
+    // Double-precision: 
     // -------------------------------------------------------
     // parameter WIDTH = 64;  
     // parameter EXPONENT_WIDTH = 11;
 	// parameter FRACTION_WIDTH = 52;
 
 
-    // import "DPI-C" function int isNaN(long long int binary);
-    // import "DPI-C" function int isInf(long long int binary);
-    // import "DPI-C" function real binary_to_float(longint binary_float);
-    // import "DPI-C" function long long int check_margin_err(real out, long long int binary_output);
-    // import "DPI-C" function longint float_to_binary(real float_output);
-    // import "DPI-C" function longint compute_expected_output(longint binary_float1, longint binary_float2);
+    import "DPI-C" function int isNaN(longint binary);
+    import "DPI-C" function int isInf(longint binary);
+    import "DPI-C" function real binary_to_float(longint binary_float);
+    import "DPI-C" function longint check_margin_err(real out, longint binary_output);
+    import "DPI-C" function longint float_to_binary(real float_output);
+    import "DPI-C" function longint compute_expected_output(longint binary_float1, longint binary_float2);
 
     parameter SIGN = WIDTH - 1;
 	parameter EXPONENT_MSB = WIDTH - 2;
