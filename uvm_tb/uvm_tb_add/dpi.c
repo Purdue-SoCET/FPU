@@ -29,10 +29,10 @@ int isInf(logic_t binary_float) {
 
 // convert binary to float
 double binary_to_float(logic_t binary_float) {
-    int S = (binary_float >> (WIDTH - 1)) & 1;
-    int E = (binary_float >> FRACTION_WIDTH) & EXPONENT_MASK;
-    int F = binary_float & FRACTION_MASK;
-    int bias = pow(2,EXPONENT_WIDTH-1)-1;
+    long long int S = (binary_float >> (WIDTH - 1)) & 1;
+    long long int E = (binary_float >> FRACTION_WIDTH) & EXPONENT_MASK;
+    long long int F = binary_float & FRACTION_MASK;
+    long long int bias = pow(2,EXPONENT_WIDTH-1)-1;
     double float_result;
     // printf("S:%d, E:%d, F:%d\n",S,E,F);
     // Special cases
@@ -54,17 +54,17 @@ double binary_to_float(logic_t binary_float) {
 
 // convert float to binary
 logic_t float_to_binary(double float_output){
-    int S;
+    long long int S;
     logic_t F;
     logic_t binary_output;
     logic_t final_binary_output;
     double normalized_num;
-    int int_part;
+    long long int int_part;
     double frac_part;
-    int biased_exponent;
+    long long int biased_exponent;
     double temp;
     int subnorm_flag = 0;
-    int bias = pow(2,EXPONENT_WIDTH-1)-1;
+    long long int bias = pow(2,EXPONENT_WIDTH-1)-1;
 
     //define the sign bit S
     if (float_output < 0) {
@@ -103,10 +103,10 @@ logic_t float_to_binary(double float_output){
     int_part = floor(normalized_num);
     frac_part = normalized_num-int_part;
     temp = frac_part;
-    for (int i = (FRACTION_WIDTH-1); i >=0; i--) {
+    for (long long int i = (FRACTION_WIDTH-1); i >=0; i--) {
         temp *= 2.0;
         if (temp >= 1.0) {
-            F |= (1 << i);
+            F |= (1ULL << i);
             temp -= 1.0;
         }
     }
@@ -147,7 +147,7 @@ logic_t check_margin_err(double out, logic_t binary_output){
 
 // compute expected output function
 logic_t compute_expected_output(logic_t binary_float1, logic_t binary_float2){
-    int sign_output;
+    long long int sign_output;
     // logic [WIDTH-1:0]QNAN,sNaN,Inf,nInf,max_norm,mini_sub;
     double float_output;
     logic_t binary_output;
@@ -164,8 +164,8 @@ logic_t compute_expected_output(logic_t binary_float1, logic_t binary_float2){
     }
     
     // Handling Inf + (-Inf) case
-    int sign1 = (binary_float1 >> (WIDTH - 1)) & 1;
-    int sign2 = (binary_float2 >> (WIDTH - 1)) & 1;
+    long long int sign1 = (binary_float1 >> (WIDTH - 1)) & 1;
+    long long int sign2 = (binary_float2 >> (WIDTH - 1)) & 1;
     if ((sign1 != sign2) && (isInf(binary_float1) && isInf(binary_float2))) {
         return QNAN;  // Inf + (-Inf) -> QNAN
     }

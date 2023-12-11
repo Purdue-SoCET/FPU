@@ -3,8 +3,21 @@
 
 #include <stdint.h>
 
-// Define the width here
+// Uncommet the precision you eant to test
+// -------------------------------------------------------
+// Half-precision
+// -------------------------------------------------------
 #define WIDTH 16
+
+// -------------------------------------------------------
+// Single-precision
+// -------------------------------------------------------
+// #define WIDTH 32
+
+// -------------------------------------------------------
+// Double-precision:
+// -------------------------------------------------------
+// #define WIDTH 64
 
 // Choose the appropriate type based on WIDTH
 #if WIDTH == 16
@@ -21,16 +34,16 @@
 #endif
 
 #define FRACTION_WIDTH (WIDTH - EXPONENT_WIDTH - 1)
-#define EXPONENT_MASK ((1U << EXPONENT_WIDTH) - 1)
+#define EXPONENT_MASK ((1ULL << EXPONENT_WIDTH) - 1)
 #define FRACTION_MASK ((1ULL << FRACTION_WIDTH) - 1)
 
 // Constants for special values like INF, NINF, QNAN
 const logic_t INF = (EXPONENT_MASK << (FRACTION_WIDTH));
-const logic_t NINF = (1U << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH));
-const logic_t QNAN = (1U << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH)) | (FRACTION_MASK);
-const logic_t SNAN = (1U << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH)) | (FRACTION_MASK - (1U << (FRACTION_WIDTH - 1)));
-const logic_t MAX_NORM = ((EXPONENT_MASK << FRACTION_WIDTH) | FRACTION_MASK) - (1U << (FRACTION_WIDTH));
-const logic_t MINI_SUB = 1U;
+const logic_t NINF = (1ULL << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH));
+const logic_t QNAN = (1ULL << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH)) | (FRACTION_MASK);
+const logic_t SNAN = (1ULL << (WIDTH - 1)) | (EXPONENT_MASK << (FRACTION_WIDTH)) | (FRACTION_MASK - (1ULL << (FRACTION_WIDTH - 1)));
+const logic_t MAX_NORM = ((EXPONENT_MASK << FRACTION_WIDTH) | FRACTION_MASK) - (1ULL << (FRACTION_WIDTH));
+const logic_t MINI_SUB = 1ULL;
 
 // Macro for reinterpretation
 #define REINTERPRET(x, to) \
