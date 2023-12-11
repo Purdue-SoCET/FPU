@@ -233,34 +233,34 @@ always_comb begin : SUM_CALC
 					begin
 						// TODO below should be correct, but online calculators don't like it
 						// "halfway" case
-						// if (~fraction_out[FRACTION_WIDTH])
-						// begin
-						// 	// odd (round up)
-						// 	// increment result
-						// 	if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
-						// 	begin
-						// 		if (exponent_out == '1)
-						// 		begin
-						// 			if (sign_A)
-						// 			begin
-						// 				sum = FLOAT_INFN;
-						// 			end
-						// 			else
-						// 			begin
-						// 				sum = FLOAT_INF;
-						// 			end
-						// 		end
-						// 		else
-						// 		begin
-						// 			sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-						// 		end
-						// 	end
-						// 	else
-						// 	begin
-						// 		sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
-						// 	end
-						// end
-						// else
+						if (fraction_out[FRACTION_WIDTH])
+						begin
+							// odd (round up)
+							// increment result
+							if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
+							begin
+								if (exponent_out == '1)
+								begin
+									if (sign_A)
+									begin
+										sum = FLOAT_INFN;
+									end
+									else
+									begin
+										sum = FLOAT_INF;
+									end
+								end
+								else
+								begin
+									sum = { sign_A, exponent_out + 1'b1, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+								end
+							end
+							else
+							begin
+								sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
+							end
+						end
+						else
 						begin
 							// even (round down)
 							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };

@@ -531,6 +531,16 @@ initial begin
 	#(PERIOD) // == 0xB34D
 	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
 	@(negedge CLK);
+
+	test_num += 1;
+	tb_float1 = 16'b1111000100110110;
+	tb_float2 = 16'b0110100011111101;
+	test_result = 16'b1110111111101110;
+	$display("Test case %d", test_num);
+	$display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
+	#(PERIOD) // == 0xB34D
+	if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
+	@(negedge CLK);
 	
 	$finish;
 end
