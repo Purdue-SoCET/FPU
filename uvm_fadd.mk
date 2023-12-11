@@ -63,7 +63,7 @@ run: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_NaN_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -72,7 +72,7 @@ run_NaN_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_pos_pos_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -81,7 +81,7 @@ run_pos_pos_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_neg_neg_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -90,7 +90,7 @@ run_neg_neg_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 	
 run_pos_neg_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -99,7 +99,7 @@ run_pos_neg_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_norm_norm_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -108,7 +108,7 @@ run_norm_norm_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_sub_sub_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -117,7 +117,7 @@ run_sub_sub_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_norm_sub_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -126,7 +126,7 @@ run_norm_sub_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_Zero_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -135,7 +135,7 @@ run_Zero_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &		
 
 run_Inf_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -144,7 +144,7 @@ run_Inf_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_Inf_Inf_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -153,7 +153,7 @@ run_Inf_Inf_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_self_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
@@ -162,7 +162,7 @@ run_self_test: build
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &	
 
 run_overflow_test: build
-	vsim -c tb_float_add -L \
+	vsim -c -sv_lib $(DPI_LIB) tb_float_add -L \
 	$$QUESTA_HOME/uvm-1.2 \
 	-voptargs=+acc \
 	-coverage \
