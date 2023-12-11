@@ -40,7 +40,7 @@ logic [FRACTION_WIDTH * 2 : 0] fraction_A, fraction_B, fraction_calc, fraction_o
 logic [EXPONENT_WIDTH - 1 : 0] exponent_difference;
 logic carry_out;
 
-logic rounding_bit, sticky_bit;
+logic guard_bit, rounding_bit, sticky_bit;
 
 // assign statements
 assign A_larger = (float1[EXPONENT_MSB : EXPONENT_LSB] > float2[EXPONENT_MSB : EXPONENT_LSB]) | ((float1[EXPONENT_MSB : EXPONENT_LSB] == float2[EXPONENT_MSB : EXPONENT_LSB]) & (float1[FRACTION_MSB : FRACTION_LSB] >= float2[FRACTION_MSB : FRACTION_LSB])); // A_larger will be 1 if float1 >= float2
@@ -188,8 +188,9 @@ always_comb begin : SUM_CALC
 			// no special cases, assemble final sum
 
 			// rounding bits
-			sticky_bit = |fraction_out;							// logical OR of all remaining bits
-			rounding_bit = fraction_out[FRACTION_WIDTH - 1];	// next bit after fraction
+			guard_bit = fraction_out[FRACTION_WIDTH - 1];		// MSB rounding bit after fraction
+			rounding_bit = fraction_out[FRACTION_WIDTH - 2];	// LSB rounding bit after fraction
+			sticky_bit = |fraction_out[FRACTION_WIDTH - 3 : 0];	// logical OR of all remaining bits
 
 			// handle rounding
 			casez (rounding_mode)
@@ -199,12 +200,7 @@ always_comb begin : SUM_CALC
 					// normal rounding mode
 					if (~rounding_bit & ~sticky_bit)
 					begin
-						// result is exact, no need for rounding
-						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
-					end
-					else if (~rounding_bit & sticky_bit)
-					begin
-						// truncate result by discarding RS
+						// truncate result
 						sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
 					end
 					else if (rounding_bit & sticky_bit)
@@ -235,14 +231,10 @@ always_comb begin : SUM_CALC
 					end
 					else
 					begin
-						// tie case
-						if (fraction_out[FRACTION_WIDTH] == 1'b0)
+						// round to even
+						if (guard_bit)
 						begin
-							// truncate result
-							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
-						end
-						else
-						begin
+							// odd (round up)
 							// increment result
 							if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
 							begin
@@ -267,12 +259,18 @@ always_comb begin : SUM_CALC
 								sum = { sign_A, exponent_out, (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] + 1'b1) };
 							end
 						end
+						else
+						begin
+							// even (round down)
+							// truncate result
+							sum = { sign_A, exponent_out, fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] };
+						end
 					end
 				end
 
 				ROUND_INF:
 				begin
-					if (~sign_A & (rounding_bit | sticky_bit))
+					if (rounding_bit & ~sticky_bit)
 					begin
 						// increment result
 						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
@@ -307,7 +305,7 @@ always_comb begin : SUM_CALC
 
 				ROUND_INFN:
 				begin
-					if (sign_A & (rounding_bit | sticky_bit))
+					if (rounding_bit & sticky_bit)
 					begin
 						// increment result
 						if (fraction_out[(FRACTION_WIDTH * 2) - 1 : FRACTION_WIDTH] == '1)
