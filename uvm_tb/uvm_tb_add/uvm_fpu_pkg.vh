@@ -3,7 +3,7 @@
 
 package uvm_fpu_pkg;
 
-    
+    //uncomment the precision parameter you want to test
     // -------------------------------------------------------
     // Half-precision
     // -------------------------------------------------------

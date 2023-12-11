@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-// Define the width here
+// Uncommet the precision you eant to test
 // -------------------------------------------------------
 // Half-precision
 // -------------------------------------------------------
