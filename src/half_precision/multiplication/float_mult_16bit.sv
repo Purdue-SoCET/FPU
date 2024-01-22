@@ -23,7 +23,7 @@ logic [5:0] normalized_exp1;
 logic [6:0] exp_product_temp;
 logic [4:0] shift;
 logic [6:0] shift_back;
-logic check, check2;
+logic check, check2, ovf;
 /////////// Initialization ///////////
 assign exp1 = float1[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W]; // all exp(s) are signed to represent float between 1 and 2
 assign exp2 = float2[HALF_FRACTION_W+HALF_EXPONENT_W-1 : HALF_FRACTION_W];
@@ -63,8 +63,9 @@ always_comb begin : mult
     shift_back = '0;
     check = 0;
     check2 = 0;
+    ovf = 0;
     /////////// Zero ///////////
-    if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0))) begin
+    if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0)) | (float1 == HALF_ZERON & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERON & ~(exp1 == '1 & mant1 == '0))) begin
         exp_product = '0;
         mant_product = '0;
         sign_product = '0;
@@ -199,6 +200,9 @@ always_comb begin : mult
                 mant_product = mant_product_full[20:11];
                 //rounding
                 if (mant_product_full[10]) begin
+                    if (mant_product == '1) begin
+                        exp_product += 1;
+                    end
                     mant_product += 1;
                 end
             end
@@ -207,6 +211,9 @@ always_comb begin : mult
             mant_product = mant_product_full[19:10];
             //rounding
             if (mant_product_full[9]) begin
+                if (mant_product == '1) begin
+                    exp_product += 1;
+                end
                 mant_product += 1;
             end
         end 

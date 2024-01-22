@@ -261,12 +261,26 @@ initial begin
     check_ans(tb_product, 16'b1000000000000010,test_num); 
 
     //0011000100110110 * 0101011000100100
-    test_num += 1; // case32: 
+    test_num += 1; // case33: 
     tb_float1 = 16'b0_01100_0100110110;
     tb_float2 = 16'b0_10101_1000100100;
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'b0_10011_0000000000,test_num);
+
+    //1100111000000110 * 0110110101010000
+    tb_float1 = 16'b1_10011_1000000110;
+    tb_float2 = 16'b0_11011_0101010000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1_11111_0000000000,test_num);
+
+    //1110101000011110 * 1101000100111011
+    tb_float1 = 16'b1_11010_1000011110;
+    tb_float2 = 16'b1_10100_0100111011;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0_11111_0000000000,test_num);
     $finish;
 end
 
