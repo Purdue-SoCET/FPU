@@ -229,13 +229,28 @@ initial begin
     @(negedge CLK);
     check_ans(tb_product, 16'b1_00001_0100100001,test_num); 
 
-    test_num += 1; // case28: UVM inf
+    test_num += 1; // case29: UVM inf
     tb_float1 = 16'b0_11100_0011100001;
     tb_float2 = 16'b1_10001_1010101011;
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'b1111110000000000,test_num); 
-    
+
+    // 0_01110_0001101011 * 1_00001_1010101011
+    test_num += 1; // case30: 
+    tb_float1 = 16'b0_01110_0001101011;
+    tb_float2 = 16'b1_00001_1010101011;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1_00000_1110101111,test_num); 
+
+    // 0001100101011010 * 1010010001110000
+    test_num += 1; // case31: 
+    tb_float1 = 16'b0001100101011010;
+    tb_float2 = 16'b1010010001110000;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1000001011111000,test_num); 
     $finish;
 end
 

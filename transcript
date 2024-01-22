@@ -1,9 +1,9 @@
 # vsim -c tb_float_mult_16bit -L /package/eda/mg/questa10.6b/questasim/uvm-1.2 -voptargs="+acc" -coverage "+UVM_TESTNAME=base_test" "+UVM_VERBOSITY=UVM_LOW" -do "do uvm_tb/fmult.do" -do "run -all" 
-# Start time: 19:55:42 on Nov 29,2023
+# Start time: 18:55:27 on Jan 21,2024
 # ** Note: (vsim-2179) An older version (version 10) DPI tfdb file is being read.
 #    Time: 0 ns  Iteration: 0  Unknown: <UNKNOWN>
-# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_37184/linux_x86_64_gcc-7.4.0/export_tramp.so
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_72875/linux_x86_64_gcc-7.4.0/export_tramp.so
+# ** Note: (vsim-8009) Loading existing optimized design _opt
 # //  Questa Sim-64
 # //  Version 2021.4 linux_x86_64 Oct 13 2021
 # //
@@ -27,8 +27,8 @@
 # Loading work.float_mult_16bit_if(fast__2)
 # Loading work.float_mult_16bit(fast)
 # Loading work.float_mult_16bit_if(fast)
-# Compiling /tmp/socet113@asicfab.ecn.purdue.edu_dpi_37184/linux_x86_64_gcc-7.4.0/exportwrapper.c
-# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_37184/linux_x86_64_gcc-7.4.0/vsim_auto_compile.so
+# Compiling /tmp/socet113@asicfab.ecn.purdue.edu_dpi_72875/linux_x86_64_gcc-7.4.0/exportwrapper.c
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_72875/linux_x86_64_gcc-7.4.0/vsim_auto_compile.so
 # Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2/linux_x86_64/uvm_dpi.so
 # do uvm_tb/fmult.do
 # wave activecursor not supported in batch mode
@@ -5668,5 +5668,5 @@
 # 
 # ** Note: $finish    : /package/eda/mg/questa2021.4/questasim/linux_x86_64/../verilog_src/uvm-1.2/src/base/uvm_root.svh(517)
 #    Time: 2000060 ns  Iteration: 68  Instance: /tb_float_mult_16bit
-# End time: 19:55:50 on Nov 29,2023, Elapsed time: 0:00:08
+# End time: 18:55:33 on Jan 21,2024, Elapsed time: 0:00:06
 # Errors: 0, Warnings: 0

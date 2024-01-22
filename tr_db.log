@@ -9,3 +9,8 @@
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
   CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}
+  CREATE_STREAM @0 {NAME:seq T:Transactions SCOPE:uvm_test_top.env.agt.sqr STREAM:648}

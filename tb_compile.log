@@ -1,5 +1,5 @@
 QuestaSim-64 vlog 2021.4 Compiler 2021.10 Oct 13 2021
-Start time: 19:55:40 on Nov 29,2023
+Start time: 20:07:24 on Nov 29,2023
 vlog "+incdir+src/half_precision/multiplication" "+incdir+include" "+incdir+uvm_tb/uvm_tb_mult/fmult16_agent" "+acc" "+cover" -L /package/eda/mg/questa10.6b/questasim/uvm-1.2 uvm_tb/uvm_tb_mult/tb_float_mult_16bit.sv -logfile tb_compile.log -printinfilenames=file_search.log 
 -- Compiling package fpu_types_pkg
 ** Note: (vlog-2286) uvm_tb/uvm_tb_mult/test.svh(2): Using implicit +incdir+/package/eda/mg/questa10.6b/questasim/uvm-1.2/../verilog_src/uvm-1.2/src from import uvm_pkg
@@ -12,5 +12,5 @@ vlog "+incdir+src/half_precision/multiplication" "+incdir+include" "+incdir+uvm_
 
 Top level modules:
 	tb_float_mult_16bit
-End time: 19:55:41 on Nov 29,2023, Elapsed time: 0:00:01
+End time: 20:07:25 on Nov 29,2023, Elapsed time: 0:00:01
 Errors: 0, Warnings: 0

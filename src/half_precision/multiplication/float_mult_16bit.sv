@@ -141,9 +141,12 @@ always_comb begin : mult
         // exp_product_temp = exp_product_temp + {6'b0, mant_product_full[1]} - 7'd15;
         exp_product_temp = exp_product_temp - 7'd15;
         // if ($signed(exp_product_temp) < $signed(-7'd13) && $signed(exp_product_temp) > $signed(-7'd25)) begin
-        if ($signed(exp_product_temp) < $signed(-7'd15) && $signed(exp_product_temp) > $signed(-7'd25)) begin
+        if (($signed(exp_product_temp) < $signed(-7'd14) && $signed(exp_product_temp) > $signed(-7'd25)) && !(($signed(exp_product_temp) == $signed(-7'd15)) && mant_product_full[21])) begin
             shift_back = -7'd14 - exp_product_temp; 
             mant_product_full = mant_product_full >> shift_back;
+            // if (mant_product_full[21])begin
+            //     mant_product_full = mant_product_full >> 1;
+            // end
             exp_product = '0;
             check = 1;
         end
