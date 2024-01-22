@@ -1,0 +1,176 @@
+# vsim -c tb_float_mult -L /package/eda/mg/questa10.6b/questasim/uvm-1.2 -voptargs="+acc" -coverage "+UVM_TESTNAME=base_test" "+UVM_VERBOSITY=UVM_LOW" -do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" 
+# Start time: 00:00:25 on Jan 22,2024
+# ** Note: (vsim-2179) An older version (version 10) DPI tfdb file is being read.
+#    Time: 0 ns  Iteration: 0  Unknown: <UNKNOWN>
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/export_tramp.so
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: (vopt-13408) Code coverage will be disabled for some DUs/packages/classes and source files.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# //  Questa Sim-64
+# //  Version 2021.4 linux_x86_64 Oct 13 2021
+# //
+# //  Copyright 1991-2021 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2.uvm_pkg(fast)
+# Loading work.uvm_fpu_pkg(fast)
+# Loading work.fpu_types_pkg(fast)
+# Loading work.tb_float_mult_sv_unit(fast)
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2.questa_uvm_pkg(fast)
+# Loading work.tb_float_mult(fast)
+# Loading work.float_mult_if(fast__2)
+# Loading work.float_mult_16bit(fast)
+# Loading work.float_mult_if(fast)
+# Compiling /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/exportwrapper.c
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/vsim_auto_compile.so
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2/linux_x86_64/uvm_dpi.so
+# coverage save -onexit coverage.ucdb
+# do uvm_tb/fmult.do
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/fmult16_if/clk'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 3
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/fmult16_if/n_rst'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 4
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/float1'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 5
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/fmult16_if/float2'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 6
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/sign1'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 7
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/sign2'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 8
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/sign_product'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 9
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/exp_overflow'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 10
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/implicit_leading_bit1'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 11
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/implicit_leading_bit2'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 12
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/exp1'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 13
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/exp2'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 14
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/exp_product'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 15
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/mant1'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 16
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/mant2'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 17
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/mant_product'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 18
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/mant_product_full'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 19
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/zero'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 20
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/qnan'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 21
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/snan'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 22
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/inf'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 23
+# ** UI-Msg (Warning): (vish-4014) No objects found matching '/tb_float_mult_16bit/DUT/product'.
+# Executing ONERROR command at macro ./uvm_tb/fmult.do line 24
+# wave activecursor not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# configure wave not supported in batch mode
+# run -all
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_root.svh(392) @ 0: reporter [UVM/RELNOTES] 
+# ----------------------------------------------------------------
+# UVM-1.2
+# (C) 2007-2014 Mentor Graphics Corporation
+# (C) 2007-2014 Cadence Design Systems, Inc.
+# (C) 2006-2014 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# (C) 2013-2014 NVIDIA Corporation
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO @ 0: reporter [RNTST] Running test base_test...
+#                    0 Starting sequence run_phase
+# UVM_INFO @ 211150000: uvm_test_top.env.scrb [Input float] 1111100001011111 * 0000000000000000 => -3.580800e+04 * 0.000000e+00
+# UVM_INFO @ 211150000: uvm_test_top.env.scrb [Product] -0.000000e+00
+# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 211150000: uvm_test_top.env.scrb [fmult_Scoreboard] 
+# PRODUCT MISMATCH: 
+# Expected product: 1000000000000000(-0.000000e+00)
+#   Actual product: 0000000000000000(0.000000e+00)
+# UVM_INFO @ 451070000: uvm_test_top.env.scrb [Input float] 1011010001101101 * 0000000000000000 => -2.766113e-01 * 0.000000e+00
+# UVM_INFO @ 451070000: uvm_test_top.env.scrb [Product] -0.000000e+00
+# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 451070000: uvm_test_top.env.scrb [fmult_Scoreboard] 
+# PRODUCT MISMATCH: 
+# Expected product: 1000000000000000(-0.000000e+00)
+#   Actual product: 0000000000000000(0.000000e+00)
+# UVM_INFO @ 630050000: uvm_test_top.env.scrb [Input float] 1111010100010011 * 0000000000000000 => -2.078400e+04 * 0.000000e+00
+# UVM_INFO @ 630050000: uvm_test_top.env.scrb [Product] -0.000000e+00
+# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 630050000: uvm_test_top.env.scrb [fmult_Scoreboard] 
+# PRODUCT MISMATCH: 
+# Expected product: 1000000000000000(-0.000000e+00)
+#   Actual product: 0000000000000000(0.000000e+00)
+# UVM_INFO @ 793530000: uvm_test_top.env.scrb [Input float] 1000000000000000 * 0101111100100000 => -0.000000e+00 * 4.560000e+02
+# UVM_INFO @ 793530000: uvm_test_top.env.scrb [Product] -0.000000e+00
+# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 793530000: uvm_test_top.env.scrb [fmult_Scoreboard] 
+# PRODUCT MISMATCH: 
+# Expected product: 1000000000000000(-0.000000e+00)
+#   Actual product: 0000000000000000(0.000000e+00)
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_objection.svh(1271) @ 2000060000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(182) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Float1 Coverage is         78
+# UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(183) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Float2 Coverage is         89
+# UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(184) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Cross Coverage of Float1 Float2 is 71
+# UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(185) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Product Coverage is         89
+# UVM_INFO uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(72) @ 2000060000: uvm_test_top.env.scrb [fmult_SB] 
+# Total number of transactions: 100000
+# Total number of MISMATCH: 4
+# 
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_report_server.svh(847) @ 2000060000: reporter [UVM/REPORT/SERVER] 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :   16
+# UVM_WARNING :    0
+# UVM_ERROR :    4
+# UVM_FATAL :    0
+# ** Report counts by id
+# [Input float]     4
+# [Product]     4
+# [RNTST]     1
+# [TEST_DONE]     1
+# [UVM/RELNOTES]     1
+# [fmult_SB]     1
+# [fmult_Scoreboard]     4
+# [uvm_test_top.env.cov]     4
+# 
+# ** Note: $finish    : /package/eda/mg/questa2021.4/questasim/linux_x86_64/../verilog_src/uvm-1.2/src/base/uvm_root.svh(517)
+#    Time: 2000060 ns  Iteration: 68  Instance: /tb_float_mult
+# Saving coverage database on exit...
+# End time: 00:00:33 on Jan 22,2024, Elapsed time: 0:00:08
+# Errors: 0, Warnings: 1
