@@ -160,7 +160,7 @@ always_comb begin : mult
         //-----------------------------------------------------------------
         exp_overflow = ((exp1[HALF_EXPONENT_W-1] & exp2[HALF_EXPONENT_W-1] & ~exp_product[HALF_EXPONENT_W-1]) | (~exp1[HALF_EXPONENT_W-1] & ~exp2[HALF_EXPONENT_W-1] & exp_product[HALF_EXPONENT_W-1]));
         
-        if (exp_overflow) begin //overflow in exp, product = +/-inf
+        if (exp_overflow || exp_product == '1) begin //overflow in exp, product = +/-inf
             exp_product = '1;
             mant_product = '0;
         end else if (s_s == 1) begin //sub * sub guaranteed to be sub
