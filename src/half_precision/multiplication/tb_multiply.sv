@@ -22,7 +22,7 @@ program test(
 import fpu_types_pkg::*;
 
 parameter PERIOD = 10;
-logic [4:0] test_num;
+logic [5:0] test_num;
 
 initial begin
     // generate waveform files
@@ -251,10 +251,26 @@ initial begin
     #(PERIOD)
     @(negedge CLK);
     check_ans(tb_product, 16'b1000001011111000,test_num); 
+
+    // 0001101011001111 * 1000000111010101
+    test_num += 1; // case32: 
+    tb_float1 = 16'b0_00110_1011001111;
+    tb_float2 = 16'b1_00000_0111010101;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b1000000000000010,test_num); 
+
+    //0011000100110110 * 0101011000100100
+    test_num += 1; // case32: 
+    tb_float1 = 16'b0_01100_0100110110;
+    tb_float2 = 16'b0_10101_1000100100;
+    #(PERIOD)
+    @(negedge CLK);
+    check_ans(tb_product, 16'b0_10011_0000000000,test_num);
     $finish;
 end
 
-task print(input [15:0] half_product, input [4:0] testNum);
+task print(input [15:0] half_product, input [5:0] testNum);
     logic half_sign;
     logic [4:0] half_exp;
     logic [10:0] double_exp;
@@ -285,7 +301,7 @@ task print(input [15:0] half_product, input [4:0] testNum);
     $display("test num = %d: product = %f", testNum, $bitstoreal(double_product));
 endtask 
 
-task check_ans (input [15:0] result, input [15:0] exp, input [4:0] testNum);
+task check_ans (input [15:0] result, input [15:0] exp, input [5:0] testNum);
     if (result == exp) begin
         $display("test num = %d: correct, result is %b.", testNum, result);
     end else begin
