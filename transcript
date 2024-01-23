@@ -1,8 +1,8 @@
 # vsim -c tb_float_mult -L /package/eda/mg/questa10.6b/questasim/uvm-1.2 -voptargs="+acc" -coverage "+UVM_TESTNAME=base_test" "+UVM_VERBOSITY=UVM_LOW" -do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fmult.do" -do "run -all" 
-# Start time: 00:00:25 on Jan 22,2024
+# Start time: 22:03:00 on Jan 22,2024
 # ** Note: (vsim-2179) An older version (version 10) DPI tfdb file is being read.
 #    Time: 0 ns  Iteration: 0  Unknown: <UNKNOWN>
-# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/export_tramp.so
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_71560/linux_x86_64_gcc-7.4.0/export_tramp.so
 # ** Note: (vsim-3812) Design is being optimized...
 # ** Warning: (vopt-13408) Code coverage will be disabled for some DUs/packages/classes and source files.
 # ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
@@ -30,8 +30,8 @@
 # Loading work.float_mult_if(fast__2)
 # Loading work.float_mult_16bit(fast)
 # Loading work.float_mult_if(fast)
-# Compiling /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/exportwrapper.c
-# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_24532/linux_x86_64_gcc-7.4.0/vsim_auto_compile.so
+# Compiling /tmp/socet113@asicfab.ecn.purdue.edu_dpi_71560/linux_x86_64_gcc-7.4.0/exportwrapper.c
+# Loading /tmp/socet113@asicfab.ecn.purdue.edu_dpi_71560/linux_x86_64_gcc-7.4.0/vsim_auto_compile.so
 # Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2/linux_x86_64/uvm_dpi.so
 # coverage save -onexit coverage.ucdb
 # do uvm_tb/fmult.do
@@ -118,30 +118,6 @@
 # 
 # UVM_INFO @ 0: reporter [RNTST] Running test base_test...
 #                    0 Starting sequence run_phase
-# UVM_INFO @ 211150000: uvm_test_top.env.scrb [Input float] 1111100001011111 * 0000000000000000 => -3.580800e+04 * 0.000000e+00
-# UVM_INFO @ 211150000: uvm_test_top.env.scrb [Product] -0.000000e+00
-# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 211150000: uvm_test_top.env.scrb [fmult_Scoreboard] 
-# PRODUCT MISMATCH: 
-# Expected product: 1000000000000000(-0.000000e+00)
-#   Actual product: 0000000000000000(0.000000e+00)
-# UVM_INFO @ 451070000: uvm_test_top.env.scrb [Input float] 1011010001101101 * 0000000000000000 => -2.766113e-01 * 0.000000e+00
-# UVM_INFO @ 451070000: uvm_test_top.env.scrb [Product] -0.000000e+00
-# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 451070000: uvm_test_top.env.scrb [fmult_Scoreboard] 
-# PRODUCT MISMATCH: 
-# Expected product: 1000000000000000(-0.000000e+00)
-#   Actual product: 0000000000000000(0.000000e+00)
-# UVM_INFO @ 630050000: uvm_test_top.env.scrb [Input float] 1111010100010011 * 0000000000000000 => -2.078400e+04 * 0.000000e+00
-# UVM_INFO @ 630050000: uvm_test_top.env.scrb [Product] -0.000000e+00
-# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 630050000: uvm_test_top.env.scrb [fmult_Scoreboard] 
-# PRODUCT MISMATCH: 
-# Expected product: 1000000000000000(-0.000000e+00)
-#   Actual product: 0000000000000000(0.000000e+00)
-# UVM_INFO @ 793530000: uvm_test_top.env.scrb [Input float] 1000000000000000 * 0101111100100000 => -0.000000e+00 * 4.560000e+02
-# UVM_INFO @ 793530000: uvm_test_top.env.scrb [Product] -0.000000e+00
-# UVM_ERROR uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(62) @ 793530000: uvm_test_top.env.scrb [fmult_Scoreboard] 
-# PRODUCT MISMATCH: 
-# Expected product: 1000000000000000(-0.000000e+00)
-#   Actual product: 0000000000000000(0.000000e+00)
 # UVM_INFO verilog_src/uvm-1.2/src/base/uvm_objection.svh(1271) @ 2000060000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
 # UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(182) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Float1 Coverage is         78
 # UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(183) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Float2 Coverage is         89
@@ -149,28 +125,25 @@
 # UVM_INFO uvm_tb/uvm_tb_mult/coverage.svh(185) @ 2000060000: uvm_test_top.env.cov [uvm_test_top.env.cov] Product Coverage is         89
 # UVM_INFO uvm_tb/uvm_tb_mult/fmult_scoreboard.svh(72) @ 2000060000: uvm_test_top.env.scrb [fmult_SB] 
 # Total number of transactions: 100000
-# Total number of MISMATCH: 4
+# Total number of MISMATCH: 0
 # 
 # UVM_INFO verilog_src/uvm-1.2/src/base/uvm_report_server.svh(847) @ 2000060000: reporter [UVM/REPORT/SERVER] 
 # --- UVM Report Summary ---
 # 
 # ** Report counts by severity
-# UVM_INFO :   16
+# UVM_INFO :    8
 # UVM_WARNING :    0
-# UVM_ERROR :    4
+# UVM_ERROR :    0
 # UVM_FATAL :    0
 # ** Report counts by id
-# [Input float]     4
-# [Product]     4
 # [RNTST]     1
 # [TEST_DONE]     1
 # [UVM/RELNOTES]     1
 # [fmult_SB]     1
-# [fmult_Scoreboard]     4
 # [uvm_test_top.env.cov]     4
 # 
 # ** Note: $finish    : /package/eda/mg/questa2021.4/questasim/linux_x86_64/../verilog_src/uvm-1.2/src/base/uvm_root.svh(517)
 #    Time: 2000060 ns  Iteration: 68  Instance: /tb_float_mult
 # Saving coverage database on exit...
-# End time: 00:00:33 on Jan 22,2024, Elapsed time: 0:00:08
+# End time: 22:03:08 on Jan 22,2024, Elapsed time: 0:00:08
 # Errors: 0, Warnings: 1

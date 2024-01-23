@@ -68,7 +68,7 @@ always_comb begin : mult
     if ((float1 == HALF_ZERO & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERO & ~(exp1 == '1 & mant1 == '0)) | (float1 == HALF_ZERON & ~(exp2 == '1 & mant2 == '0)) | (float2 == HALF_ZERON & ~(exp1 == '1 & mant1 == '0))) begin
         exp_product = '0;
         mant_product = '0;
-        sign_product = '0;
+        sign_product = sign1 ^ sign2;
 
         zero = 1;
     end
