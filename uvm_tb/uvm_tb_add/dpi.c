@@ -137,18 +137,23 @@ logic_t check_margin_err(double out, logic_t binary_output){
     binary_output_add1 = binary_output +1 ;
     temp1 = binary_to_float(binary_output);
     temp2 = binary_to_float(binary_output_add1);
+    printf("Values: %lf, %lf, %lf\n", out, temp1, temp2);
     if ((fabs(out-temp1)) < (fabs(out-temp2))) {
+	printf("Returned normal\n");
         return binary_output;
     }
     else if ((fabs(out-temp1)) == (fabs(out-temp2))) {
 	if (binary_output & 1) {
+    	    printf("Returned +1\n");
 	    return binary_output_add1;
 	}
 	else {
+    	    printf("Returned normal\n");
 	    return binary_output;
 	}
     }
     else {
+        printf("Returned +1\n");
         return binary_output_add1;
     }
 }
