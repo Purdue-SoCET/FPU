@@ -1,0 +1,201 @@
+# vsim -c -sv_lib dpi_lib tb_float_add -L /package/eda/mg/questa10.6b/questasim/uvm-1.2 -voptargs="+acc" -coverage "+UVM_TESTNAME=base_test" "+UVM_VERBOSITY=UVM_LOW" -do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" 
+# Start time: 15:14:14 on Feb 05,2024
+# Loading /tmp/socet59@asicfab.ecn.purdue.edu_dpi_31518/linux_x86_64_gcc-5.3.0/export_tramp.so
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim-64
+# //  Version 10.6b linux_x86_64 May 25 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2.uvm_pkg
+# Loading work.uvm_fpu_pkg(fast)
+# Loading work.fpu_types_pkg(fast)
+# Loading work.tb_float_add_sv_unit(fast)
+# Loading work.tb_float_add(fast)
+# Loading work.float_add_if(fast)
+# Loading work.float_add(fast)
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2.questa_uvm_pkg(fast)
+# Loading work.float_add_if(fast)
+# Compiling /tmp/socet59@asicfab.ecn.purdue.edu_dpi_31518/linux_x86_64_gcc-5.3.0/exportwrapper.c
+# Loading /tmp/socet59@asicfab.ecn.purdue.edu_dpi_31518/linux_x86_64_gcc-5.3.0/vsim_auto_compile.so
+# Loading ./dpi_lib.so
+# Loading /package/eda/mg/questa10.6b/questasim/uvm-1.2/linux_x86_64/uvm_dpi.so
+# coverage save -onexit coverage.ucdb
+# do uvm_tb/fadd.do
+# Cannot open macro file: uvm_tb/fadd.do
+# run -all
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_root.svh(392) @ 0: reporter [UVM/RELNOTES] 
+# ----------------------------------------------------------------
+# UVM-1.2
+# (C) 2007-2014 Mentor Graphics Corporation
+# (C) 2007-2014 Cadence Design Systems, Inc.
+# (C) 2006-2014 Synopsys, Inc.
+# (C) 2011-2013 Cypress Semiconductor Corp.
+# (C) 2013-2014 NVIDIA Corporation
+# ----------------------------------------------------------------
+# 
+#   ***********       IMPORTANT RELEASE NOTES         ************
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_NO_DEPRECATED undefined.
+#   See http://www.eda.org/svdb/view.php?id=3313 for more details.
+# 
+#   You are using a version of the UVM library that has been compiled
+#   with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+#   See http://www.eda.org/svdb/view.php?id=3770 for more details.
+# 
+#       (Specify +UVM_NO_RELNOTES to turn off this notice)
+# 
+# UVM_INFO @ 0: reporter [RNTST] Running test base_test...
+#                    0 Starting sequence run_phase
+# UVM_INFO @ 388410000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0000001001101111 => 6.550400e+04 + 3.713369e-05
+# UVM_INFO @ 388410000: uvm_test_top.env.scrb [Sum] 6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 388410000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 2600030000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0000111100011001 => 6.550400e+04 + 4.332066e-04
+# UVM_INFO @ 2600030000: uvm_test_top.env.scrb [Sum] 6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 2600030000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 2894590000: uvm_test_top.env.scrb [Input float] 1011101111011100 + 1111101111111111 => -9.824219e-01 + -6.550400e+04
+# UVM_INFO @ 2894590000: uvm_test_top.env.scrb [Sum] -6.550498e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 2894590000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 3427230000: uvm_test_top.env.scrb [Input float] 1111101111111111 + 1000011110011100 => -6.550400e+04 + -1.161098e-04
+# UVM_INFO @ 3427230000: uvm_test_top.env.scrb [Sum] -6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 3427230000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 5088530000: uvm_test_top.env.scrb [Input float] 1001100110111100 + 1111101111111111 => -2.799988e-03 + -6.550400e+04
+# UVM_INFO @ 5088530000: uvm_test_top.env.scrb [Sum] -6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 5088530000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 6516410000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0000100101101010 => 6.550400e+04 + 1.652241e-04
+# UVM_INFO @ 6516410000: uvm_test_top.env.scrb [Sum] 6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 6516410000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 7900690000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0100100000000111 => 6.550400e+04 + 8.054688e+00
+# UVM_INFO @ 7900690000: uvm_test_top.env.scrb [Sum] 6.551205e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 7900690000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 10621450000: uvm_test_top.env.scrb [Input float] 1111101111111111 + 1001101011100011 => -6.550400e+04 + -3.362656e-03
+# UVM_INFO @ 10621450000: uvm_test_top.env.scrb [Sum] -6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 10621450000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 11571550000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0011110011010101 => 6.550400e+04 + 1.208008e+00
+# UVM_INFO @ 11571550000: uvm_test_top.env.scrb [Sum] 6.550521e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 11571550000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 11912090000: uvm_test_top.env.scrb [Input float] 1000011011010101 + 1111101111111111 => -1.042485e-04 + -6.550400e+04
+# UVM_INFO @ 11912090000: uvm_test_top.env.scrb [Sum] -6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 11912090000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 12876710000: uvm_test_top.env.scrb [Input float] 0111101111001001 + 0110011011001011 => 6.377600e+04 + 1.739000e+03
+# UVM_INFO @ 12876710000: uvm_test_top.env.scrb [Sum] 6.551500e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 12876710000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 14541830000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0011000000110011 => 6.550400e+04 + 1.312256e-01
+# UVM_INFO @ 14541830000: uvm_test_top.env.scrb [Sum] 6.550413e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 14541830000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 14796530000: uvm_test_top.env.scrb [Input float] 1111101111111111 + 1010111000010000 => -6.550400e+04 + -9.472656e-02
+# UVM_INFO @ 14796530000: uvm_test_top.env.scrb [Sum] -6.550409e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 14796530000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 15081450000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0000111110011000 => 6.550400e+04 + 4.634857e-04
+# UVM_INFO @ 15081450000: uvm_test_top.env.scrb [Sum] 6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 15081450000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 15283450000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0100011100101010 => 6.550400e+04 + 7.164062e+00
+# UVM_INFO @ 15283450000: uvm_test_top.env.scrb [Sum] 6.551116e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 15283450000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO @ 15380170000: uvm_test_top.env.scrb [Input float] 0000011110111001 + 0000000001000111 => 1.178384e-04 + 4.231930e-06
+# UVM_INFO @ 15380170000: uvm_test_top.env.scrb [Sum] 1.220703e-04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 15380170000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0000100000000000(1.220703e-04)
+#   Actual output: 0000000000000000(0.000000e+00)
+# UVM_INFO @ 17171610000: uvm_test_top.env.scrb [Input float] 1011010011100000 + 1111101111111111 => -3.046875e-01 + -6.550400e+04
+# UVM_INFO @ 17171610000: uvm_test_top.env.scrb [Sum] -6.550430e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 17171610000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 17492330000: uvm_test_top.env.scrb [Input float] 1001001001110001 + 1111101111111111 => -7.863045e-04 + -6.550400e+04
+# UVM_INFO @ 17492330000: uvm_test_top.env.scrb [Sum] -6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 17492330000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 1111110000000000(-inf)
+#   Actual output: 1111101111111111(-6.550400e+04)
+# UVM_INFO @ 19290370000: uvm_test_top.env.scrb [Input float] 0111101111111111 + 0000001010010000 => 6.550400e+04 + 3.910065e-05
+# UVM_INFO @ 19290370000: uvm_test_top.env.scrb [Sum] 6.550400e+04
+# UVM_ERROR uvm_tb/uvm_tb_add/fadd_scoreboard.svh(63) @ 19290370000: uvm_test_top.env.scrb [fadd_Scoreboard] 
+# OUTPUT MISMATCH 
+# Expected output: 0111110000000000(inf)
+#   Actual output: 0111101111111111(6.550400e+04)
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_objection.svh(1271) @ 20000060000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+# UVM_INFO uvm_tb/uvm_tb_add/fadd_scoreboard.svh(72) @ 20000060000: uvm_test_top.env.scrb [fadd_SB] 
+# Total number of transactions: 1000000
+# Total number of MISMATCH: 19
+# 
+# UVM_INFO verilog_src/uvm-1.2/src/base/uvm_report_server.svh(847) @ 20000060000: reporter [UVM/REPORT/SERVER] 
+# --- UVM Report Summary ---
+# 
+# ** Report counts by severity
+# UVM_INFO :   42
+# UVM_WARNING :    0
+# UVM_ERROR :   19
+# UVM_FATAL :    0
+# ** Report counts by id
+# [Input float]    19
+# [RNTST]     1
+# [Sum]    19
+# [TEST_DONE]     1
+# [UVM/RELNOTES]     1
+# [fadd_SB]     1
+# [fadd_Scoreboard]    19
+# 
+# ** Note: $finish    : /package/eda/mg/questa10.6b/questasim/linux_x86_64/../verilog_src/uvm-1.2/src/base/uvm_root.svh(517)
+#    Time: 20000060 ns  Iteration: 68  Instance: /tb_float_add
+# Saving coverage database on exit...
+# End time: 15:14:59 on Feb 05,2024, Elapsed time: 0:00:45
+# Errors: 0, Warnings: 0
