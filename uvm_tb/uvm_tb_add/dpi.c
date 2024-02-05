@@ -140,6 +140,14 @@ logic_t check_margin_err(double out, logic_t binary_output){
     if ((fabs(out-temp1)) < (fabs(out-temp2))) {
         return binary_output;
     }
+    else if ((fabs(out-temp1)) == (fabs(out-temp2))) {
+	if (binary_output & 1) {
+	    return binary_output_add1;
+	}
+	else {
+	    return binary_output;
+	}
+    }
     else {
         return binary_output_add1;
     }
