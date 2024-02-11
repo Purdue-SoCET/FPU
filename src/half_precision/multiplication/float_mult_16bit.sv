@@ -4,6 +4,7 @@ import fpu_types_pkg::*;
 module float_mult_16bit (
     input logic [HALF_FLOAT_W-1:0] float1,
     input logic [HALF_FLOAT_W-1:0] float2,
+    input logic [2:0] rm,
     output logic [HALF_FLOAT_W-1:0] product
 );
    
@@ -199,22 +200,26 @@ always_comb begin : mult
                 end
                 mant_product = mant_product_full[20:11];
                 //rounding
-                if (mant_product_full[10]) begin
-                    if (mant_product == '1) begin
-                        exp_product += 1;
+                if(rm == RM_RNE) begin
+                    if (mant_product_full[10]) begin
+                        if (mant_product == '1) begin
+                            exp_product += 1;
+                        end
+                        mant_product += 1;
                     end
-                    mant_product += 1;
                 end
             end
         end else begin //mant carry 1
             no_carry = 1;
             mant_product = mant_product_full[19:10];
             //rounding
-            if (mant_product_full[9]) begin
-                if (mant_product == '1) begin
-                    exp_product += 1;
+            if(rm == RM_RNE) begin
+                if (mant_product_full[9]) begin
+                    if (mant_product == '1) begin
+                        exp_product += 1;
+                    end
+                    mant_product += 1;
                 end
-                mant_product += 1;
             end
         end 
         //-----------------------------------------------------------------

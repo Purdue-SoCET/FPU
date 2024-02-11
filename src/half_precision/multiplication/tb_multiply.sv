@@ -7,16 +7,18 @@ module tb_multiply;
     parameter PERIOD = 10;
     logic CLK = 0, nRST;
     logic [HALF_FLOAT_W-1:0] tb_float1, tb_float2, tb_product;
+    logic [2:0] tb_rm;
     always #(PERIOD/2) CLK++;
 
-    float_mult_16bit Zfh (.float1(tb_float1), .float2(tb_float2), .product(tb_product));
-    test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_product(tb_product));
+    float_mult_16bit Zfh (.float1(tb_float1), .float2(tb_float2), .rm(tb_rm), .product(tb_product));
+    test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_rm(tb_rm), .tb_product(tb_product));
 endmodule
 
 program test(
     input logic CLK,
     output logic [HALF_FLOAT_W-1:0] tb_float1,
     output logic [HALF_FLOAT_W-1:0] tb_float2,
+    output logic [2:0] tb_rm,
     input logic [HALF_FLOAT_W-1:0] tb_product
 );
 import fpu_types_pkg::*;
@@ -29,6 +31,7 @@ initial begin
     $dumpfile("waveform_multiply.fst");
     $dumpvars;
     /////////// Zero ///////////
+    tb_rm = '0;
     test_num = 0; // case0: 0 * 0
     tb_float1 = '0;
     tb_float2 = '0;
