@@ -168,7 +168,7 @@ always_comb begin : SUM_CALC
 			sum = sign_B ? FLOAT_INFN : FLOAT_INF;
 		end
 	end
-	else if ((exponent_difference == 0) & (fraction_out == 0))
+	else if ((exponent_difference == 0) & (fraction_out == 0) & (normal_A == normal_B))
 	begin
 		// x + -x or -x + x
 		sum = FLOAT_ZERO;
