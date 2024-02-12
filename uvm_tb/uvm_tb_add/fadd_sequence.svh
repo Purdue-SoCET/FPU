@@ -20,7 +20,7 @@ class fadd_sequence extends uvm_sequence #(transaction);
         //`uvm_info("fadd_sequence","start sequence ",UVM_LOW);
 
         //repeat randomized test cases
-        repeat(100000) begin
+        repeat(1000000) begin
             #20ns;
             start_item(req_item);
 
