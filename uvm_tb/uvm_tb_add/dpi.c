@@ -166,9 +166,11 @@ logic_t compute_expected_output(logic_t binary_float1, logic_t binary_float2){
     logic_t binary_output;
     double norm_bound;
     double subnorm_bound;
+    double max_spacing;
 
     norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number
     subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number
+    max_spacing = (pow(2, (((pow(2, EXPONENT_WIDTH) / 2.0) - 1) - FRACTION_WIDTH)) / 2.0); // spacing between max normal numbers
 
     // Handling NaN case
     // Any calculation involved NaN {exp = 5'b11111, mant != 0} => QNAN
@@ -205,7 +207,7 @@ logic_t compute_expected_output(logic_t binary_float1, logic_t binary_float2){
     }
     
     // Handling Overflow case
-    if ((float_output > norm_bound) || (float_output < (-norm_bound))) {
+    if ((float_output >= (norm_bound + max_spacing)) || (float_output <= (-norm_bound - max_spacing))) {
         if(sign_output) { 
             return NINF; //Overflow-> -Inf
         }
