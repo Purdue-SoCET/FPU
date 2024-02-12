@@ -210,7 +210,7 @@ logic_t compute_expected_output(logic_t binary_float1, logic_t binary_float2){
             return NINF; //Overflow-> -Inf
         }
         else { 
-            printf("RETURN INF: %lf, %lf", binary_to_float(binary_float1), binary_to_float(binary_float2))
+            printf("RETURN INF: %lf, %lf\n", binary_to_float(binary_float1), binary_to_float(binary_float2));
             return INF;  //Overflow-> Inf
         }
     }
