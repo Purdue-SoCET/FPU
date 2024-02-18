@@ -200,12 +200,41 @@ always_comb begin : mult
                 end
                 mant_product = mant_product_full[20:11];
                 //rounding
-                if(rm == RM_RNE) begin
+                if(rm == RM_RMM) begin // tie to max
                     if (mant_product_full[10]) begin
                         if (mant_product == '1) begin
                             exp_product += 1;
                         end
                         mant_product += 1;
+                    end
+                end else if (rm == RM_RNE) begin //tie to even
+                    if (mant_product_full[10]) begin
+                        if (mant_product_full[9:0] == '0) begin //tie
+                            if (mant_product[0]) begin // even
+                                mant_product += 1;
+                            end
+                        end else begin //not tie
+                            if (mant_product == '1) begin
+                                exp_product += 1;
+                            end
+                            mant_product += 1;
+                        end
+                    end
+                end else if (rm == RM_RUP) begin // round up           
+                    if (mant_product_full[10:0] != '0) begin
+                        if (mant_product == '1) begin
+                            exp_product += 1;
+                        end
+                        mant_product += 1;
+                    end    
+                end else if (rm == RM_RDN) begin // round down
+                    if (sign_product) begin
+                        if (mant_product_full[10:0] != '0) begin
+                            if (mant_product == '1) begin
+                                exp_product += 1;
+                            end
+                            mant_product += 1;
+                        end   
                     end
                 end
             end
@@ -213,12 +242,41 @@ always_comb begin : mult
             no_carry = 1;
             mant_product = mant_product_full[19:10];
             //rounding
-            if(rm == RM_RNE) begin
+            if(rm == RM_RMM) begin //tie to max
                 if (mant_product_full[9]) begin
                     if (mant_product == '1) begin
                         exp_product += 1;
                     end
                     mant_product += 1;
+                end
+            end else if (rm == RM_RNE) begin //tie to even
+                if (mant_product_full[9]) begin
+                    if (mant_product_full[8:0] == '0) begin // tie
+                        if (mant_product[0]) begin //even
+                            mant_product += 1;
+                        end
+                    end else begin // not tie
+                        if (mant_product == '1) begin
+                            exp_product += 1;
+                        end
+                        mant_product += 1;
+                    end
+                end
+            end else if (rm == RM_RUP) begin // round up 
+                if (mant_product_full[9:0] != '0) begin
+                    if (mant_product == '1) begin
+                        exp_product += 1;
+                    end
+                    mant_product += 1;
+                end
+            end else if (rm == RM_RDN) begin // round down
+                if (sign_product) begin
+                    if (mant_product_full[9:0] != '0) begin
+                        if (mant_product == '1) begin
+                            exp_product += 1;
+                        end
+                        mant_product += 1;
+                    end
                 end
             end
         end 

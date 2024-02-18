@@ -29,7 +29,7 @@ module tb_float_mult ();
     float_mult_if #(.WIDTH(WIDTH)) fmult_if(clk);
     
     // instantiate the DUT
-    float_mult_16bit DUT(.float1(fmult_if.float1),.float2(fmult_if.float2), .product(fmult_if.product));
+    float_mult_16bit DUT(.float1(fmult_if.float1),.float2(fmult_if.float2),.rm(3'b100), .product(fmult_if.product));
     
     initial begin
         // configure the interface into the database, so that it can be accessed throughout the hierachy
