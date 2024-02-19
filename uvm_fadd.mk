@@ -60,6 +60,7 @@ run: build
 	-coverage \
 	+UVM_TESTNAME="base_test" \
 	+UVM_VERBOSITY=UVM_LOW \
+	+sv_seed=random \
 	-do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" &
 
 run_NaN_test: build

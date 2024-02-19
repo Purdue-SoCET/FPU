@@ -28,6 +28,13 @@ add: clean
 add_wave: add
 	gtkwave build/socet_aft_fpu_0.1.0/sim_add-verilator/waveform_add.fst gtkw/add.gtkw &
 
+add_uvm: clean
+	make -f uvm_fadd.mk clean
+	make -f uvm_fadd.mk
+	make -f uvm_fadd.mk dpi
+	make -f uvm_fadd.mk build
+	make -f uvm_fadd.mk run
+
 # clean targets
 clean:
 	rm -rf build/
