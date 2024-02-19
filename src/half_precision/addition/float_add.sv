@@ -275,12 +275,90 @@ always_comb begin : SUM_CALC
 
 				ROUND_INF:
 				begin
-					// TODO
+					if (sign_A)
+					begin
+						// negative number, will always truncate
+						sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+					end
+					else
+					begin
+						// positive number, will round up if any bits after LSB
+						if (guard_bit | rounding_bit | sticky_bit)
+						begin
+							// increment result
+							if (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] == '1)
+							begin
+								if (exponent_out == '1)
+								begin
+									if (sign_A)
+									begin
+										sum = FLOAT_INFN;
+									end
+									else
+									begin
+										sum = FLOAT_INF;
+									end
+								end
+								else
+								begin
+									sum = { sign_A, exponent_out + 1'b1, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
+								end
+							end
+							else
+							begin
+								sum = { sign_A, exponent_out, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
+							end
+						end
+						else
+						begin
+							// result is exact
+							sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+						end
+					end
 				end
 
 				ROUND_INFN:
 				begin
-					// TODO
+					if (sign_A)
+					begin
+						// negative number, will round to larger magnitude if any bits after LSB
+						if (guard_bit | rounding_bit | sticky_bit)
+						begin
+							// increment result
+							if (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] == '1)
+							begin
+								if (exponent_out == '1)
+								begin
+									if (sign_A)
+									begin
+										sum = FLOAT_INFN;
+									end
+									else
+									begin
+										sum = FLOAT_INF;
+									end
+								end
+								else
+								begin
+									sum = { sign_A, exponent_out + 1'b1, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
+								end
+							end
+							else
+							begin
+								sum = { sign_A, exponent_out, (fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] + 1'b1) };
+							end
+						end
+						else
+						begin
+							// result is exact
+							sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+						end
+					end
+					else
+					begin
+						// positive number, will always truncate
+						sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+					end
 				end
 
 				ROUND_ZERO:
