@@ -22,6 +22,7 @@ filesets:
 #      - "socet:digital-lib:edge_detector"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
+      - include/fpu_types_pkg.vh : {is_include_file: true}
       - src/half_precision/multiplication/float_mult_16bit.sv
     file_type: systemVerilogSource
   
