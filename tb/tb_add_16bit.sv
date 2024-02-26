@@ -12,7 +12,7 @@ module tb_add_16bit;
 	logic tb_subtract;
 	always #(PERIOD/2) CLK++;
 
-	float_add Zfh (.float1(tb_float1), .float2(tb_float2), .rounding_mode(tb_rounding_mode), .sum(tb_sum));
+	float_add_16bit Zfh (.float1(tb_float1), .float2(tb_float2), .rounding_mode(tb_rounding_mode), .sum(tb_sum));
 	test PROG (.CLK(CLK), .tb_float1(tb_float1), .tb_float2(tb_float2), .tb_rounding_mode(tb_rounding_mode), .tb_sum(tb_sum));
 endmodule
 

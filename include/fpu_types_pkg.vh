@@ -6,19 +6,19 @@ package fpu_types_pkg;
 	parameter WORD_W	= 32;
 
 	// instruction format widths
-	parameter OP_W			= 7;
-	parameter REG_W			= 5;
+	parameter OP_W		= 7;
+	parameter REG_W		= 5;
 	parameter WIDTH_W 	= 3;
-	parameter IMM_W			= 12;
-	parameter FMT_W			= 2;
-	parameter RM_W			= 3;
+	parameter IMM_W		= 12;
+	parameter FMT_W		= 2;
+	parameter RM_W		= 3;
 	parameter FUNCT5_W	= 5;
 
 	// special format widths
 	parameter CLASSIFY_W	= 10;
 
 	// floating-point widths
-	parameter SIGN_W					= 1;
+	parameter SIGN_W			= 1;
 	parameter HALF_EXPONENT_W	= 5;
 	parameter HALF_FRACTION_W	= 10;
 	parameter HALF_FLOAT_W		= 16;	

@@ -4,9 +4,11 @@ description: SoCET FPU module
 
 filesets:
   rtl:
-#    depend:
-#      - "socet:digital-lib:counter"
+    depend:
+      - "socet:riscv:riscv_include"
+      - "socet:riscv:packages"
     files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
       - src/fpu.sv
     file_type: systemVerilogSource
 
@@ -16,43 +18,36 @@ filesets:
     file_type: systemVerilogSource
 
   rtl_multiply:
-#    depend:
-#      - "socet:digital-lib:counter"
-#      - "socet:digital-lib:shift_register"
-#      - "socet:digital-lib:edge_detector"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/multiplication/float_mult_16bit.sv
+      - src/float_mult_16bit.sv
     file_type: systemVerilogSource
   
   tb_multiply:
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/multiplication/tb_multiply.sv
+      - tb/tb_mult_16bit.sv
     file_type: systemVerilogSource
 
   rtl_add:
-#    depend:
-#      - "socet:digital-lib:counter"
-#      - "socet:digital-lib:shift_register"
-#      - "socet:digital-lib:edge_detector"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/addition/float_add.sv
+      - src/float_add.sv
+      - src/float_add_16bit.sv
     file_type: systemVerilogSource
   
   tb_add_16bit:
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/half_precision/addition/tb_add_16bit.sv
+      - tb/tb_add_16bit.sv
     file_type: systemVerilogSource
 
 targets:
   default: &default
     filesets:
       - rtl
-    toplevel: fpu
+    toplevel: fpu_wrapper
 
   multiply: &multiply
     filesets:

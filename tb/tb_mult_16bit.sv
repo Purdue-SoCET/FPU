@@ -2,7 +2,7 @@
 
 `timescale 1 ns/ 1 ns
 
-module tb_multiply;
+module tb_mult_16bit;
     import fpu_types_pkg::*;
     parameter PERIOD = 10;
     logic CLK = 0, nRST;
