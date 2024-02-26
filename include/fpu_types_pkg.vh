@@ -21,7 +21,7 @@ package fpu_types_pkg;
 	parameter SIGN_W			= 1;
 	parameter HALF_EXPONENT_W	= 5;
 	parameter HALF_FRACTION_W	= 10;
-	parameter HALF_FLOAT_W		= 16;	
+	parameter HALF_FLOAT_W		= 16;
 
 	// half-precision special number representations
 	parameter HALF_ZERO		= 16'h0000; // exponent 0, mantissa zero
@@ -43,13 +43,13 @@ package fpu_types_pkg;
 	// opcode field types
 	typedef enum logic [OP_W - 1 : 0] {
 
-		OPCODE_FLOAD	= 7'b0000111,
-		OPCODE_FSTORE	= 7'b0100111,
+		// OPCODE_LOADFP	= 7'b0000111,	// unused for Zhinx
+		// OPCODE_STOREFP	= 7'b0100111,	// unused for Zhinx
+		OPCODE_OPFP		= 7'b1010011,
 		OPCODE_FMADD	= 7'b1000011,
 		OPCODE_FMSUB	= 7'b1000111,
-		OPCODE_FNMSUB	= 7'b1001011,
 		OPCODE_FNMADD	= 7'b1001111,
-		OPCODE_FOP		= 7'b1010011 // includes basically all other FP operations
+		OPCODE_FNMSUB	= 7'b1001011
 
 	} fpu_opcode_t;
 
@@ -60,34 +60,33 @@ package fpu_types_pkg;
 		FUNCT_FSUB		= 5'b00001,
 		FUNCT_FMUL		= 5'b00010,
 		FUNCT_FDIV		= 5'b00011,
+		FUNCT_FMINMAX	= 5'b00101, // include FMIN/FMAX
 		FUNCT_FSQRT		= 5'b01011,
 		FUNCT_FSGNJ		= 5'b00100, // includes FSGNJ, FSGNJN, FSGNJX
-		FUNCT_FMINMAX	= 5'b00101, // include FMIN/FMAX
 		FUNCT_FCOMP		= 5'b10100, // include FEQ, FLT, FLE
 		FUNCT_FCLASS	= 5'b11100
-
-		// FUNCT_FCVTHI	= 5'b00000, // convert H to I // TODO: unknown
-		// FUNCT_FCVTIH	= 5'b00000 // convert I to H // TODO: unknown
+		// convert and move instructions not used for Zhinx
 
 	} fpu_funct_t;
 
+	// TODO: unused for Zhinx
 	// width field types
-	typedef enum logic [WIDTH_W - 1 : 0] {
+	// typedef enum logic [WIDTH_W - 1 : 0] {
 
-		WIDTH_SINGLE	= 3'b010,
-		WIDTH_DOUBLE	= 3'b011,
-		WIDTH_HALF		= 3'b000, // TODO: unknown
-		WIDTH_QUAD		= 3'b100
+	// 	WIDTH_SINGLE	= 3'b010,
+	// 	WIDTH_DOUBLE	= 3'b011,
+	// 	WIDTH_HALF		= 3'b000, // TODO: unknown
+	// 	WIDTH_QUAD		= 3'b100
 
-	} fpu_width_t;
+	// } fpu_width_t;
 
 	// fmt field types
 	typedef enum logic [FMT_W - 1 : 0] {
 
 		FMT_SINGLE	= 2'b00,
 		FMT_DOUBLE	= 2'b01,
-		FMT_HALF		= 2'b10,
-		FMT_QUAD		= 2'b11
+		FMT_HALF	= 2'b10,
+		FMT_QUAD	= 2'b11
 
 	} fpu_fmt_t;
 
@@ -96,7 +95,7 @@ package fpu_types_pkg;
 
 		RM_RNE	= 3'b000,	// round to nearest, ties to even
 		RM_RTZ	= 3'b001,	// round towards zero
-		RM_RDN	=	3'b010,	// round down (towards -inf)
+		RM_RDN	= 3'b010,	// round down (towards -inf)
 		RM_RUP	= 3'b011,	// round up (rowards inf)
 		RM_RMM	= 3'b100,	// round to nearest, ties to max magnitude
 		RM_DYN	= 3'b111	// selects dynamic rounding mode; in rounding mode register, invalid
@@ -116,16 +115,16 @@ package fpu_types_pkg;
 	// classify result bits
 	typedef enum logic [CLASSIFY_W - 1 : 0] {
 
-		CLASS_INFN			= 10'b0000000001, // rs1 is -inf
-		CLASS_NORMN			= 10'b0000000010, // rs1 is a negative normal number
-		CLASS_SUBNORMN	= 10'b0000000100, // rs1 is a negative subnormal number
-		CLASS_ZERON			= 10'b0000001000, // rs1 is -0
-		CLASS_ZERO			= 10'b0000010000, // rs1 is +0
-		CLASS_SUBNORM		= 10'b0000100000, // rs1 is a positive subnormal number
-		CLASS_NORM			= 10'b0001000000, // rs1 is a positive normal number
-		CLASS_INF				= 10'b0010000000, // rs1 is +inf
-		CLASS_SIGNAN		= 10'b0100000000, // rs1 is a signaling NaN
-		CLASS_QNAN			= 10'b1000000000 // rs1 is a quiet NaN
+		CLASS_INFN		= 10'b0000000001,	// rs1 is -inf
+		CLASS_NORMN		= 10'b0000000010,	// rs1 is a negative normal number
+		CLASS_SUBNORMN	= 10'b0000000100,	// rs1 is a negative subnormal number
+		CLASS_ZERON		= 10'b0000001000,	// rs1 is -0
+		CLASS_ZERO		= 10'b0000010000,	// rs1 is +0
+		CLASS_SUBNORM	= 10'b0000100000,	// rs1 is a positive subnormal number
+		CLASS_NORM		= 10'b0001000000,	// rs1 is a positive normal number
+		CLASS_INF		= 10'b0010000000,	// rs1 is +inf
+		CLASS_SIGNAN	= 10'b0100000000,	// rs1 is a signaling NaN
+		CLASS_QNAN		= 10'b1000000000	// rs1 is a quiet NaN
 
 	} fpu_classify_w;
 
