@@ -27,9 +27,18 @@ package fpu_types_pkg;
 	parameter HALF_ZERO		= 16'h0000; // exponent 0, mantissa zero
 	parameter HALF_ZERON	= 16'h8000; // exponent 0, mantissa zero, negative
 	parameter HALF_INF		= 16'h7C00; // exponent 255, mantissa zero
-	parameter HALF_INFN		=	16'hFC00; // exponent 255, mantissa zero, negative
-	parameter HALF_NAN		= 16'h7C01; // exponent 255, mantissa non-zero
-	parameter	HALF_NANN		= 16'hFC01; // exponent 255, mantissa non-zero, negative
+	parameter HALF_INFN		= 16'hFC00; // exponent 255, mantissa zero, negative
+	parameter HALF_NAN		= 16'hFFFF; // exponent 255, mantissa non-zero
+
+	// rounding modes
+	typedef enum {
+
+		ROUND_NEAREST_EVEN,	// default
+		ROUND_INF,			// round up result
+		ROUND_INFN,			// round down result
+		ROUND_ZERO			// always truncate result
+
+	} fpu_rounding_mode_t;
 
 	// opcode field types
 	typedef enum logic [OP_W - 1 : 0] {
