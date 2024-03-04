@@ -6,7 +6,7 @@ module float_add_16bit
 	input logic [HALF_FLOAT_W - 1 : 0] float1,
 	input logic [HALF_FLOAT_W - 1 : 0] float2,
 
-	input fpu_rounding_mode_t rounding_mode,
+	input fpu_rm_t rounding_mode,
 
 	output logic [HALF_FLOAT_W - 1 : 0] sum
 );

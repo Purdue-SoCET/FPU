@@ -4,19 +4,23 @@ description: SoCET FPU module
 
 filesets:
   rtl:
-    depend:
-      - "socet:riscv:riscv_include"
-      - "socet:riscv:packages"
+#    depend:
+#      - "socet:riscv:riscv_include"
+#      - "socet:riscv:packages"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/rv32zhinx_wrapper.sv
+#      - src/rv32zhinx_wrapper.sv
       - src/rv32zhinx_enabled.sv
-      - src/rv32zhinx_disabled.sv
+#      - src/rv32zhinx_disabled.sv
+      - src/float_add_16bit.sv
+      - src/float_add.sv
+      - src/float_mult_16bit.sv
     file_type: systemVerilogSource
 
   tb:
     files:
-      - tb/tb_fpu.sv
+#      - tb/tb_fpu.sv
+      - tb/tb_rv32zhinx_enabled.sv
     file_type: systemVerilogSource
 
   rtl_multiply:
@@ -49,7 +53,8 @@ targets:
   default: &default
     filesets:
       - rtl
-    toplevel: fpu_wrapper
+#    toplevel: fpu_wrapper
+    toplevel: rv32zhinx_enabled
 
   multiply: &multiply
     filesets:
@@ -68,7 +73,8 @@ targets:
     filesets_append:
       - tb
     toplevel: 
-      - tb_fpu
+#      - tb_fpu
+      - tb_rv32zhinx_enabled
     tools:
       xcelium:
         xrun_options:

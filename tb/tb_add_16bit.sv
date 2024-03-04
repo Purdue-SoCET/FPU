@@ -8,7 +8,7 @@ module tb_add_16bit;
 	parameter PERIOD = 10;
 	logic CLK = 0;
 	logic [HALF_FLOAT_W - 1 : 0] tb_float1, tb_float2, tb_sum;
-	fpu_rounding_mode_t tb_rounding_mode;
+	fpu_rm_t tb_rounding_mode;
 	logic tb_subtract;
 	always #(PERIOD/2) CLK++;
 
@@ -23,7 +23,7 @@ program test
 	output logic [HALF_FLOAT_W - 1:0] tb_float1,
 	output logic [HALF_FLOAT_W - 1:0] tb_float2,
 
-	output fpu_rounding_mode_t tb_rounding_mode,
+	output fpu_rm_t tb_rounding_mode,
 
 	input logic [HALF_FLOAT_W - 1:0] tb_sum
 );

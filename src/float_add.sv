@@ -28,7 +28,7 @@ module float_add
 	input logic [FLOAT_WIDTH - 1 : 0] float1,
 	input logic [FLOAT_WIDTH - 1 : 0] float2,
 
-	input fpu_rounding_mode_t rounding_mode,
+	input fpu_rm_t rounding_mode,
 
 	output logic [FLOAT_WIDTH - 1 : 0] sum
 );
@@ -80,6 +80,7 @@ always_comb begin : SUM_CALC
 	exponent_out = '0;
 	fraction_out = '0;
 
+	guard_bit = '0;
 	rounding_bit = '0;
 	sticky_bit = '0;
 	sum = '0;
@@ -200,7 +201,7 @@ always_comb begin : SUM_CALC
 			// handle rounding
 			casez (rounding_mode)
 
-				ROUND_NEAREST_EVEN:
+				RM_RNE:
 				begin
 					// normal rounding mode
 					if (~guard_bit)
@@ -273,7 +274,7 @@ always_comb begin : SUM_CALC
 					end
 				end
 
-				ROUND_INF:
+				RM_RUP:
 				begin
 					if (sign_A)
 					begin
@@ -317,7 +318,7 @@ always_comb begin : SUM_CALC
 					end
 				end
 
-				ROUND_INFN:
+				RM_RDN:
 				begin
 					if (sign_A)
 					begin
@@ -361,9 +362,21 @@ always_comb begin : SUM_CALC
 					end
 				end
 
-				ROUND_ZERO:
+				RM_RTZ:
 				begin
 					// truncate result
+					sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+				end
+
+				RM_RMM:
+				begin
+					// TODO !!!
+					sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
+				end
+
+				default:
+				begin
+					// TODO !!!
 					sum = { sign_A, exponent_out, fraction_out[TOP_FRAC_OUT_BIT : BOTTOM_FRAC_OUT_BIT] };
 				end
 				
