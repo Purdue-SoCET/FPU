@@ -9,7 +9,9 @@ filesets:
       - "socet:riscv:packages"
     files:
       - include/fpu_types_pkg.vh : {is_include_file: true}
-      - src/fpu.sv
+      - src/rv32zhinx_wrapper.sv
+      - src/rv32zhinx_enabled.sv
+      - src/rv32zhinx_disabled.sv
     file_type: systemVerilogSource
 
   tb:
