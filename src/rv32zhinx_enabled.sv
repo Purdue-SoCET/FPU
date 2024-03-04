@@ -68,6 +68,21 @@ float_mult_16bit multiply
 	.product(half_product)
 );
 
+/* 16-BIT MIN/MAX */
+
+// min/max signals
+logic max;
+assign max = (operation == FPU_HALF_MAX);
+logic [HALF_FLOAT_W - 1 : 0] half_minmax;
+
+float_minmax_16bit minmax
+(
+	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
+	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0]),
+	.max(max),
+	.out(half_minmax)
+);
+
 /* RESULT */
 always_comb
 begin : RESULT
@@ -86,10 +101,14 @@ begin : RESULT
 				rv32zhinx_out = { 16'b0, half_product };
 			end
 
+			FPU_HALF_MIN, FPU_HALF_MAX:
+			begin
+				rv32zhinx_done = 1'b1; // TODO ?
+				rv32zhinx_out = { 16'b0, half_minmax };
+			end
+
 			// TODO:
 			// FPU_HALF_DIV:
-			// FPU_HALF_MIN:
-			// FPU_HALF_MAX:
 			// FPU_HALF_SQRT:
 			// FPU_HALF_SGNJ:
 			// FPU_HALF_COMP:
