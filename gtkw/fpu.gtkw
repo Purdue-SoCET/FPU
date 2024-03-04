@@ -1,0 +1,38 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Mon Mar  4 16:03:43 2024
+[*]
+[dumpfile] "/home/benjaminowen/FPU/build/socet_aft_fpu_0.1.0/sim-verilator/waveform_enabled.fst"
+[dumpfile_mtime] "Mon Mar  4 16:02:56 2024"
+[dumpfile_size] 2654
+[savefile] "/home/benjaminowen/FPU/gtkw/fpu.gtkw"
+[timestart] 0
+[size] 2310 1392
+[pos] -46 -46
+*-4.379975 58 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_rv32zhinx_enabled.
+[sst_width] 209
+[signals_width] 150
+[sst_expanded] 1
+[sst_vpaned_height] 432
+@28
+TOP.tb_rv32zhinx_enabled.CLK
+TOP.tb_rv32zhinx_enabled.nRST
+@200
+-
+@22
+TOP.tb_rv32zhinx_enabled.tb_inputa[31:0]
+TOP.tb_rv32zhinx_enabled.tb_inputb[31:0]
+@100000028
+TOP.tb_rv32zhinx_enabled.tb_operation
+@29
+TOP.tb_rv32zhinx_enabled.tb_start
+@200
+-
+@28
+TOP.tb_rv32zhinx_enabled.tb_done
+@22
+TOP.tb_rv32zhinx_enabled.tb_out[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

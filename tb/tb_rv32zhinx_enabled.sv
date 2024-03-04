@@ -48,33 +48,55 @@ import fpu_types_pkg::*;
 
 parameter PERIOD = 10;
 logic [7:0] test_num;
-logic [15:0] test_result;
+logic [31:0] test_result;
 
 initial begin
 	// generate waveform files
 	$dumpfile("waveform_enabled.fst");
 	$dumpvars;
 
-	/////////// Zero ///////////
-	// test_num += 1;
-	// tb_float1 = 16'h0;
-	// tb_float2 = 16'h0;
-	// test_result = 16'h0;
-	// $display("Test case %d", test_num);
-	// $display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
-	// #(PERIOD) // == 0xB34D
-	// if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
-	// @(negedge CLK);
+	nRST = 1'b1;
+	#(PERIOD);
+	nRST = 1'b0;
 
-	// test_num += 1;
-	// tb_float1 = 16'h4500;
-	// tb_float2 = 16'h0000;
-	// test_result = 16'h4500;
-	// $display("Test case %d", test_num);
-	// $display("Input 1: %4h | Input 2: %4h | Expected result: %4h", tb_float1, tb_float2, test_result);
-	// #(PERIOD) // == 0xB34D
-	// if (tb_sum == test_result) $display("Correct output\n"); else $display("Incorrect output (%4h)\n", tb_sum);
-	// @(negedge CLK);
+	/////////// ADDITION ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_ADD;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h00005450;	// 69.0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// SUBTRACTION ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_SUB;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h0000D360;	// -59.0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// MULTIPLICATION ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_MUL;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h00005D00;	// 320.0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
 	
 	$finish;
 end

@@ -12,7 +12,8 @@ fpu: clean
 	fusesoc --cores-root . run --target sim --tool verilator socet:aft:fpu
 
 fpu_wave: fpu
-	gtkwave build/socet_aft_fpu_0.1.0/sim-verilator/waveform_fpu.fst gtkw/fpu.gtkw &
+	# gtkwave build/socet_aft_fpu_0.1.0/sim-verilator/waveform_fpu.fst gtkw/fpu.gtkw &
+	gtkwave build/socet_aft_fpu_0.1.0/sim-verilator/waveform_enabled.fst gtkw/fpu.gtkw &
 
 # targets for multiplier
 multiply: clean
