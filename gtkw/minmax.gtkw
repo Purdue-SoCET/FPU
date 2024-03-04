@@ -1,0 +1,50 @@
+[*]
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Mon Mar  4 20:06:17 2024
+[*]
+[dumpfile] "(null)"
+[savefile] "/home/benjaminowen/FPU/gtkw/minmax.gtkw"
+[timestart] 262
+[size] 1670 1032
+[pos] -1 -1
+*-4.160965 349 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_minmax_16bit.
+[treeopen] TOP.tb_minmax_16bit.Zfh.
+[sst_width] 209
+[signals_width] 264
+[sst_expanded] 1
+[sst_vpaned_height] 307
+@28
+TOP.tb_minmax_16bit.CLK
+@25
+TOP.tb_minmax_16bit.PROG.test_num[7:0]
+@22
+TOP.tb_minmax_16bit.tb_float1[15:0]
+TOP.tb_minmax_16bit.tb_float2[15:0]
+@28
+TOP.tb_minmax_16bit.tb_max
+@200
+-
+@22
+TOP.tb_minmax_16bit.tb_out[15:0]
+@200
+-
+@22
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float1[15:0]
+@28
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float1_sign
+@22
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float1_exponent[4:0]
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float1_fraction[9:0]
+@200
+-
+@22
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float2[15:0]
+@28
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float2_sign
+@22
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float2_exponent[4:0]
+TOP.tb_minmax_16bit.Zfh.minmax_16bit.float2_fraction[9:0]
+[pattern_trace] 1
+[pattern_trace] 0

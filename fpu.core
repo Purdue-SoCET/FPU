@@ -15,6 +15,8 @@ filesets:
       - src/float_add_16bit.sv
       - src/float_add.sv
       - src/float_mult_16bit.sv
+      - src/float_minmax.sv
+      - src/float_minmax_16bit.sv
     file_type: systemVerilogSource
 
   tb:
@@ -49,6 +51,19 @@ filesets:
       - tb/tb_add_16bit.sv
     file_type: systemVerilogSource
 
+  rtl_minmax:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/float_minmax.sv
+      - src/float_minmax_16bit.sv
+    file_type: systemVerilogSource
+  
+  tb_minmax_16bit:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - tb/tb_minmax_16bit.sv
+    file_type: systemVerilogSource
+
 targets:
   default: &default
     filesets:
@@ -65,6 +80,11 @@ targets:
     filesets:
       - rtl_add
     toplevel: add
+  
+  minmax: &minmax
+    filesets:
+      - rtl_minmax
+    toplevel: minmax
     
   sim:
     <<: *default
@@ -133,6 +153,35 @@ targets:
       - tb_add_16bit
     toplevel: 
       - tb_add_16bit
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+
+  sim_minmax:
+    <<: *minmax
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_minmax_16bit
+    toplevel: 
+      - tb_minmax_16bit
     tools:
       xcelium:
         xrun_options:
