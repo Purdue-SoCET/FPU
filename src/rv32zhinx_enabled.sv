@@ -38,31 +38,21 @@ begin : SAVE_INPUTS
 	end
 end
 
-/* 16-BIT ADDITION */
+/* 16-BIT ADDITION/SUBTRACTION */
 
-// addition signals
+// subtraction signals
+logic [HALF_FLOAT_W - 1 : 0] half_input_b;
+assign half_input_b = (operation == FPU_HALF_SUB) ?
+					rv32zhinx_b[HALF_FLOAT_W - 1 : 0] ^ 16'h8000 : 	// negative for subtraction
+					rv32zhinx_b[HALF_FLOAT_W - 1 : 0];				// unchanged for addition
 logic [HALF_FLOAT_W - 1 : 0] half_sum;
 
 float_add_16bit add
 (
 	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
-	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0]),
+	.float2(half_input_b),
 	.rounding_mode(rounding_mode),
 	.sum(half_sum)
-);
-
-/* 16-BIT SUBTRACTION */
-
-// subtraction signals
-logic [HALF_FLOAT_W - 1 : 0] half_difference;
-
-float_add_16bit subtract
-(
-	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
-	// .float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0] ^ { (SIGN_W - 1){1'b1}, (HALF_FLOAT_W - SIGN_W){1'b0} }), // XOR sign bit to invert sign
-	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0] ^ 16'h8000), // XOR sign bit to invert sign
-	.rounding_mode(rounding_mode),
-	.sum(half_difference)
 );
 
 /* 16-BIT MULTIPLICATION */
@@ -84,16 +74,10 @@ begin : RESULT
 	if (rv32zhinx_start)
 	begin
 		casez(operation)
-			FPU_HALF_ADD:
+			FPU_HALF_ADD, FPU_HALF_SUB:
 			begin
 				rv32zhinx_done = 1'b1; // TODO ?
 				rv32zhinx_out = { 16'b0, half_sum };
-			end
-
-			FPU_HALF_SUB:
-			begin
-				rv32zhinx_done = 1'b1; // TODO ?
-				rv32zhinx_out = { 16'b0, half_difference };
 			end
 
 			FPU_HALF_MUL:
