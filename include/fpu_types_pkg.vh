@@ -140,5 +140,21 @@ typedef logic [WORD_W-1:0] word_t;
 typedef logic [HALF_EXPONENT_W-1:0] exp_t; // 5 bits
 typedef logic [HALF_FRACTION_W-1:0] mant_t; // 10 bits
 
+typedef struct packed {
+	logic [4:0] funct5;
+	logic [1:0] fmt;
+	logic [4:0] rs2;
+	logic [4:0] rs1;
+	logic [2:0] rm;
+	logic [4:0] rd;
+	logic [6:0] opcode;
+} rv32zhinx_insn_t; // 1 word
+
+typedef struct packed {
+	logic [2:0] select; 
+	fpu_opcode_t op; // 7b
+} rv32zhinx_decode_t;
+
+
 endpackage
 `endif // FPU_TYPES_PKG_VH
