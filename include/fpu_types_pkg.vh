@@ -112,8 +112,8 @@ package fpu_types_pkg;
 
 		// TODO overlapping enum values
 		// for FMINMAX instructions
-		// RM_FMIN	= 3'b000,
-		// RM_FMAX	= 3'b001,
+		RM_FMIN	= 3'b000,
+		RM_FMAX	= 3'b001,
 
 		// for FCOMP instructions
 		// RM_FEQ		= 3'b010,
@@ -160,12 +160,6 @@ typedef struct packed {
 	logic [4:0] rd;
 	logic [6:0] opcode;
 } rv32zhinx_insn_t; // 1 word
-
-typedef struct packed {
-	logic [2:0] select; 
-	fpu_opcode_t op; // 7b
-} rv32zhinx_decode_t;
-
 
 endpackage
 `endif // FPU_TYPES_PKG_VH
