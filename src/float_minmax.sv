@@ -93,12 +93,12 @@ begin : OUTPUT
 			if (float1_exponent > float2_exponent)
 			begin
 				// float1 has larger exponent, return float1
-				assign out = max ? float1 : float2;
+				assign out = max ? (float1_sign ? float2 : float1) : (float1_sign ? float1 : float2);
 			end
 			else if (float2_exponent > float1_exponent)
 			begin
 				// float2 has larger exponent, return float2
-				assign out = max ? float2 : float1;
+				assign out = max ? (float1_sign ? float1 : float2) : (float1_sign ? float2 : float1);
 			end
 			else
 			begin
@@ -106,16 +106,16 @@ begin : OUTPUT
 				if (float1_fraction > float2_fraction)
 				begin
 					// float1 has larger fraction, return float1
-					assign out = max ? float1 : float2;
+					assign out = max ? (float1_sign ? float2 : float1) : (float1_sign ? float1 : float2);
 				end
 				else if (float2_fraction > float1_fraction)
 				begin
 					// float2 has larger fraction, return float2
-					assign out = max ? float2 : float1;
+					assign out = max ? (float1_sign ? float1 : float2) : (float1_sign ? float2 : float1);
 				end
 				else
 				begin
-					// float1 == float2, return float1
+					// float1 == float2, return float1 (or float2)
 					assign out = float1;
 				end
 			end
