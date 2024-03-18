@@ -1,26 +1,38 @@
+import fpu_types_pkg::*;
+
 module rv32zhinx_decode (
     input [31:0] insn,
-    // output logic claim,
-    output fpu_types_pkg::rv32m_decode_t rv32zhinx_control
+    output fpu_operation_t operation
 );
-    import fpu_types_pkg::*;
 
     rv32zhinx_insn_t insn_split;
 
     assign insn_split = rv32zhinx_insn_t'(insn); 
-    assign rv32zhinx_control.select = '0;
-    assign rv32zhinx_control.op = '0;
 
     always_comb begin
-        casez (fpu_funct_t'(insn_split.opcode))
+        casez (fpu_operation_t'(insn_split.opcode))
             OPCODE_OPFP: begin 
-                        rv32zhinx_control.select = 3'd0;
-                        rv32zhinx_control.op = fpu_funct_t'(insn_split.funct5)
+                casez (fpu_funct_t'(insn_split.funct5))
+                    FUNCT_FADD: operation = FPU_HALF_ADD;
+                    FUNCT_FSUB: operation = FPU_HALF_SUB;
+                    FUNCT_FMUL: operation = FPU_HALF_MUL;
+                    FUNCT_FDIV: operation = FPU_HALF_DIV;
+                    FUNCT_FMINMAX: begin
+                        casez (fpu_rm_t'(insn_split.rm))
+                        RM_FMIN: operation = FPU_HALF_MIN;
+                        RM_FMAX: operation = FPU_HALF_MAX;
+                        endcase
+                    end
+                    FUNCT_FSQRT: operation = FPU_HALF_SQRT;
+                    FUNCT_FSGNJ: operation = FPU_HALF_SGNJ;
+                    FUNCT_FCOMP: operation = FPU_HALF_COMP;
+                    FUNCT_FCLASS: operation = FPU_HALF_CLASS;
+                endcase
             end
-            OPCODE_FMADD: rv32zhinx_control.select = 3'd1;
-            OPCODE_FMSUB: rv32zhinx_control.select = 3'd2;
-            OPCODE_FNMADD: rv32zhinx_control.select = 3'd3;
-            OPCODE_FNMSUB: rv32zhinx_control.select = 3'd4;
+            OPCODE_FMADD: operation = FPU_HALF_MADD;
+            OPCODE_FMSUB: operation = FPU_HALF_MSUB;
+            OPCODE_FNMADD: operation = FPU_HALF_NMADD;
+            OPCODE_FNMSUB: operation = FPU_HALF_NMSUB;
         endcase
     end
 
