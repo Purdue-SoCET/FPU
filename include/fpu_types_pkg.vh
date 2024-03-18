@@ -40,7 +40,9 @@ package fpu_types_pkg;
 		FPU_HALF_MAX,
 		FPU_HALF_SQRT,
 		FPU_HALF_SGNJ,
-		FPU_HALF_COMP,
+		FPU_HALF_FEQ,
+		FPU_HALF_FLT,
+		FPU_HALF_FLE,
 		FPU_HALF_CLASS,
 		FPU_HALF_MADD,
 		FPU_HALF_MSUB,
@@ -119,6 +121,15 @@ package fpu_types_pkg;
 		// RM_FLE		= 3'b000
 
 	} fpu_rm_t;
+
+	typedef enum logic [RM_W - 1 : 0] {
+
+		// for FCOMP instructions
+		RM_FEQ		= 3'b010,
+		RM_FLT		= 3'b001,
+		RM_FLE		= 3'b000
+
+	} fpu_cmp_rm_t;
 
 	// classify result bits
 	typedef enum logic [CLASSIFY_W - 1 : 0] {

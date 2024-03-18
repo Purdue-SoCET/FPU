@@ -17,6 +17,8 @@ filesets:
       - src/float_mult_16bit.sv
       - src/float_minmax.sv
       - src/float_minmax_16bit.sv
+      - src/float_compare.sv
+      - src/float_compare_16bit.sv
     file_type: systemVerilogSource
 
   tb:
@@ -64,6 +66,19 @@ filesets:
       - tb/tb_minmax_16bit.sv
     file_type: systemVerilogSource
 
+  rtl_compare:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/float_compare.sv
+      - src/float_compare_16bit.sv
+    file_type: systemVerilogSource
+  
+  tb_compare_16bit:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - tb/tb_compare_16bit.sv
+    file_type: systemVerilogSource
+
 targets:
   default: &default
     filesets:
@@ -85,6 +100,11 @@ targets:
     filesets:
       - rtl_minmax
     toplevel: minmax
+  
+  compare: &compare
+    filesets:
+      - rtl_compare
+    toplevel: compare
     
   sim:
     <<: *default
@@ -182,6 +202,35 @@ targets:
       - tb_minmax_16bit
     toplevel: 
       - tb_minmax_16bit
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+  
+  sim_compare:
+    <<: *compare
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_compare_16bit
+    toplevel: 
+      - tb_compare_16bit
     tools:
       xcelium:
         xrun_options:

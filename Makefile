@@ -36,6 +36,13 @@ minmax: clean
 minmax_wave: minmax
 	gtkwave build/socet_aft_fpu_0.1.0/sim_minmax-verilator/waveform_minmax.fst gtkw/minmax.gtkw &
 
+# targets for compare
+compare: clean
+	fusesoc --cores-root . run --target sim_compare --tool verilator socet:aft:fpu
+
+compare_wave: compare
+	gtkwave build/socet_aft_fpu_0.1.0/sim_compare-verilator/waveform_compare.fst gtkw/compare.gtkw &
+
 add_uvm: clean
 	make -f uvm_fadd.mk clean
 	make -f uvm_fadd.mk

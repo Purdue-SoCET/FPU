@@ -123,6 +123,45 @@ initial begin
 	#(PERIOD)
 	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
 	@(negedge CLK);
+
+	/////////// FEQ ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_FEQ;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h00000000;	// 0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// FLT ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_FLT;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h00000001;	// 1
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// FLE ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_FLE;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h00000001;	// 1
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
 	
 	$finish;
 end

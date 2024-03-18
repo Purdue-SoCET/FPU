@@ -83,12 +83,27 @@ float_minmax_16bit minmax
 	.out(half_minmax)
 );
 
+/* 16-BIT COMPARE */
+
+// compare signals
+fpu_cmp_rm_t cmp;
+assign cmp = operation == FPU_HALF_FLT ? RM_FLT : operation == FPU_HALF_FLE ? RM_FLE : RM_FEQ;
+logic half_compare;
+
+float_compare_16bit compare
+(
+	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
+	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0]),
+	.operation(cmp),
+	.out(half_compare)
+);
+
 /* RESULT */
 always_comb
 begin : RESULT
 	if (rv32zhinx_start)
 	begin
-		casez(operation)
+		casez (operation)
 			FPU_HALF_ADD, FPU_HALF_SUB:
 			begin
 				rv32zhinx_done = 1'b1; // TODO ?
@@ -107,16 +122,20 @@ begin : RESULT
 				rv32zhinx_out = { 16'b0, half_minmax };
 			end
 
+			FPU_HALF_FEQ, FPU_HALF_FLT, FPU_HALF_FLE:
+			begin
+				rv32zhinx_done = 1'b1; // TODO ?
+				rv32zhinx_out = { 31'b0, half_compare };
+			end
+
 			// TODO:
-			// FPU_HALF_DIV:
-			// FPU_HALF_SQRT:
 			// FPU_HALF_SGNJ:
-			// FPU_HALF_COMP:
 			// FPU_HALF_CLASS:
 			// FPU_HALF_MADD:
 			// FPU_HALF_MSUB:
 			// FPU_HALF_NMADD:
 			// FPU_HALF_NMSUB:
+			/* FPI_HALF_DIV, FPU_HALF_SQRT, */
 			default:
 			begin
 				rv32zhinx_done = 1'b1;
