@@ -110,17 +110,15 @@ package fpu_types_pkg;
 		RM_RMM	= 3'b100,	// round to nearest, ties to max magnitude
 		RM_DYN	= 3'b111	// selects dynamic rounding mode; in rounding mode register, invalid
 
-		// TODO overlapping enum values
+	} fpu_rm_t;
+
+	typedef enum logic [RM_W - 1 : 0] {
+
 		// for FMINMAX instructions
 		RM_FMIN	= 3'b000,
-		RM_FMAX	= 3'b001,
+		RM_FMAX	= 3'b001
 
-		// for FCOMP instructions
-		// RM_FEQ		= 3'b010,
-		// RM_FLT		= 3'b001,
-		// RM_FLE		= 3'b000
-
-	} fpu_rm_t;
+	} fpu_mm_rm_t;
 
 	typedef enum logic [RM_W - 1 : 0] {
 
