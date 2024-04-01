@@ -43,6 +43,13 @@ compare: clean
 compare_wave: compare
 	gtkwave build/socet_aft_fpu_0.1.0/sim_compare-verilator/waveform_compare.fst gtkw/compare.gtkw &
 
+# targets for convert
+convert: clean
+	fusesoc --cores-root . run --target sim_convert --tool verilator socet:aft:fpu
+
+convert_wave: convert
+	gtkwave build/socet_aft_fpu_0.1.0/sim_convert-verilator/waveform_convert.fst gtkw/convert.gtkw &
+
 add_uvm: clean
 	make -f uvm_fadd.mk clean
 	make -f uvm_fadd.mk

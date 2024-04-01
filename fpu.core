@@ -78,6 +78,19 @@ filesets:
       - include/fpu_types_pkg.vh : {is_include_file: true}
       - tb/tb_compare_16bit.sv
     file_type: systemVerilogSource
+  
+  rtl_convert:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/float_convert.sv
+      - src/float_convert_16bit.sv
+    file_type: systemVerilogSource
+  
+  tb_convert_16bit:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - tb/tb_convert_16bit.sv
+    file_type: systemVerilogSource
 
 targets:
   default: &default
@@ -105,6 +118,11 @@ targets:
     filesets:
       - rtl_compare
     toplevel: compare
+  
+  convert: &convert
+    filesets:
+      - rtl_convert
+    toplevel: convert
     
   sim:
     <<: *default
@@ -231,6 +249,35 @@ targets:
       - tb_compare_16bit
     toplevel: 
       - tb_compare_16bit
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+  
+  sim_convert:
+    <<: *convert
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_convert_16bit
+    toplevel: 
+      - tb_convert_16bit
     tools:
       xcelium:
         xrun_options:

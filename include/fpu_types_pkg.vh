@@ -129,6 +129,16 @@ package fpu_types_pkg;
 
 	} fpu_cmp_rm_t;
 
+	typedef enum {
+
+		// for FCVT instructions
+		FUNCT_W_H,
+		FUNCT_H_W,
+		FUNCT_WU_H,
+		FUNCT_H_WU
+
+	} fpu_cvt_type_t;
+
 	// classify result bits
 	typedef enum logic [CLASSIFY_W - 1 : 0] {
 
