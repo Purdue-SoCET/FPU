@@ -91,6 +91,18 @@ filesets:
       - include/fpu_types_pkg.vh : {is_include_file: true}
       - tb/tb_convert_16bit.sv
     file_type: systemVerilogSource
+  
+  rtl_cvtHW:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/float_cvtHW.sv
+    file_type: systemVerilogSource
+  
+  tb_cvtHW:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - tb/tb_cvtHW.sv
 
 targets:
   default: &default
@@ -123,6 +135,11 @@ targets:
     filesets:
       - rtl_convert
     toplevel: convert
+  
+  cvtHW: &cvtHW
+    filesets:
+      - rtl_cvtHW
+    toplevel: cvtHW
     
   sim:
     <<: *default
@@ -278,6 +295,34 @@ targets:
       - tb_convert_16bit
     toplevel: 
       - tb_convert_16bit
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+  sim_cvtHW:
+    <<: *cvtHW
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_cvtHW
+    toplevel: 
+      - tb_cvtHW
     tools:
       xcelium:
         xrun_options:

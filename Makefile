@@ -50,6 +50,13 @@ convert: clean
 convert_wave: convert
 	gtkwave build/socet_aft_fpu_0.1.0/sim_convert-verilator/waveform_convert.fst gtkw/convert.gtkw &
 
+# targets for int to float separated test
+cvtHW: clean
+	fusesoc --cores-root . run --target sim_cvtHW --tool verilator socet:aft:fpu
+
+cvtHW_wave: cvtHW
+	gtkwave build/socet_aft_fpu_0.1.0/sim_cvtHW-verilator/waveform_cvtHW.fst gtkw/cvtHW.gtkw &
+
 add_uvm: clean
 	make -f uvm_fadd.mk clean
 	make -f uvm_fadd.mk
