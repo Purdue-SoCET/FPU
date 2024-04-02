@@ -25,7 +25,13 @@ module rv32zhinx_decode (
                     end
                     FUNCT_FSQRT: operation = FPU_HALF_SQRT;
                     FUNCT_FSGNJ: operation = FPU_HALF_SGNJ;
-                    FUNCT_FCOMP: operation = FPU_HALF_COMP;
+                    FUNCT_FCOMP: begin
+                        casez (fpu_cmp_rm_t'(insn_split.rm))
+                        RM_FEQ: operation = FPU_HALF_FEQ;
+                        RM_FLT: operation = FPU_HALF_FLT;
+                        RM_FLE: operation = FPU_HALF_FLE;
+                        endcase
+                    end
                     FUNCT_FCLASS: operation = FPU_HALF_CLASS;
                 endcase
             end
