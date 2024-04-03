@@ -12,8 +12,8 @@ module tb_cvtHW;
 
     always #(PERIOD/2) CLK++;
 
-    float_cvtHW cvt (.int32(tb_int), .rounding_mode(tb_rm), .float16(tb_hf));
-    test PROG (.CLK(CLK), .int32(tb_int), .rounding_mode(tb_rm), .float16(tb_hf));
+    float_cvtHW cvt (.int32(tb_int), .rm(tb_rm), .float16(tb_hf));
+    test PROG (.CLK(CLK), .tb_int(tb_int), .tb_rm(tb_rm), .tb_hf(tb_hf));
 endmodule
 
 program test(
@@ -33,9 +33,33 @@ initial begin
     $dumpvars;
 
     
-    test_num = 0; // case0
+    test_num = 0; // case0: 0
     tb_rm = '0;
     tb_int = '0;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case1: +INF
+    tb_rm = '0;
+    tb_int = 65520;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case2: -INF
+    tb_rm = '0;
+    tb_int = -65520;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case3
+    tb_rm = '0;
+    tb_int = 65519;
+    #(PERIOD)
+    @(negedge CLK);
+
+    test_num += 1; // case4
+    tb_rm = '0;
+    tb_int = -65519;
     #(PERIOD)
     @(negedge CLK);
 

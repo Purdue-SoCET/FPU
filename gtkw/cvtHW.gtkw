@@ -1,0 +1,46 @@
+[*]
+[*] GTKWave Analyzer v3.3.111 (w)1999-2020 BSI
+[*] Wed Apr  3 05:10:48 2024
+[*]
+[dumpfile] "/home/asicfab/a/socet113/FPU/build/socet_aft_fpu_0.1.0/sim_cvtHW-verilator/waveform_cvtHW.fst"
+[dumpfile_mtime] "Tue Apr  2 22:28:19 2024"
+[dumpfile_size] 1138
+[savefile] "/home/asicfab/a/socet113/FPU/gtkw/cvtHW.gtkw"
+[timestart] 0
+[size] 1920 908
+[pos] -1 -1
+*-2.700783 20 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] TOP.
+[treeopen] TOP.tb_cvtHW.
+[sst_width] 221
+[signals_width] 338
+[sst_expanded] 1
+[sst_vpaned_height] 250
+@28
+TOP.tb_cvtHW.CLK
+@420
+TOP.tb_cvtHW.PERIOD
+@28
+TOP.tb_cvtHW.nRST
+TOP.tb_cvtHW.tb_hf[15:0]
+@420
+TOP.tb_cvtHW.tb_int[31:0]
+@28
+TOP.tb_cvtHW.tb_rm[2:0]
+@200
+-dut
+@22
+TOP.tb_cvtHW.cvt.exponent[4:0]
+TOP.tb_cvtHW.cvt.extended_mantissa[10:0]
+TOP.tb_cvtHW.cvt.float16[15:0]
+TOP.tb_cvtHW.cvt.int32[31:0]
+TOP.tb_cvtHW.cvt.magnitude[31:0]
+TOP.tb_cvtHW.cvt.mantissa[9:0]
+TOP.tb_cvtHW.cvt.msb_pos[31:0]
+@23
+TOP.tb_cvtHW.cvt.raw_exponent[31:0]
+@28
+TOP.tb_cvtHW.cvt.rounding_mode[2:0]
+TOP.tb_cvtHW.cvt.sign
+[pattern_trace] 1
+[pattern_trace] 0
