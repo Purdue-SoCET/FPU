@@ -58,13 +58,69 @@ module float_cvtHW(
             // Apply rounding based on mode
             // Additional rounding logic needed here based on rounding_mode
             // ...
+            casez (rm)
+                RM_RMM: begin // tie to max
+                    if (extended_mantissa[0]) begin
+                        if (extended_mantissa == '1) begin
+                            raw_exponent += 1;
+                        end
+                        extended_mantissa += 1;
+                    end
+                end
+
+                RM_RNE: begin
+                    if (extended_mantissa[0]) begin  //tie to even
+                        if (magnitude[msb_pos-11 -: 2] == '0) begin //tie
+                            if (extended_mantissa[1]) begin // even
+                                extended_mantissa += 1;
+                            end
+                        end else begin //not tie
+                            if (extended_mantissa == '1) begin
+                                raw_exponent += 1;
+                            end
+                            extended_mantissa += 1;
+                        end
+                    end
+                end
+
+                RM_RUP: begin //round up
+                    if (magnitude[msb_pos-11 -: 2] != '0) begin
+                        if (extended_mantissa == '1) begin
+                            raw_exponent += 1;
+                        end
+                        extended_mantissa += 1;
+                    end
+                end
+
+                RM_RDN: begin // round down
+                    if (sign) begin
+                        if (magnitude[msb_pos-11 -: 2] != '0) begin
+                            if (extended_mantissa == '1) begin
+                                raw_exponent += 1;
+                            end
+                            extended_mantissa += 1;
+                        end
+                    end
+                end
+
+                default: begin 
+                    //default is round to zero
+                    //no operation is needed
+                end
+            endcase 
+                
 
             // Adjust exponent and mantissa after rounding
             exponent = raw_exponent[4:0]; // Assuming no overflow/underflow for simplicity
             mantissa = extended_mantissa[9:0]; // Truncated to 10 bits
 
             // Assemble the float16 value
-            float16 = {sign, exponent, mantissa};
+            if (raw_exponent > 31) begin
+                float16 = sign ? HALF_INFN: HALF_INF;
+            end else begin
+                float16 = {sign, exponent, mantissa};
+            end
+            
         end
         
     end
