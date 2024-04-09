@@ -139,6 +139,15 @@ package fpu_types_pkg;
 
 	} fpu_cvt_type_t;
 
+	typedef enum {
+
+		// for FSGNJ instructions
+		RM_J,
+		RM_JN,
+		RM_JX
+
+	} fpu_sgnj_type_t;
+
 	// classify result bits
 	typedef enum logic [CLASSIFY_W - 1 : 0] {
 

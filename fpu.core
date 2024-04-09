@@ -92,6 +92,19 @@ filesets:
       - tb/tb_convert_16bit.sv
     file_type: systemVerilogSource
 
+  rtl_signinj:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - src/float_signinj.sv
+      - src/float_signinj_16bit.sv
+    file_type: systemVerilogSource
+  
+  tb_signinj_16bit:
+    files:
+      - include/fpu_types_pkg.vh : {is_include_file: true}
+      - tb/tb_signinj_16bit.sv
+    file_type: systemVerilogSource
+
 targets:
   default: &default
     filesets:
@@ -123,6 +136,11 @@ targets:
     filesets:
       - rtl_convert
     toplevel: convert
+  
+  signinj: &signinj
+    filesets:
+      - rtl_signinj
+    toplevel: signinj
     
   sim:
     <<: *default
@@ -278,6 +296,35 @@ targets:
       - tb_convert_16bit
     toplevel: 
       - tb_convert_16bit
+    tools:
+      xcelium:
+        xrun_options:
+          - +xmtimescale+1ns/100ps
+      modelsim:
+        vsim_options:
+          - -vopt
+          - -voptargs='+acc'
+          - -t ps
+      vcs:
+        vcs_options:
+          - -assert svaext
+      verilator:
+        verilator_options:
+          - --trace
+          - --trace-fst
+          - --trace-structs
+          - --timing
+          - --binary
+          - --timescale 1ns
+  
+  sim_signinj:
+    <<: *signinj
+    description: Simulate w/TB
+    default_tool: xcelium
+    filesets_append:
+      - tb_signinj_16bit
+    toplevel: 
+      - tb_signinj_16bit
     tools:
       xcelium:
         xrun_options:

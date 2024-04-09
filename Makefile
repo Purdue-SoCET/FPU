@@ -50,6 +50,13 @@ convert: clean
 convert_wave: convert
 	gtkwave build/socet_aft_fpu_0.1.0/sim_convert-verilator/waveform_convert.fst gtkw/convert.gtkw &
 
+# targets for signinj
+signinj: clean
+	fusesoc --cores-root . run --target sim_signinj --tool verilator socet:aft:fpu
+
+signinj_wave: signinj
+	gtkwave build/socet_aft_fpu_0.1.0/sim_signinj-verilator/waveform_signinj.fst gtkw/signinj.gtkw &
+
 add_uvm: clean
 	make -f uvm_fadd.mk clean
 	make -f uvm_fadd.mk
