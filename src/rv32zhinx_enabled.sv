@@ -98,9 +98,9 @@ float_compare_16bit compare
 	.out(half_compare)
 );
 
-/* 16-BIT SGNJ */
+/* 16-BIT SIGN INJECTION */
 
-// compare signals
+// sign injection signals
 fpu_sgnj_type_t sgnj;
 assign sgnj = operation == FPU_HALF_SGNJ ? RM_J : operation == FPU_HALF_SGNJN ? RM_JN : RM_JX;
 logic [HALF_FLOAT_W - 1 : 0] half_sgnj;
@@ -111,6 +111,17 @@ float_signinj_16bit signinj
 	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0]),
 	.sgnj_type(sgnj),
 	.out(half_sgnj)
+);
+
+/* 16-BIT CLASSIFY */
+
+// classify signals
+logic [9:0] half_classify;
+
+float_classify_16bit classify
+(
+	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
+	.out(half_classify)
 );
 
 /* RESULT */
@@ -151,8 +162,13 @@ begin : RESULT
 				rv32zhinx_out = { 16'b0, half_sgnj };
 			end
 
+			FPU_HALF_CLASS:
+			begin
+				rv32zhinx_done = 1'b1; // TODO ?
+				rv32zhinx_out = { 22'b0, half_classify };
+			end
+
 			// TODO:
-			// FPU_HALF_CLASS:
 			/* FPI_HALF_DIV, FPU_HALF_SQRT, */
 			/* FPU_HALF_MADD, FPU_HALF_MSUB, FPU_HALF_NMADD, FPU_HALF_NMSUB, */
 			default:

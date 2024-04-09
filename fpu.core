@@ -23,6 +23,8 @@ filesets:
       - src/float_convert_16bit.sv
       - src/float_signinj.sv
       - src/float_signinj_16bit.sv
+      - src/float_classify.sv
+      - src/float_classify_16bit.sv
     file_type: systemVerilogSource
 
   tb:

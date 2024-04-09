@@ -195,7 +195,7 @@ initial begin
 
 	$display();
 	$display("****************************************");
-	$display("SGNJ:");
+	$display("SIGN INJECTION:");
 	$display("****************************************");
 	$display();
 
@@ -232,6 +232,25 @@ initial begin
 	tb_inputa = 32'h0000C500;	// -5.0
 	tb_inputb = 32'h0000D400;	// -64.0
 	test_result = 32'h00004500;	// 1
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	$display();
+	$display("****************************************");
+	$display("CLASSIFY:");
+	$display("****************************************");
+	$display();
+
+	/////////// SGNJ ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_CLASS;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h0;			// X
+	test_result = 32'b1000000;	// bit 6 set
 	$display("Test case %d", test_num);
 	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
 	#(PERIOD)
