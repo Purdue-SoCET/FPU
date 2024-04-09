@@ -29,6 +29,10 @@ package fpu_types_pkg;
 	parameter HALF_INF		= 16'h7C00; // exponent 255, mantissa zero
 	parameter HALF_INFN		= 16'hFC00; // exponent 255, mantissa zero, negative
 	parameter HALF_NAN		= 16'hFFFF; // exponent 255, mantissa non-zero
+	// quiet NaN
+	parameter HALF_QNAN		= 16'hFE00; // exponent 255, mantissa top bit set
+	// signaling NaN
+	parameter HALF_SNAN		= 16'hFD00; // exponent 255, mantissa second-top bit set
 
 	// top-level operations
 	typedef enum {

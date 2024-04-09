@@ -57,6 +57,13 @@ signinj: clean
 signinj_wave: signinj
 	gtkwave build/socet_aft_fpu_0.1.0/sim_signinj-verilator/waveform_signinj.fst gtkw/signinj.gtkw &
 
+# targets for classify
+classify: clean
+	fusesoc --cores-root . run --target sim_classify --tool verilator socet:aft:fpu
+
+classify_wave: classify
+	gtkwave build/socet_aft_fpu_0.1.0/sim_classify-verilator/waveform_classify.fst gtkw/classify.gtkw &
+
 add_uvm: clean
 	make -f uvm_fadd.mk clean
 	make -f uvm_fadd.mk
