@@ -59,6 +59,12 @@ initial begin
 	#(PERIOD);
 	nRST = 1'b0;
 
+	$display();
+	$display("****************************************");
+	$display("ADD/SUB:");
+	$display("****************************************");
+	$display();
+
 	/////////// ADDITION ///////////
 	test_num += 1;
 	tb_start = 1'b1;
@@ -85,6 +91,12 @@ initial begin
 	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
 	@(negedge CLK);
 
+	$display();
+	$display("****************************************");
+	$display("MULT:");
+	$display("****************************************");
+	$display();
+
 	/////////// MULTIPLICATION ///////////
 	test_num += 1;
 	tb_start = 1'b1;
@@ -97,6 +109,12 @@ initial begin
 	#(PERIOD)
 	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
 	@(negedge CLK);
+
+	$display();
+	$display("****************************************");
+	$display("MINMAX:");
+	$display("****************************************");
+	$display();
 
 	/////////// MIN ///////////
 	test_num += 1;
@@ -123,6 +141,12 @@ initial begin
 	#(PERIOD)
 	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
 	@(negedge CLK);
+
+	$display();
+	$display("****************************************");
+	$display("COMPARE:");
+	$display("****************************************");
+	$display();
 
 	/////////// FEQ ///////////
 	test_num += 1;
@@ -157,6 +181,57 @@ initial begin
 	tb_inputa = 32'h00004500;	// 5.0
 	tb_inputb = 32'h00005400;	// 64.0
 	test_result = 32'h00000001;	// 1
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	$display();
+	$display("****************************************");
+	$display("CONVERT:");
+	$display("****************************************");
+	$display();
+
+	$display();
+	$display("****************************************");
+	$display("SGNJ:");
+	$display("****************************************");
+	$display();
+
+	/////////// SGNJ ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_SGNJ;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h0000D400;	// -64.0
+	test_result = 32'h0000C500;	// -5.0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// SGNJN ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_SGNJN;
+	tb_inputa = 32'h00004500;	// 5.0
+	tb_inputb = 32'h00005400;	// 64.0
+	test_result = 32'h0000C500;	// -5.0
+	$display("Test case %d", test_num);
+	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
+	#(PERIOD)
+	if (tb_out == test_result) $display("Correct output\n"); else $display("Incorrect output (%8h)\n", tb_out);
+	@(negedge CLK);
+
+	/////////// SGNJX ///////////
+	test_num += 1;
+	tb_start = 1'b1;
+	tb_operation = FPU_HALF_SGNJX;
+	tb_inputa = 32'h0000C500;	// -5.0
+	tb_inputb = 32'h0000D400;	// -64.0
+	test_result = 32'h00004500;	// 1
 	$display("Test case %d", test_num);
 	$display("Input 1: %8h | Input 2: %8h | Expected result: %8h", tb_inputa, tb_inputb, test_result);
 	#(PERIOD)

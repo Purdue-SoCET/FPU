@@ -19,6 +19,10 @@ filesets:
       - src/float_minmax_16bit.sv
       - src/float_compare.sv
       - src/float_compare_16bit.sv
+      - src/float_convert.sv
+      - src/float_convert_16bit.sv
+      - src/float_signinj.sv
+      - src/float_signinj_16bit.sv
     file_type: systemVerilogSource
 
   tb:

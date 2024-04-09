@@ -98,6 +98,21 @@ float_compare_16bit compare
 	.out(half_compare)
 );
 
+/* 16-BIT SGNJ */
+
+// compare signals
+fpu_sgnj_type_t sgnj;
+assign sgnj = operation == FPU_HALF_SGNJ ? RM_J : operation == FPU_HALF_SGNJN ? RM_JN : RM_JX;
+logic [HALF_FLOAT_W - 1 : 0] half_sgnj;
+
+float_signinj_16bit signinj
+(
+	.float1(rv32zhinx_a[HALF_FLOAT_W - 1 : 0]),
+	.float2(rv32zhinx_b[HALF_FLOAT_W - 1 : 0]),
+	.sgnj_type(sgnj),
+	.out(half_sgnj)
+);
+
 /* RESULT */
 always_comb
 begin : RESULT
@@ -128,14 +143,18 @@ begin : RESULT
 				rv32zhinx_out = { 31'b0, half_compare };
 			end
 
+			// TODO convert
+
+			FPU_HALF_SGNJ, FPU_HALF_SGNJN, FPU_HALF_SGNJX:
+			begin
+				rv32zhinx_done = 1'b1; // TODO ?
+				rv32zhinx_out = { 16'b0, half_sgnj };
+			end
+
 			// TODO:
-			// FPU_HALF_SGNJ:
 			// FPU_HALF_CLASS:
-			// FPU_HALF_MADD:
-			// FPU_HALF_MSUB:
-			// FPU_HALF_NMADD:
-			// FPU_HALF_NMSUB:
 			/* FPI_HALF_DIV, FPU_HALF_SQRT, */
+			/* FPU_HALF_MADD, FPU_HALF_MSUB, FPU_HALF_NMADD, FPU_HALF_NMSUB, */
 			default:
 			begin
 				rv32zhinx_done = 1'b1;
