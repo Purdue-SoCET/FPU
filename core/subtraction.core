@@ -1,0 +1,55 @@
+CAPI=2:
+name: socet:fpu_subtractor_file:1.0.0
+description: FPU subtractor 
+
+filesets:
+  rtl:
+    files:
+      - src/single_precision/subtraction.sv
+    file_type: systemVerilogSource
+  
+  tb:
+    files:
+      - uvm_tb/uvm_tb_sub_single/tb_sub.sv
+    file_type: systemVerilogSource
+  
+  tb-cpp:
+    files:
+      - uvm_tb/uvm_tb_sub_single/tb_sub.cc
+    file_type: cppSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: subtraction
+  
+  sim:
+    <<: *default
+    description: Simulate w/SV TB
+    default_tool: verilator
+    filesets_append:
+      - tb
+    toplevel: tb_sub
+    tools:
+      verilator:
+        verilator_options:
+          - --binary
+          - --coverage
+          - --trace-fst
+          - --trace-structs
+    
+  sim-cpp:
+    <<: *default
+    description: Simulate w/C++ TB
+    default_tool: verilator
+    filesets_append:
+      - tb-cpp
+    toplevel: subtraction
+    tools:
+      verilator:
+        mode: cc
+        verilator_options:
+          - --coverage
+          - --trace-fst
+          - --trace-structs
