@@ -73,7 +73,7 @@ module subtraction(
                     result = {1'b0, biggerEXP, mant1 - mant2};
                 end
                 else begin 
-                    resutl = {1'b1, biggerEXP, mant1 - mant2};
+                    result = {1'b1, biggerEXP, mant1 - mant2};
                 end
             end
             2'b10: begin
@@ -84,7 +84,7 @@ module subtraction(
                     result = {1'b1, biggerEXP, mant1 + mant2};
                 end
             end
-            default: resutl = '0;
+            default: result = '0;
         endcase
     end
     
