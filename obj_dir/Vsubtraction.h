@@ -12,6 +12,7 @@
 
 class Vsubtraction__Syms;
 class Vsubtraction___024root;
+class VerilatedFstC;
 
 // This class is the main interface to the Verilated model
 class alignas(VL_CACHE_LINE_BYTES) Vsubtraction VL_NOT_FINAL : public VerilatedModel {
@@ -48,18 +49,20 @@ class alignas(VL_CACHE_LINE_BYTES) Vsubtraction VL_NOT_FINAL : public VerilatedM
   public:
     // API METHODS
     /// Evaluate the model.  Application must call when inputs change.
-    void eval() { eval_step(); }
+    void eval() { eval_step(); eval_end_step(); }
     /// Evaluate when calling multiple units/models per time step.
     void eval_step();
     /// Evaluate at end of a timestep for tracing, when using eval_step().
     /// Application must call after all eval() and before time changes.
-    void eval_end_step() {}
+    void eval_end_step();
     /// Simulation complete, run final blocks.  Application must call on completion.
     void final();
     /// Are there scheduled events to handle?
     bool eventsPending();
     /// Returns time at next time slot. Aborts if !eventsPending()
     uint64_t nextTimeSlot();
+    /// Trace signals in the model; called by application code
+    void trace(VerilatedFstC* tfp, int levels, int options = 0);
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
 
@@ -67,6 +70,7 @@ class alignas(VL_CACHE_LINE_BYTES) Vsubtraction VL_NOT_FINAL : public VerilatedM
     const char* hierName() const override final;
     const char* modelName() const override final;
     unsigned threads() const override final;
+    std::unique_ptr<VerilatedTraceConfig> traceConfig() const override final;
 };
 
 #endif  // guard

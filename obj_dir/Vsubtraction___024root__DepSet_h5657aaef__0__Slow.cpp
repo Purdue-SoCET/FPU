@@ -43,7 +43,7 @@ VL_ATTR_COLD void Vsubtraction___024root___eval_settle(Vsubtraction___024root* v
 #ifdef VL_DEBUG
                 Vsubtraction___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("uvm_tb/uvm_tb_sub_single/tb_sub.sv", 3, "", "Settle region did not converge.");
+                VL_FATAL_MT("uvm_tb/uvm_tb_sub_single/tb_sub.sv", 1, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -76,6 +76,11 @@ VL_ATTR_COLD void Vsubtraction___024root___eval_stl(Vsubtraction___024root* vlSe
     // Body
     if ((1ULL & vlSelf->__VstlTriggered.word(0U))) {
         Vsubtraction___024root___act_sequent__TOP__0(vlSelf);
+        vlSelf->__Vm_traceActivity[4U] = 1U;
+        vlSelf->__Vm_traceActivity[3U] = 1U;
+        vlSelf->__Vm_traceActivity[2U] = 1U;
+        vlSelf->__Vm_traceActivity[1U] = 1U;
+        vlSelf->__Vm_traceActivity[0U] = 1U;
     }
 }
 
@@ -114,9 +119,15 @@ VL_ATTR_COLD void Vsubtraction___024root___ctor_var_reset(Vsubtraction___024root
     Vsubtraction__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vsubtraction___024root___ctor_var_reset\n"); );
     // Body
-    vlSelf->subtb__DOT__tb_data1 = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__tb_data2 = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__tb_result = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__DUT__DOT__biggerEXP = VL_RAND_RESET_I(8);
-    vlSelf->subtb__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
+    vlSelf->tb_sub__DOT__tb_data1 = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__tb_data2 = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__tb_result = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__DUT__DOT__mant1 = VL_RAND_RESET_I(23);
+    vlSelf->tb_sub__DOT__DUT__DOT__mant2 = VL_RAND_RESET_I(23);
+    vlSelf->tb_sub__DOT__DUT__DOT__count = VL_RAND_RESET_I(8);
+    vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP = VL_RAND_RESET_I(8);
+    vlSelf->tb_sub__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
+    for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {
+        vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
+}
