@@ -1,0 +1,3 @@
+[console_scripts]
+jsonschema2md=jsonschema2md:main
+
