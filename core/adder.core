@@ -1,5 +1,5 @@
 CAPI=2:
-name: socet:fpu_adder_file:1.0.0
+name: ORG:socet:adder:1.0.0
 description: FPU adder 
 
 filesets:
