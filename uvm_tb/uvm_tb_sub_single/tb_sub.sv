@@ -1,6 +1,6 @@
 // 'timescale 1ns / 10ps
 
-module subtb ();
+module tb_sub ();
 
     // logic declarations
     logic [31:0] tb_data1;

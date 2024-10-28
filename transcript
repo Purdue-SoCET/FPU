@@ -1,6 +1,0 @@
-# ** Error: (vsim-3763) SystemVerilog DPI cannot access file './dpi_lib.so'
-# No such file or directory. (errno = ENOENT)
-# Use the -help option for complete vsim usage.
-# vsim -c -sv_lib dpi_lib tb_adder -L /uvm-1.2 -voptargs="+acc" -coverage "+UVM_TESTNAME=base_test" "+UVM_VERBOSITY=UVM_LOW" "+sv_seed=random" -do "coverage save -onexit coverage.ucdb" -do "do uvm_tb/fadd.do" -do "run -all" 
-# Error loading design
-# Errors: 1, Warnings: 0
