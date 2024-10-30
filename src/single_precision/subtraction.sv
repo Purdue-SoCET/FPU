@@ -51,11 +51,11 @@ module subtraction(
         else begin 
             exp_sub = exp2 - exp1;
             if(count == 0) begin 
-                mant1 = shift1 << 1;
+                mant1 = shift1 << 1; // how about this
                 count = count + 1;
             end
             while(count < exp_sub - 1) begin 
-                mant1 = shift1 << 0;
+                mant1 = shift1 << 0; // does this actually do anything
                 count = count + 1;
             end
             biggerEXP = exp2;

@@ -80,11 +80,11 @@ module adder(
         if(exp1 > exp2) begin
             exp_sub = exp1 - exp2;
             if(count == 0) begin
-               mant2 = shift2 << 1;
+               mant2 = shift2 << 1; //is this right
                count = count + 1;
             end
             while(count < exp_sub - 1) begin
-               mant2 = shift2 << 0;
+               mant2 = shift2 << 0; //is this correct
                count = count + 1;
             end
             biggerExp = exp1;
