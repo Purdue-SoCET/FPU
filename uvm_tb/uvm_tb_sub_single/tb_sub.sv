@@ -18,7 +18,7 @@ module tb_sub ();
     endtask
 
     initial begin
-        $dumpfile("waveform.fst");
+        $dumpfile("Subtraction_waveform.fst");
         $dumpvars(0, tb_sub);
 
        $display("Initializing data variables...");

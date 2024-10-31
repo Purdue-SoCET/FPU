@@ -25,7 +25,10 @@ VL_INLINE_OPT void Vsubtraction___024root___act_sequent__TOP__0(Vsubtraction___0
     // Body
     vlSelf->tb_sub__DOT__DUT__DOT__mant1 = 0U;
     vlSelf->tb_sub__DOT__DUT__DOT__mant2 = 0U;
-    vlSelf->tb_sub__DOT__DUT__DOT__count = 0U;
+    vlSelf->tb_sub__DOT__DUT__DOT__shift2 = (0x7fffffU 
+                                             & vlSelf->tb_sub__DOT__tb_data2);
+    vlSelf->tb_sub__DOT__DUT__DOT__shift1 = (0x7fffffU 
+                                             & vlSelf->tb_sub__DOT__tb_data1);
     if (((0xffU & (((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data1)) 
                    >> 0x17U)) > (0xffU & (((IData)(1U) 
                                            + (~ vlSelf->tb_sub__DOT__tb_data2)) 
@@ -40,53 +43,44 @@ VL_INLINE_OPT void Vsubtraction___024root___act_sequent__TOP__0(Vsubtraction___0
                                                        + 
                                                        (~ vlSelf->tb_sub__DOT__tb_data2)) 
                                                       >> 0x17U)));
-        if ((0U == (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count))) {
-            vlSelf->tb_sub__DOT__DUT__DOT__count = 
-                (0xffU & ((IData)(1U) + (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count)));
-            vlSelf->tb_sub__DOT__DUT__DOT__mant2 = 
-                (0x7fffffU & (((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data2)) 
-                              << 1U));
-        }
+        vlSelf->tb_sub__DOT__DUT__DOT__mant2 = (0x400000U 
+                                                | (0x3fffffU 
+                                                   & (vlSelf->tb_sub__DOT__DUT__DOT__shift2 
+                                                      >> 1U)));
         vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP = 
             (0xffU & (((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data1)) 
                       >> 0x17U));
-        while (((IData)(vlSelf->tb_sub__DOT__DUT__DOT__count) 
-                < ((IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub) 
-                   - (IData)(1U)))) {
-            vlSelf->tb_sub__DOT__DUT__DOT__mant2 = 
-                (0x7fffffU & ((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data2)));
-            vlSelf->tb_sub__DOT__DUT__DOT__count = 
-                (0xffU & ((IData)(1U) + (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count)));
-        }
+        vlSelf->tb_sub__DOT__DUT__DOT__mant2 = ((0x16U 
+                                                 >= (IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub))
+                                                 ? 
+                                                (0x7fffffU 
+                                                 & (vlSelf->tb_sub__DOT__DUT__DOT__mant2 
+                                                    >> (IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub)))
+                                                 : 0U);
     } else {
         vlSelf->tb_sub__DOT__DUT__DOT__exp_sub = (0xffU 
-                                                  & ((((IData)(1U) 
-                                                       + 
-                                                       (~ vlSelf->tb_sub__DOT__tb_data2)) 
-                                                      >> 0x17U) 
-                                                     - 
-                                                     (((IData)(1U) 
-                                                       + 
-                                                       (~ vlSelf->tb_sub__DOT__tb_data1)) 
-                                                      >> 0x17U)));
-        if ((0U == (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count))) {
-            vlSelf->tb_sub__DOT__DUT__DOT__count = 
-                (0xffU & ((IData)(1U) + (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count)));
-            vlSelf->tb_sub__DOT__DUT__DOT__mant1 = 
-                (0x7fffffU & (((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data1)) 
-                              << 1U));
-        }
+                                                  & ((IData)(1U) 
+                                                     + 
+                                                     ((~ 
+                                                       (((IData)(1U) 
+                                                         + 
+                                                         (~ vlSelf->tb_sub__DOT__tb_data1)) 
+                                                        >> 0x17U)) 
+                                                      + 
+                                                      (((IData)(1U) 
+                                                        + 
+                                                        (~ vlSelf->tb_sub__DOT__tb_data2)) 
+                                                       >> 0x17U))));
+        vlSelf->tb_sub__DOT__DUT__DOT__mant1 = ((0x16U 
+                                                 >= (IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub))
+                                                 ? 
+                                                (0x7fffffU 
+                                                 & (vlSelf->tb_sub__DOT__DUT__DOT__shift1 
+                                                    >> (IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub)))
+                                                 : 0U);
         vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP = 
             (0xffU & (((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data2)) 
                       >> 0x17U));
-        while (((IData)(vlSelf->tb_sub__DOT__DUT__DOT__count) 
-                < ((IData)(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub) 
-                   - (IData)(1U)))) {
-            vlSelf->tb_sub__DOT__DUT__DOT__mant1 = 
-                (0x7fffffU & ((IData)(1U) + (~ vlSelf->tb_sub__DOT__tb_data1)));
-            vlSelf->tb_sub__DOT__DUT__DOT__count = 
-                (0xffU & ((IData)(1U) + (IData)(vlSelf->tb_sub__DOT__DUT__DOT__count)));
-        }
     }
     vlSelf->tb_sub__DOT__tb_result = ((((IData)(1U) 
                                         + (~ vlSelf->tb_sub__DOT__tb_data1)) 

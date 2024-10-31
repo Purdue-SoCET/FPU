@@ -122,6 +122,8 @@ VL_ATTR_COLD void Vsubtraction___024root___ctor_var_reset(Vsubtraction___024root
     vlSelf->tb_sub__DOT__tb_data1 = VL_RAND_RESET_I(32);
     vlSelf->tb_sub__DOT__tb_data2 = VL_RAND_RESET_I(32);
     vlSelf->tb_sub__DOT__tb_result = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__DUT__DOT__shift1 = VL_RAND_RESET_I(23);
+    vlSelf->tb_sub__DOT__DUT__DOT__shift2 = VL_RAND_RESET_I(23);
     vlSelf->tb_sub__DOT__DUT__DOT__mant1 = VL_RAND_RESET_I(23);
     vlSelf->tb_sub__DOT__DUT__DOT__mant2 = VL_RAND_RESET_I(23);
     vlSelf->tb_sub__DOT__DUT__DOT__count = VL_RAND_RESET_I(8);

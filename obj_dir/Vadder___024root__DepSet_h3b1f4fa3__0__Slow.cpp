@@ -76,6 +76,11 @@ VL_ATTR_COLD void Vadder___024root___eval_stl(Vadder___024root* vlSelf) {
     // Body
     if ((1ULL & vlSelf->__VstlTriggered.word(0U))) {
         Vadder___024root___act_sequent__TOP__0(vlSelf);
+        vlSelf->__Vm_traceActivity[4U] = 1U;
+        vlSelf->__Vm_traceActivity[3U] = 1U;
+        vlSelf->__Vm_traceActivity[2U] = 1U;
+        vlSelf->__Vm_traceActivity[1U] = 1U;
+        vlSelf->__Vm_traceActivity[0U] = 1U;
     }
 }
 
@@ -114,9 +119,17 @@ VL_ATTR_COLD void Vadder___024root___ctor_var_reset(Vadder___024root* vlSelf) {
     Vadder__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vadder___024root___ctor_var_reset\n"); );
     // Body
-    vlSelf->addertb__DOT__tb_data1 = VL_RAND_RESET_I(32);
-    vlSelf->addertb__DOT__tb_data2 = VL_RAND_RESET_I(32);
-    vlSelf->addertb__DOT__tb_result = VL_RAND_RESET_I(32);
-    vlSelf->addertb__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
-    vlSelf->addertb__DOT__DUT__DOT__biggerExp = VL_RAND_RESET_I(8);
+    vlSelf->tb_adder__DOT__tb_data1 = VL_RAND_RESET_I(32);
+    vlSelf->tb_adder__DOT__tb_data2 = VL_RAND_RESET_I(32);
+    vlSelf->tb_adder__DOT__tb_result = VL_RAND_RESET_I(32);
+    vlSelf->tb_adder__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
+    vlSelf->tb_adder__DOT__DUT__DOT__mant1 = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__mant2 = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__biggerExp = VL_RAND_RESET_I(8);
+    vlSelf->tb_adder__DOT__DUT__DOT__shift1 = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__shift2 = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__count = VL_RAND_RESET_I(8);
+    for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {
+        vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }
+}
