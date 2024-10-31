@@ -68,6 +68,22 @@ VL_INLINE_OPT void Vadder___024root___act_sequent__TOP__0(Vadder___024root* vlSe
             = (0xffU & (vlSelf->tb_adder__DOT__tb_data2 
                         >> 0x17U));
     }
+    vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck = 
+        (0xffffffU & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
+                      + vlSelf->tb_adder__DOT__DUT__DOT__mant2));
+    if ((0x800000U & vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck)) {
+        vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck 
+            = (0xffffffU & (vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck 
+                            >> 1U));
+        vlSelf->tb_adder__DOT__DUT__DOT__biggerExp 
+            = (0xffU & ((IData)(1U) + (IData)(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp)));
+        vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult 
+            = (0x7fffffU & vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck);
+    } else {
+        vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult 
+            = (0x7fffffU & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
+                            + vlSelf->tb_adder__DOT__DUT__DOT__mant2));
+    }
     vlSelf->tb_adder__DOT__tb_result = ((vlSelf->tb_adder__DOT__tb_data1 
                                          >> 0x1fU) ? 
                                         ((vlSelf->tb_adder__DOT__tb_data2 
@@ -75,22 +91,16 @@ VL_INLINE_OPT void Vadder___024root___act_sequent__TOP__0(Vadder___024root* vlSe
                                           ? (0x80000000U 
                                              | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp) 
                                                  << 0x17U) 
-                                                | (0x7fffffU 
-                                                   & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
-                                                      + vlSelf->tb_adder__DOT__DUT__DOT__mant2))))
+                                                | vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult))
                                           : ((vlSelf->tb_adder__DOT__DUT__DOT__mant2 
                                               > vlSelf->tb_adder__DOT__DUT__DOT__mant1)
                                               ? (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp) 
                                                   << 0x17U) 
-                                                 | (0x7fffffU 
-                                                    & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
-                                                       + vlSelf->tb_adder__DOT__DUT__DOT__mant2)))
+                                                 | vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult)
                                               : (0x80000000U 
                                                  | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp) 
                                                      << 0x17U) 
-                                                    | (0x7fffffU 
-                                                       & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
-                                                          + vlSelf->tb_adder__DOT__DUT__DOT__mant2))))))
+                                                    | vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult))))
                                          : ((vlSelf->tb_adder__DOT__tb_data2 
                                              >> 0x1fU)
                                              ? ((vlSelf->tb_adder__DOT__DUT__DOT__mant1 
@@ -110,9 +120,7 @@ VL_INLINE_OPT void Vadder___024root___act_sequent__TOP__0(Vadder___024root* vlSe
                                                           - vlSelf->tb_adder__DOT__DUT__DOT__mant2)))))
                                              : (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp) 
                                                  << 0x17U) 
-                                                | (0x7fffffU 
-                                                   & (vlSelf->tb_adder__DOT__DUT__DOT__mant1 
-                                                      + vlSelf->tb_adder__DOT__DUT__DOT__mant2)))));
+                                                | vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult)));
 }
 
 void Vadder___024root___eval_act(Vadder___024root* vlSelf) {

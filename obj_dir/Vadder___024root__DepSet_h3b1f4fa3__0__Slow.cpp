@@ -129,6 +129,8 @@ VL_ATTR_COLD void Vadder___024root___ctor_var_reset(Vadder___024root* vlSelf) {
     vlSelf->tb_adder__DOT__DUT__DOT__shift1 = VL_RAND_RESET_I(23);
     vlSelf->tb_adder__DOT__DUT__DOT__shift2 = VL_RAND_RESET_I(23);
     vlSelf->tb_adder__DOT__DUT__DOT__count = VL_RAND_RESET_I(8);
+    vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck = VL_RAND_RESET_I(24);
+    vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult = VL_RAND_RESET_I(23);
     for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }

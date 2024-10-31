@@ -26,6 +26,8 @@ class alignas(VL_CACHE_LINE_BYTES) Vadder___024root final : public VerilatedModu
     IData/*22:0*/ tb_adder__DOT__DUT__DOT__mant2;
     IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift1;
     IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift2;
+    IData/*23:0*/ tb_adder__DOT__DUT__DOT__carroutCheck;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mantissaResult;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;

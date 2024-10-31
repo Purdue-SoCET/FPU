@@ -29,7 +29,9 @@ VL_ATTR_COLD void Vadder___024root__trace_init_sub__TOP__0(Vadder___024root* vlS
     tracep->declBus(c+11,"biggerExp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
     tracep->declBus(c+12,"shift1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
     tracep->declBus(c+13,"shift2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+14,"count",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+16,"count",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+14,"carroutCheck",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 23,0);
+    tracep->declBus(c+15,"mantissaResult",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
     tracep->popNamePrefix(2);
 }
 
@@ -90,5 +92,7 @@ VL_ATTR_COLD void Vadder___024root__trace_full_sub_0(Vadder___024root* vlSelf, V
     bufp->fullCData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
     bufp->fullIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),23);
     bufp->fullIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),23);
-    bufp->fullCData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__count),8);
+    bufp->fullIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck),24);
+    bufp->fullIData(oldp+15,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),23);
+    bufp->fullCData(oldp+16,(vlSelf->tb_adder__DOT__DUT__DOT__count),8);
 }

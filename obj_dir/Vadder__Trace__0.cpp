@@ -45,6 +45,8 @@ void Vadder___024root__trace_chg_sub_0(Vadder___024root* vlSelf, VerilatedFst::B
         bufp->chgCData(oldp+10,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
         bufp->chgIData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),23);
         bufp->chgIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),23);
+        bufp->chgIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck),24);
+        bufp->chgIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),23);
     }
 }
 
