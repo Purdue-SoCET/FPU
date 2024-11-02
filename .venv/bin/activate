@@ -35,7 +35,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/asicfab/a/socet211/FPU/.venv"
+VIRTUAL_ENV="/home/asicfab/a/socet37/FPU/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

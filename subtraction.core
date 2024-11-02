@@ -27,11 +27,7 @@ targets:
   sim:
     <<: *default
     description: Simulate w/SV TB
-    default_tool: verilator
-    filesets_append:
-      - tb
-    toplevel: tb_sub
-    tools:
+    default_tool: verilator=
       verilator:
         verilator_options:
           - --binary

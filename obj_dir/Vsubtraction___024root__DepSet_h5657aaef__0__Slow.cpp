@@ -114,9 +114,9 @@ VL_ATTR_COLD void Vsubtraction___024root___ctor_var_reset(Vsubtraction___024root
     Vsubtraction__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vsubtraction___024root___ctor_var_reset\n"); );
     // Body
-    vlSelf->subtb__DOT__tb_data1 = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__tb_data2 = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__tb_result = VL_RAND_RESET_I(32);
-    vlSelf->subtb__DOT__DUT__DOT__biggerEXP = VL_RAND_RESET_I(8);
-    vlSelf->subtb__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
+    vlSelf->tb_sub__DOT__tb_data1 = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__tb_data2 = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__tb_result = VL_RAND_RESET_I(32);
+    vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP = VL_RAND_RESET_I(8);
+    vlSelf->tb_sub__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
     }
