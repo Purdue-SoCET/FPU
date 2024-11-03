@@ -1,0 +1,55 @@
+CAPI=2:
+name: socet:aft:multiplication:1.0.0
+description: FPU multiplication 
+
+filesets:
+  rtl:
+    files:
+      - src/single_precision/multiplication.sv
+    file_type: systemVerilogSource
+  
+  tb:
+    files:
+      - uvm_tb/uvm_tb_mult_single/tb_mult.sv
+    file_type: systemVerilogSource
+  
+  tb-cpp:
+    files:
+      - uvm_tb/uvm_tb_mult_single/tb_mult.cc
+    file_type: cppSource
+
+targets:
+  default: &default
+    filesets:
+      - rtl
+    toplevel: multiplication
+  
+  sim:
+    <<: *default
+    description: Simulate w/SV TB
+    default_tool: verilator
+    filesets_append:
+      - tb
+    toplevel: tb_mult
+    tools:
+      verilator:
+        verilator_options:
+          - --binary
+          - --coverage
+          - --trace-fst
+          - --trace-structs
+    
+  sim-cpp:
+    <<: *default
+    description: Simulate w/C++ TB
+    default_tool: verilator
+    filesets_append:
+      - tb-cpp
+    toplevel: multiplication
+    tools:
+      verilator:
+        mode: cc
+        verilator_options:
+          - --coverage
+          - --trace-fst
+          - --trace-structs
