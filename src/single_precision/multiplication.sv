@@ -1,4 +1,4 @@
-module subtraction (    
+module multiplication (    
     input logic [31:0] data1, data2,
     output logic [31:0] result
     output logic overflow, underflow
@@ -57,7 +57,7 @@ module subtraction (
     assign na1 == (exp1 == 255) && (mant1 != 0); // NaN when all ones and mant is not 0 
     assign na2 == (exp2 == 255) && (mant2 != 0); // NaN when all ones and mant is not 0 
 
-    // Caculate for sign, temp exponent and mantissa for special case 
+    // Caculate for sign, temp exponent and mantissa
     always_comb begin 
         // sign bit
         sign_result = sign1 ^ sign2; // same sign (positive), different sign (negative)
