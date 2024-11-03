@@ -1,4 +1,4 @@
-#!/home/asicfab/a/socet211/FPU/.venv/bin/python3.11
+#!/home/asicfab/a/socet37/FPU/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

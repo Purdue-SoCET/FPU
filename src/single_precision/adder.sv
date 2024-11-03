@@ -70,7 +70,6 @@ module adder(
     assign sign1 = data1[31];
     assign sign2 = data2[31];
 
-
     //subtract exponents
     always_comb begin
         mant1 = '0;
