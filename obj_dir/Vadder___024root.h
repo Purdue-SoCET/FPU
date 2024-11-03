@@ -15,14 +15,22 @@ class alignas(VL_CACHE_LINE_BYTES) Vadder___024root final : public VerilatedModu
   public:
 
     // DESIGN SPECIFIC STATE
-    CData/*7:0*/ addertb__DOT__DUT__DOT__exp_sub;
-    CData/*7:0*/ addertb__DOT__DUT__DOT__biggerExp;
+    CData/*7:0*/ tb_adder__DOT__DUT__DOT__exp_sub;
+    CData/*7:0*/ tb_adder__DOT__DUT__DOT__biggerExp;
+    CData/*7:0*/ tb_adder__DOT__DUT__DOT__count;
     CData/*0:0*/ __VactContinue;
-    IData/*31:0*/ addertb__DOT__tb_data1;
-    IData/*31:0*/ addertb__DOT__tb_data2;
-    IData/*31:0*/ addertb__DOT__tb_result;
+    IData/*31:0*/ tb_adder__DOT__tb_data1;
+    IData/*31:0*/ tb_adder__DOT__tb_data2;
+    IData/*31:0*/ tb_adder__DOT__tb_result;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mant1;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mant2;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift1;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift2;
+    IData/*23:0*/ tb_adder__DOT__DUT__DOT__carroutCheck;
+    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mantissaResult;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
+    VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
     VlDelayScheduler __VdlySched;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VactTriggered;

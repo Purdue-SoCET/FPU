@@ -39,19 +39,16 @@ void Vsubtraction___024root__trace_chg_sub_0(Vsubtraction___024root* vlSelf, Ver
         bufp->chgCData(oldp+7,((0xffU & (((IData)(1U) 
                                           + (~ vlSelf->tb_sub__DOT__tb_data2)) 
                                          >> 0x17U))),8);
-        bufp->chgIData(oldp+8,((0x7fffffU & ((IData)(1U) 
-                                             + (~ vlSelf->tb_sub__DOT__tb_data1)))),23);
-        bufp->chgIData(oldp+9,((0x7fffffU & ((IData)(1U) 
-                                             + (~ vlSelf->tb_sub__DOT__tb_data2)))),23);
     }
     if (VL_UNLIKELY((vlSelf->__Vm_traceActivity[3U] 
                      | vlSelf->__Vm_traceActivity[4U]))) {
-        bufp->chgIData(oldp+10,(vlSelf->tb_sub__DOT__tb_result),32);
+        bufp->chgIData(oldp+8,(vlSelf->tb_sub__DOT__tb_result),32);
+        bufp->chgIData(oldp+9,(vlSelf->tb_sub__DOT__DUT__DOT__shift1),23);
+        bufp->chgIData(oldp+10,(vlSelf->tb_sub__DOT__DUT__DOT__shift2),23);
         bufp->chgIData(oldp+11,(vlSelf->tb_sub__DOT__DUT__DOT__mant1),23);
         bufp->chgIData(oldp+12,(vlSelf->tb_sub__DOT__DUT__DOT__mant2),23);
-        bufp->chgCData(oldp+13,(vlSelf->tb_sub__DOT__DUT__DOT__count),8);
-        bufp->chgCData(oldp+14,(vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP),8);
-        bufp->chgCData(oldp+15,(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub),8);
+        bufp->chgCData(oldp+13,(vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP),8);
+        bufp->chgCData(oldp+14,(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub),8);
     }
 }
 

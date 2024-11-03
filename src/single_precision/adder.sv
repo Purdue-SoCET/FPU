@@ -48,6 +48,7 @@ module adder(
     input logic [31:0] data1, data2,
     output logic [31:0] result
 );
+    //making logic variables for the operations
     logic [7:0] exp_sub;
     logic sign1;
     logic sign2;
@@ -59,13 +60,12 @@ module adder(
     logic [22:0] shift1;
     logic [22:0] shift2;
     logic [7:0] count;
+    logic [23:0] carroutCheck;
+    logic [22:0] mantissaResult;
 
     //assign exp of data to exp 1 and exp 2
     assign exp1 = data1[30:23];
     assign exp2 = data2[30:23];
-
-    assign shift1 = data1[22:0];
-    assign shift2 = data2[22:0]; //
 
     assign sign1 = data1[31];
     assign sign2 = data2[31];
@@ -75,49 +75,43 @@ module adder(
         mant1 = '0;
         mant2 = '0;
         result = '0;
-        count = '0;
+        shift2 = data2[22:0]; //mantissa data for second register
+        shift1 = data1[22:0]; //mantissa data for first register
         if(exp1 > exp2) begin
-            exp_sub = exp1 - exp2;  // do exp1 + 2's complement of exp2 (exp1 + (-exp2))
-            if(count == 0) begin
-               mant2 = shift2 << 1; //is this right // - think it should be right shift, what we have is left shift
-               count = count + 1; // = expsub
+            exp_sub = exp1 + (~exp2 + 1);  // do exp1 + 2's complement of exp2 (exp1 + (-exp2))
+            
+            mant2 = {1'b1, shift2[22:1]}; //Shift in 1 to the second mantissa for implied "1.####"
+            mant2 = mant2 >> exp_sub; 
 
-               // we already shifted somehting
-
-               //line 81 - do 2's complement
-               //dont use count, and if loop
-               //mant2 = shift 2 >> exp_sub
-            end
-            while(count < exp_sub - 1) begin // check if working first, if not wherever there is -, use 2's complement 
-               mant2 = shift2 << 0; // whatever we did in line 83 got erased //is this correct // while loop doesnt work in verilog & shifting by 0 doesnt work
-               //not synthesizable in verilog, use for loop in verilog
-               //only use while loop in tb
-               //change the while loop
-              // count is not necessary
-               count = count + 1;
-            end
             //a = b >> 4 - shifting b right by 4 bits
             biggerExp = exp1;
         end
         else begin
-            exp_sub = exp2 - exp1;
-            if(count == 0) begin
-                mant1 = shift1 << 1;
-                count = count + 1;
-            end
-            while(count < exp_sub - 1) begin
-                mant1 = shift1 << 0;
-                count = count + 1;
-            end
+            exp_sub = exp2 + (~exp1 + 1);
+            
+            mant1 = {1'b1, shift1[22:1]}; //Shift in 1 to the first mantissa for implied "1.####"
+            mant1 = shift1 >> exp_sub;
+            
             biggerExp = exp2;
         end 
 
 // return result as per format according to IEE-754 according to data
 //refer to justin and om discussion, right shifting with 1 in msb, make sure logic is right
 
+        carroutCheck = mant1 + mant2; //this checks for a carryout value by using a logic variable that is 24 bits
+        if(carroutCheck[23]) begin//If the 23rd bit is equal to 1, then there is a carry out
+        
+            carroutCheck = carroutCheck >> 1; //The entire 23rd bit value is shifted by 1
+            biggerExp = biggerExp + 1; //Then 1 is added to the exponent
+            mantissaResult = {carroutCheck[22:0]}; //Mantissa result for addition is set to the 23 bits that were shifted in the if statement.
+        end
+        else begin
+            mantissaResult = mant1 + mant2; //Mantissa result for addition is set to the mantissas added if there is no carryout to worry about
+        end
+
         case({sign1,sign2}) 
-            2'b00: begin result = {1'b0, biggerExp, mant1 + mant2}; end
-            2'b11: begin result = {1'b1, biggerExp, mant1 + mant2}; end
+            2'b00: begin result = {1'b0, biggerExp, mantissaResult}; end
+            2'b11: begin result = {1'b1, biggerExp, mantissaResult}; end
             2'b01: begin 
                 if(mant1 > mant2) begin
                     result = {1'b0, biggerExp, mant1 - mant2}; 
@@ -128,10 +122,10 @@ module adder(
             end
             2'b10: begin 
                 if(mant2 > mant1) begin
-                    result = {1'b0, biggerExp, mant1 + mant2}; 
+                    result = {1'b0, biggerExp, mantissaResult}; 
                 end
                 else begin
-                    result = {1'b1, biggerExp, mant1 + mant2}; 
+                    result = {1'b1, biggerExp, mantissaResult}; 
                 end
             end
             default: result = '0;

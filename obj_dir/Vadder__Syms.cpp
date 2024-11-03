@@ -8,6 +8,31 @@
 // FUNCTIONS
 Vadder__Syms::~Vadder__Syms()
 {
+#ifdef VM_TRACE
+    if (__Vm_dumping) _traceDumpClose();
+#endif  // VM_TRACE
+}
+
+void Vadder__Syms::_traceDump() {
+    const VerilatedLockGuard lock(__Vm_dumperMutex);
+    __Vm_dumperp->dump(VL_TIME_Q());
+}
+
+void Vadder__Syms::_traceDumpOpen() {
+    const VerilatedLockGuard lock(__Vm_dumperMutex);
+    if (VL_UNLIKELY(!__Vm_dumperp)) {
+        __Vm_dumperp = new VerilatedFstC();
+        __Vm_modelp->trace(__Vm_dumperp, 0, 0);
+        std::string dumpfile = _vm_contextp__->dumpfileCheck();
+        __Vm_dumperp->open(dumpfile.c_str());
+        __Vm_dumping = true;
+    }
+}
+
+void Vadder__Syms::_traceDumpClose() {
+    const VerilatedLockGuard lock(__Vm_dumperMutex);
+    __Vm_dumping = false;
+    VL_DO_CLEAR(delete __Vm_dumperp, __Vm_dumperp = nullptr);
 }
 
 Vadder__Syms::Vadder__Syms(VerilatedContext* contextp, const char* namep, Vadder* modelp)

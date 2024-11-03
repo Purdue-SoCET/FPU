@@ -15,14 +15,20 @@ class alignas(VL_CACHE_LINE_BYTES) Vsubtraction___024root final : public Verilat
   public:
 
     // DESIGN SPECIFIC STATE
+    CData/*7:0*/ tb_sub__DOT__DUT__DOT__count;
     CData/*7:0*/ tb_sub__DOT__DUT__DOT__biggerEXP;
     CData/*7:0*/ tb_sub__DOT__DUT__DOT__exp_sub;
     CData/*0:0*/ __VactContinue;
     IData/*31:0*/ tb_sub__DOT__tb_data1;
     IData/*31:0*/ tb_sub__DOT__tb_data2;
     IData/*31:0*/ tb_sub__DOT__tb_result;
+    IData/*22:0*/ tb_sub__DOT__DUT__DOT__shift1;
+    IData/*22:0*/ tb_sub__DOT__DUT__DOT__shift2;
+    IData/*22:0*/ tb_sub__DOT__DUT__DOT__mant1;
+    IData/*22:0*/ tb_sub__DOT__DUT__DOT__mant2;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
+    VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
     VlDelayScheduler __VdlySched;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VactTriggered;

@@ -14,24 +14,24 @@ VL_ATTR_COLD void Vsubtraction___024root__trace_init_sub__TOP__0(Vsubtraction___
     tracep->pushNamePrefix("tb_sub ");
     tracep->declBus(c+1,"tb_data1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
     tracep->declBus(c+2,"tb_data2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
-    tracep->declBus(c+11,"tb_result",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
+    tracep->declBus(c+9,"tb_result",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
     tracep->pushNamePrefix("DUT ");
     tracep->declBus(c+1,"data1",-1,FST_VD_INPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
     tracep->declBus(c+2,"data2",-1,FST_VD_INPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
-    tracep->declBus(c+11,"result",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
+    tracep->declBus(c+9,"result",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
     tracep->declBus(c+3,"data1_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
     tracep->declBus(c+4,"data2_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
     tracep->declBit(c+5,"sign1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
     tracep->declBit(c+6,"sign2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
     tracep->declBus(c+7,"exp1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
     tracep->declBus(c+8,"exp2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+9,"shift1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+10,"shift2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
+    tracep->declBus(c+10,"shift1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
+    tracep->declBus(c+11,"shift2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
     tracep->declBus(c+12,"mant1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
     tracep->declBus(c+13,"mant2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+14,"count",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+15,"biggerEXP",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+16,"exp_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+16,"count",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+14,"biggerEXP",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+15,"exp_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
     tracep->popNamePrefix(2);
 }
 
@@ -89,14 +89,12 @@ VL_ATTR_COLD void Vsubtraction___024root__trace_full_sub_0(Vsubtraction___024roo
     bufp->fullCData(oldp+8,((0xffU & (((IData)(1U) 
                                        + (~ vlSelf->tb_sub__DOT__tb_data2)) 
                                       >> 0x17U))),8);
-    bufp->fullIData(oldp+9,((0x7fffffU & ((IData)(1U) 
-                                          + (~ vlSelf->tb_sub__DOT__tb_data1)))),23);
-    bufp->fullIData(oldp+10,((0x7fffffU & ((IData)(1U) 
-                                           + (~ vlSelf->tb_sub__DOT__tb_data2)))),23);
-    bufp->fullIData(oldp+11,(vlSelf->tb_sub__DOT__tb_result),32);
+    bufp->fullIData(oldp+9,(vlSelf->tb_sub__DOT__tb_result),32);
+    bufp->fullIData(oldp+10,(vlSelf->tb_sub__DOT__DUT__DOT__shift1),23);
+    bufp->fullIData(oldp+11,(vlSelf->tb_sub__DOT__DUT__DOT__shift2),23);
     bufp->fullIData(oldp+12,(vlSelf->tb_sub__DOT__DUT__DOT__mant1),23);
     bufp->fullIData(oldp+13,(vlSelf->tb_sub__DOT__DUT__DOT__mant2),23);
-    bufp->fullCData(oldp+14,(vlSelf->tb_sub__DOT__DUT__DOT__count),8);
-    bufp->fullCData(oldp+15,(vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP),8);
-    bufp->fullCData(oldp+16,(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub),8);
+    bufp->fullCData(oldp+14,(vlSelf->tb_sub__DOT__DUT__DOT__biggerEXP),8);
+    bufp->fullCData(oldp+15,(vlSelf->tb_sub__DOT__DUT__DOT__exp_sub),8);
+    bufp->fullCData(oldp+16,(vlSelf->tb_sub__DOT__DUT__DOT__count),8);
 }

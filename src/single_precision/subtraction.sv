@@ -28,36 +28,24 @@ module subtraction(
     assign exp1 = data1_sub[30:23];
     assign exp2 = data2_sub[30:23];
 
-    assign shift1 = data1_sub[22:0];
-    assign shift2 = data2_sub[22:0];
-    
     always_comb begin 
         mant1 = '0;
         mant2 = '0;
         result = '0;
-        count = '0;
+        shift2 = data2[22:0]; //mantissa data for second register
+        shift1 = data1[22:0]; //mantissa data for first register
         if(exp1 > exp2) begin 
             exp_sub = exp1 - exp2; 
-            if(count == 0) begin
-                mant2 = shift2 << 1;
-                count = count + 1;
-            end
-            while(count < exp_sub - 1) begin 
-                mant2 = shift2 << 0;
-                count = count + 1;
-            end
+            
+            mant2 = {1'b1, shift2[22:1]}; //Shift in 1 to the second mantissa for implied "1.####"
+            mant2 = mant2 >> exp_sub;
             biggerEXP = exp1;
         end
         else begin 
-            exp_sub = exp2 - exp1;
-            if(count == 0) begin 
-                mant1 = shift1 << 1; // how about this
-                count = count + 1;
-            end
-            while(count < exp_sub - 1) begin 
-                mant1 = shift1 << 0; // does this actually do anything
-                count = count + 1;
-            end
+            exp_sub = exp2 + (~exp1 + 1);
+            
+            mant1 = {1'b1, shift1[22:1]}; //Shift in 1 to the second mantissa for implied "1.####"
+            mant1 = shift1 >> exp_sub;
             biggerEXP = exp2;
         end
 
