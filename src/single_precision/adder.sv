@@ -45,7 +45,7 @@ module adder(
     always_comb begin
         // mant1 = '0;
         // mant2 = '0;
-        result = '0;
+        //result = '0;
         // shift2 = data2[22:0]; //mantissa data for second register
         // shift1 = data1[22:0]; //mantissa data for first register
         if(exp1 > exp2) begin
