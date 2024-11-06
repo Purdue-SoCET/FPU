@@ -96,7 +96,7 @@ module adder(
     end
 
     always_comb begin
-        if (mant_result[24]) begin
+        if (mantissaResult[24]) begin
             // check for carry out, shift right and increment exponent
             normalized_mant = mantissaResult[24:1];
             normalized_exp = biggerExp + 1;
