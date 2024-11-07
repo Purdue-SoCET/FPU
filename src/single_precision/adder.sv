@@ -101,9 +101,16 @@ module adder(
             normalized_mant = mantissaResult[24:1];
             normalized_exp = biggerExp + 1;
         end else begin
-            normalized_mant = mantissaResult[23:0];
-            normalized_exp = biggerExp;
+            if(~mantissaResult[23]) begin
+                normalized_mant = mantissaResult[22:0] << 1;
+                normalized_exp = biggerExp - 1; 
+            end 
+            else begin
+                normalized_mant = mantissaResult[23:0];
+                normalized_exp = biggerExp;
+            end
         end
+
 
         // Check for overflow and underflow
         overflow_temp = (normalized_exp >= 8'hFF);  // Overflow if exponent is maxed out
