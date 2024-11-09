@@ -8,8 +8,10 @@ module tb_adder ();
     logic [31:0] tb_data1;
     logic [31:0] tb_data2;
     logic [31:0] tb_result;
+    logic tb_underflow;
+    logic tb_overflow;
 
-    adder DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result));
+    adder DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result), .overflow(tb_overflow), .underflow(tb_underflow));
 
     initial begin
         $dumpfile("Adder_waveform.fst");

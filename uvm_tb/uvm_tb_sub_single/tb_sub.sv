@@ -4,9 +4,11 @@ module tb_sub ();
     logic [31:0] tb_data1;
     logic [31:0] tb_data2;
     logic [31:0] tb_result;
+    logic tb_underflow;
+    logic tb_overflow;
 
     // Instantiate the subtractor module
-    subtraction DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result));
+    subtraction DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result), .overflow(tb_overflow), .underflow(tb_underflow));
 
     task setinputs;
     input logic [31:0] data1tb;
