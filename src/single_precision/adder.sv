@@ -110,12 +110,10 @@ module adder(
                 // normalized_mant = mantissaResult[23:0];
                 // normalized_exp = biggerExp;
             //end
-            //initial values
-            normalized_exp = biggerExp;
             normalized_mant = mantissaResult[23:0];
+            normalized_exp = biggerExp;
             //leading zero checking using case statement for normalization
             casez (mantissaResult[23:0])
-            //already normalized
                 24'b1??????????????????????: normalized_mant = mantissaResult[23:0];         
                 24'b01?????????????????????: begin
                     normalized_mant = mantissaResult[22:0] <<< 1; 
