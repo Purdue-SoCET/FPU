@@ -102,7 +102,7 @@ module adder(
             normalized_exp = biggerExp + 1;
         end else begin
             if(~mantissaResult[23]) begin //underflow case, shift mantissa, and minus exponent
-                normalized_mant = mantissaResult[22:0] << 1;
+                normalized_mant = mantissaResult[23:1];
                 normalized_exp = biggerExp - 1; 
             end
             else begin
