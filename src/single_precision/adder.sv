@@ -86,10 +86,10 @@ module adder(
             sign_result = sign1;
         end else begin
             if (shift1 > shift2) begin
-                mantissaResult = shift1 - shift2;
+                mantissaResult = shift1 + (~shift2 + 1); //shift1 - shift2
                 sign_result = sign1;
             end else begin
-                mantissaResult = shift2 - shift1;
+                mantissaResult = shift2 + (~shift1 + 1); //shift2 - shift1
                 sign_result = sign2;
             end
         end
