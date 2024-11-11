@@ -21,7 +21,7 @@ module adder(
     logic sign_result; //sign
     logic [24:0] mantissaResult; //mantissa result
     logic [23:0] shift1; //mant 1 alligned
-    logic [23:0] shift2; //mant 2 aligned
+    logic [23:0] shift2, shift_int; //mant 2 aligned
     //logic [7:0] count;
     //logic [23:0] carroutCheck;
     logic [7:0] biggerExp; //exp result
@@ -86,10 +86,12 @@ module adder(
             sign_result = sign1;
         end else begin
             if (shift1 > shift2) begin
-                mantissaResult = shift1 + (~shift2 + 1); //shift1 - shift2
+                shift_int = ~shift2 + 1;
+                mantissaResult = shift1 + shift_int; //shift1 - shift2
                 sign_result = sign1;
             end else begin
-                mantissaResult = shift2 + (~shift1 + 1); //shift2 - shift1
+                shift_int = ~shift1 + 1;
+                mantissaResult = shift2 + shift_int; //shift2 - shift1
                 sign_result = sign2;
             end
         end
