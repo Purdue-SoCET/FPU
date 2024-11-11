@@ -19,9 +19,9 @@ module adder(
     //internal signals
     logic [7:0] exp_sub; 
     logic sign_result; //sign
-    logic [24:0] mantissaResult; //mantissa result
-    logic [23:0] shift1; //mant 1 alligned
-    logic [23:0] shift2, shift_int; //mant 2 aligned
+    logic [25:0] mantissaResult; //mantissa result
+    logic [24:0] shift1; //mant 1 alligned
+    logic [24:0] shift2, shift_int; //mant 2 aligned
     //logic [7:0] count;
     //logic [23:0] carroutCheck;
     logic [7:0] biggerExp; //exp result
@@ -31,6 +31,11 @@ module adder(
     logic [23:0] normalized_mant;
     logic overflow_temp, underflow_temp;
     
+    //overflow checking variables
+    logic carry;
+    logic[24:0] temp;
+    logic[24:0] mr;
+
     //assign exp of data to exp 1 and exp 2
     assign exp1 = data1[30:23];
     assign exp2 = data2[30:23];
@@ -50,17 +55,19 @@ module adder(
         // shift1 = data1[22:0]; //mantissa data for first register
         if(exp1 > exp2) begin
             exp_sub = exp1 + (~exp2 + 1);  // do exp1 + 2's complement of exp2 (exp1 + (-exp2))
-            shift1 = mant1;
+            shift1 = {1'b0,mant1};
             //mant2 = {1'b1, shift2[22:1]}; //Shift in 1 to the second mantissa for implied "1.####"
-            shift2 = mant2 >> exp_sub; 
+            shift2[23:0] = mant2 >> exp_sub;
+            shift2[24] = 0; 
             //a = b >> 4 - shifting b right by 4 bits
             biggerExp = exp1;
         end
         else begin
             exp_sub = exp2 + (~exp1 + 1);
-            shift2 = mant2;
+            shift2 = {1'b0,mant2};
             //mant1 = {1'b1, shift1[22:1]}; //Shift in 1 to the first mantissa for implied "1.####"
-            shift1 = mant1 >> exp_sub;
+            shift1[23:0] = mant1 >> exp_sub;
+            shift1[24] = 0;
             biggerExp = exp2;
         end 
     end
@@ -81,17 +88,26 @@ module adder(
 
     //Add or subtract mantissas based on signs
     always_comb begin
+        shift_int = 0; carry = 0;
         if (sign1 == sign2) begin
             mantissaResult = shift1 + shift2;
+            temp = shift1[23:0] + shift2[23:0];
+            carry = temp[24];
             sign_result = sign1;
         end else begin
             if (shift1 > shift2) begin
                 shift_int = ~shift2 + 1;
+                //shift_int[23] = 0;
                 mantissaResult = shift1 + shift_int; //shift1 - shift2
+                temp = shift1[23:0] + shift_int[23:0];
+                carry = temp[24];
                 sign_result = sign1;
             end else begin
                 shift_int = ~shift1 + 1;
+                //shift_int[23] = 0;
                 mantissaResult = shift2 + shift_int; //shift2 - shift1
+                temp = shift2[23:0] + shift_int[23:0];
+                carry = temp[24];
                 sign_result = sign2;
             end
         end
@@ -99,11 +115,89 @@ module adder(
 
 //normalising the result
     always_comb begin
-        if (mantissaResult[24]) begin
+        mr = 0;
+        if (carry & ~mantissaResult[25]) begin
             // check for carry out, shift right and increment exponent
             normalized_mant = mantissaResult[24:1];
             normalized_exp = biggerExp + 1;
-        end else begin
+        end 
+        //else if (carry & mantissaResult[24]) begin
+        //     mr[24:0] = ~mantissaResult[24:0] + 1;
+        //     casez (mr[24:1])
+        //         24'b1??????????????????????: normalized_mant = mr[24:1];         
+        //         24'b01?????????????????????: begin
+        //             normalized_mant = {mr[23:1],1'b0};
+        //             normalized_exp -= 1; end
+        //         24'b001????????????????????: begin 
+        //             normalized_mant = {mr[22:1],2'd0}; 
+        //             normalized_exp -= 2; end
+        //         24'b0001???????????????????: begin 
+        //             normalized_mant = {mr[21:1], 3'd0}; 
+        //             normalized_exp -= 3; end
+        //         24'b00001??????????????????: begin 
+        //             normalized_mant = {mr[20:1] , 4'd0}; 
+        //             normalized_exp -= 4; end
+        //         24'b000001?????????????????: begin 
+        //             normalized_mant = {mr[19:1] , 5'd0}; 
+        //             normalized_exp -= 5; end
+        //         24'b0000001????????????????: begin 
+        //             normalized_mant = {mr[18:1] , 6'd0}; 
+        //             normalized_exp -= 6; end
+        //         24'b00000001???????????????: begin 
+        //             normalized_mant = {mr[17:1] , 7'd0}; 
+        //             normalized_exp -= 7; end
+        //         24'b000000001??????????????: begin 
+        //             normalized_mant = {mr[16:1] , 8'd0}; 
+        //             normalized_exp -= 8; end
+        //         24'b0000000001?????????????: begin 
+        //             normalized_mant = {mr[15:1] , 9'd0}; 
+        //             normalized_exp -= 9; end
+        //         24'b00000000001????????????: begin 
+        //             normalized_mant = {mr[14:1] , 10'd0}; 
+        //             normalized_exp -= 10; end
+        //         24'b000000000001???????????: begin 
+        //             normalized_mant = {mr[13:1] , 11'd0}; 
+        //             normalized_exp -= 11; end
+        //         24'b0000000000001??????????: begin 
+        //             normalized_mant = {mr[12:1] , 12'd0}; 
+        //             normalized_exp -= 12; end
+        //         24'b00000000000001?????????: begin 
+        //             normalized_mant = {mr[11:1] , 13'd0}; 
+        //             normalized_exp -= 13; end
+        //         24'b000000000000001????????: begin 
+        //             normalized_mant = {mr[10:1] , 14'd0}; 
+        //             normalized_exp -= 14; end
+        //         24'b0000000000000001???????: begin 
+        //             normalized_mant = {mr[9:1] , 15'd0}; 
+        //             normalized_exp -= 15; end
+        //         24'b00000000000000001??????: begin 
+        //             normalized_mant = {mr[8:1] , 16'd0}; 
+        //             normalized_exp -= 16; end
+        //         24'b000000000000000001?????: begin 
+        //             normalized_mant = {mr[7:1] , 17'd0}; 
+        //             normalized_exp -= 17; end
+        //         24'b0000000000000000001????: begin 
+        //             normalized_mant = {mr[6:1] , 18'd0}; 
+        //             normalized_exp -= 18; end
+        //         24'b00000000000000000001???: begin 
+        //             normalized_mant = {mr[5:1] , 19'd0}; 
+        //             normalized_exp -= 19; end
+        //         24'b000000000000000000001??: begin 
+        //             normalized_mant = {mr[4:1] , 20'd0}; 
+        //             normalized_exp -= 20; end
+        //         24'b0000000000000000000001?: begin 
+        //             normalized_mant = {mr[3:1] , 21'd0}; 
+        //             normalized_exp -= 21; end
+        //         24'b00000000000000000000001: begin 
+        //             normalized_mant = {mr[2:1] , 22'd0}; 
+        //             normalized_exp -= 22; end
+        //         // default: begin
+        //         //     normalized_mant = mantissaResult[23:0]; //result = 0/normalized
+        //         //     normalized_exp = 8'h00; //exp = 0
+        //         // end
+        //     endcase
+        // end 
+        else begin
             // if(~mantissaResult[23]) begin //underflow case, shift mantissa, and minus exponent
             //     normalized_mant = {mantissaResult[22:0],1'b1}
             //     normalized_exp = biggerExp - 1; 
@@ -115,72 +209,72 @@ module adder(
             normalized_mant = mantissaResult[23:0];
             normalized_exp = biggerExp;
             //leading zero checking using case statement for normalization
-            casez (mantissaResult[23:0])
-                24'b1??????????????????????: normalized_mant = mantissaResult[23:0];         
-                24'b01?????????????????????: begin
+            casez (mantissaResult[24:0])
+                25'b01???????????????????????: normalized_mant = mantissaResult[23:0];         
+                25'b001??????????????????????: begin
                     normalized_mant = {mantissaResult[22:0],1'b0};
                     normalized_exp -= 1; end
-                24'b001????????????????????: begin 
+                25'b0001?????????????????????: begin 
                     normalized_mant = {mantissaResult[21:0],2'd0}; 
                     normalized_exp -= 2; end
-                24'b0001???????????????????: begin 
+                25'b00001????????????????????: begin 
                     normalized_mant = {mantissaResult[20:0], 3'd0}; 
                     normalized_exp -= 3; end
-                24'b00001??????????????????: begin 
+                25'b000001???????????????????: begin 
                     normalized_mant = {mantissaResult[19:0] , 4'd0}; 
                     normalized_exp -= 4; end
-                24'b000001?????????????????: begin 
+                25'b0000001??????????????????: begin 
                     normalized_mant = {mantissaResult[18:0] , 5'd0}; 
                     normalized_exp -= 5; end
-                24'b0000001????????????????: begin 
+                25'b00000001?????????????????: begin 
                     normalized_mant = {mantissaResult[17:0] , 6'd0}; 
                     normalized_exp -= 6; end
-                24'b00000001???????????????: begin 
+                25'b000000001????????????????: begin 
                     normalized_mant = {mantissaResult[16:0] , 7'd0}; 
                     normalized_exp -= 7; end
-                24'b000000001??????????????: begin 
+                25'b0000000001???????????????: begin 
                     normalized_mant = {mantissaResult[15:0] , 8'd0}; 
                     normalized_exp -= 8; end
-                24'b0000000001?????????????: begin 
+                25'b00000000001??????????????: begin 
                     normalized_mant = {mantissaResult[14:0] , 9'd0}; 
                     normalized_exp -= 9; end
-                24'b00000000001????????????: begin 
+                25'b000000000001?????????????: begin 
                     normalized_mant = {mantissaResult[13:0] , 10'd0}; 
                     normalized_exp -= 10; end
-                24'b000000000001???????????: begin 
+                25'b0000000000001????????????: begin 
                     normalized_mant = {mantissaResult[12:0] , 11'd0}; 
                     normalized_exp -= 11; end
-                24'b0000000000001??????????: begin 
+                25'b00000000000001???????????: begin 
                     normalized_mant = {mantissaResult[11:0] , 12'd0}; 
                     normalized_exp -= 12; end
-                24'b00000000000001?????????: begin 
+                25'b000000000000001??????????: begin 
                     normalized_mant = {mantissaResult[10:0] , 13'd0}; 
                     normalized_exp -= 13; end
-                24'b000000000000001????????: begin 
+                25'b0000000000000001?????????: begin 
                     normalized_mant = {mantissaResult[9:0] , 14'd0}; 
                     normalized_exp -= 14; end
-                24'b0000000000000001???????: begin 
+                25'b00000000000000001????????: begin 
                     normalized_mant = {mantissaResult[8:0] , 15'd0}; 
                     normalized_exp -= 15; end
-                24'b00000000000000001??????: begin 
+                25'b000000000000000001???????: begin 
                     normalized_mant = {mantissaResult[7:0] , 16'd0}; 
                     normalized_exp -= 16; end
-                24'b000000000000000001?????: begin 
+                25'b0000000000000000001??????: begin 
                     normalized_mant = {mantissaResult[6:0] , 17'd0}; 
                     normalized_exp -= 17; end
-                24'b0000000000000000001????: begin 
+                25'b00000000000000000001?????: begin 
                     normalized_mant = {mantissaResult[5:0] , 18'd0}; 
                     normalized_exp -= 18; end
-                24'b00000000000000000001???: begin 
+                25'b000000000000000000001????: begin 
                     normalized_mant = {mantissaResult[4:0] , 19'd0}; 
                     normalized_exp -= 19; end
-                24'b000000000000000000001??: begin 
+                25'b0000000000000000000001???: begin 
                     normalized_mant = {mantissaResult[3:0] , 20'd0}; 
                     normalized_exp -= 20; end
-                24'b0000000000000000000001?: begin 
+                25'b00000000000000000000001??: begin 
                     normalized_mant = {mantissaResult[2:0] , 21'd0}; 
                     normalized_exp -= 21; end
-                24'b00000000000000000000001: begin 
+                25'b000000000000000000000001?: begin 
                     normalized_mant = {mantissaResult[1:0] , 22'd0}; 
                     normalized_exp -= 22; end
                 // default: begin
