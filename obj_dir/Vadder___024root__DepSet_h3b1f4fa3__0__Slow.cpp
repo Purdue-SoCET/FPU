@@ -121,16 +121,20 @@ VL_ATTR_COLD void Vadder___024root___ctor_var_reset(Vadder___024root* vlSelf) {
     // Body
     vlSelf->tb_adder__DOT__tb_data1 = VL_RAND_RESET_I(32);
     vlSelf->tb_adder__DOT__tb_data2 = VL_RAND_RESET_I(32);
-    vlSelf->tb_adder__DOT__tb_result = VL_RAND_RESET_I(32);
     vlSelf->tb_adder__DOT__DUT__DOT__exp_sub = VL_RAND_RESET_I(8);
-    vlSelf->tb_adder__DOT__DUT__DOT__mant1 = VL_RAND_RESET_I(23);
-    vlSelf->tb_adder__DOT__DUT__DOT__mant2 = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__sign_result = VL_RAND_RESET_I(1);
+    vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult = VL_RAND_RESET_I(26);
+    vlSelf->tb_adder__DOT__DUT__DOT__shift1 = VL_RAND_RESET_I(25);
+    vlSelf->tb_adder__DOT__DUT__DOT__shift2 = VL_RAND_RESET_I(25);
+    vlSelf->tb_adder__DOT__DUT__DOT__shift_int = VL_RAND_RESET_I(25);
     vlSelf->tb_adder__DOT__DUT__DOT__biggerExp = VL_RAND_RESET_I(8);
-    vlSelf->tb_adder__DOT__DUT__DOT__shift1 = VL_RAND_RESET_I(23);
-    vlSelf->tb_adder__DOT__DUT__DOT__shift2 = VL_RAND_RESET_I(23);
-    vlSelf->tb_adder__DOT__DUT__DOT__count = VL_RAND_RESET_I(8);
-    vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck = VL_RAND_RESET_I(24);
-    vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult = VL_RAND_RESET_I(23);
+    vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp = VL_RAND_RESET_I(8);
+    vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant = VL_RAND_RESET_I(24);
+    vlSelf->tb_adder__DOT__DUT__DOT__overflow_temp = VL_RAND_RESET_I(1);
+    vlSelf->tb_adder__DOT__DUT__DOT__underflow_temp = VL_RAND_RESET_I(1);
+    vlSelf->tb_adder__DOT__DUT__DOT__carry = VL_RAND_RESET_I(1);
+    vlSelf->tb_adder__DOT__DUT__DOT__temp = VL_RAND_RESET_I(25);
+    vlSelf->tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0 = VL_RAND_RESET_I(1);
     for (int __Vi0 = 0; __Vi0 < 5; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;
     }

@@ -35,19 +35,50 @@ void Vadder___024root__trace_chg_sub_0(Vadder___024root* vlSelf, VerilatedFst::B
                                          >> 0x17U))),8);
         bufp->chgCData(oldp+5,((0xffU & (vlSelf->tb_adder__DOT__tb_data2 
                                          >> 0x17U))),8);
+        bufp->chgIData(oldp+6,((0x800000U | (0x7fffffU 
+                                             & vlSelf->tb_adder__DOT__tb_data1))),24);
+        bufp->chgIData(oldp+7,((0x800000U | (0x7fffffU 
+                                             & vlSelf->tb_adder__DOT__tb_data2))),24);
     }
     if (VL_UNLIKELY((vlSelf->__Vm_traceActivity[3U] 
                      | vlSelf->__Vm_traceActivity[4U]))) {
-        bufp->chgIData(oldp+6,(vlSelf->tb_adder__DOT__tb_result),32);
-        bufp->chgCData(oldp+7,(vlSelf->tb_adder__DOT__DUT__DOT__exp_sub),8);
-        bufp->chgIData(oldp+8,(vlSelf->tb_adder__DOT__DUT__DOT__mant1),23);
-        bufp->chgIData(oldp+9,(vlSelf->tb_adder__DOT__DUT__DOT__mant2),23);
-        bufp->chgCData(oldp+10,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
-        bufp->chgIData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),23);
-        bufp->chgIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),23);
-        bufp->chgIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck),24);
-        bufp->chgIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),23);
+        bufp->chgBit(oldp+8,(vlSelf->tb_adder__DOT__DUT__DOT__underflow_temp));
+        bufp->chgBit(oldp+9,(vlSelf->tb_adder__DOT__DUT__DOT__overflow_temp));
+        bufp->chgCData(oldp+10,(vlSelf->tb_adder__DOT__DUT__DOT__exp_sub),8);
+        bufp->chgIData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),26);
+        bufp->chgIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),25);
+        bufp->chgIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),25);
+        bufp->chgIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__shift_int),25);
+        bufp->chgCData(oldp+15,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
+        bufp->chgCData(oldp+16,(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp),8);
+        bufp->chgIData(oldp+17,(vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant),24);
+        bufp->chgBit(oldp+18,(vlSelf->tb_adder__DOT__DUT__DOT__carry));
+        bufp->chgIData(oldp+19,(vlSelf->tb_adder__DOT__DUT__DOT__temp),25);
     }
+    bufp->chgIData(oldp+20,(((((IData)(vlSelf->tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0)
+                                ? (vlSelf->tb_adder__DOT__tb_data1 
+                                   >> 0x1fU) : ((vlSelf->tb_adder__DOT__DUT__DOT__shift1 
+                                                 > vlSelf->tb_adder__DOT__DUT__DOT__shift2)
+                                                 ? 
+                                                (vlSelf->tb_adder__DOT__tb_data1 
+                                                 >> 0x1fU)
+                                                 : 
+                                                (vlSelf->tb_adder__DOT__tb_data2 
+                                                 >> 0x1fU))) 
+                              << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                            << 0x17U) 
+                                           | (0x7fffffU 
+                                              & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))),32);
+    bufp->chgBit(oldp+21,((1U & ((IData)(vlSelf->tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0)
+                                  ? (vlSelf->tb_adder__DOT__tb_data1 
+                                     >> 0x1fU) : ((vlSelf->tb_adder__DOT__DUT__DOT__shift1 
+                                                   > vlSelf->tb_adder__DOT__DUT__DOT__shift2)
+                                                   ? 
+                                                  (vlSelf->tb_adder__DOT__tb_data1 
+                                                   >> 0x1fU)
+                                                   : 
+                                                  (vlSelf->tb_adder__DOT__tb_data2 
+                                                   >> 0x1fU))))));
 }
 
 void Vadder___024root__trace_cleanup(void* voidSelf, VerilatedFst* /*unused*/) {

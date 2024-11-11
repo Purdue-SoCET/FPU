@@ -14,24 +14,35 @@ VL_ATTR_COLD void Vadder___024root__trace_init_sub__TOP__0(Vadder___024root* vlS
     tracep->pushNamePrefix("tb_adder ");
     tracep->declBus(c+1,"tb_data1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
     tracep->declBus(c+2,"tb_data2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
-    tracep->declBus(c+7,"tb_result",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
+    tracep->declBus(c+21,"tb_result",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 31,0);
+    tracep->declBit(c+9,"tb_underflow",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
+    tracep->declBit(c+10,"tb_overflow",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
     tracep->pushNamePrefix("DUT ");
     tracep->declBus(c+1,"data1",-1,FST_VD_INPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
     tracep->declBus(c+2,"data2",-1,FST_VD_INPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
-    tracep->declBus(c+7,"result",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
-    tracep->declBus(c+8,"exp_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+21,"result",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1, 31,0);
+    tracep->declBit(c+10,"overflow",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1);
+    tracep->declBit(c+9,"underflow",-1,FST_VD_OUTPUT,FST_VT_VCD_WIRE, false,-1);
     tracep->declBit(c+3,"sign1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
     tracep->declBit(c+4,"sign2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
     tracep->declBus(c+5,"exp1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
     tracep->declBus(c+6,"exp2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+9,"mant1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+10,"mant2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+11,"biggerExp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+12,"shift1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+13,"shift2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
-    tracep->declBus(c+16,"count",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
-    tracep->declBus(c+14,"carroutCheck",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 23,0);
-    tracep->declBus(c+15,"mantissaResult",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 22,0);
+    tracep->declBus(c+7,"mant1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 23,0);
+    tracep->declBus(c+8,"mant2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 23,0);
+    tracep->declBus(c+11,"exp_sub",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBit(c+22,"sign_result",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
+    tracep->declBus(c+12,"mantissaResult",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 25,0);
+    tracep->declBus(c+13,"shift1",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 24,0);
+    tracep->declBus(c+14,"shift2",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 24,0);
+    tracep->declBus(c+15,"shift_int",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 24,0);
+    tracep->declBus(c+16,"biggerExp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+17,"normalized_exp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 7,0);
+    tracep->declBus(c+18,"normalized_mant",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 23,0);
+    tracep->declBit(c+10,"overflow_temp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
+    tracep->declBit(c+9,"underflow_temp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
+    tracep->declBit(c+19,"carry",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1);
+    tracep->declBus(c+20,"temp",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 24,0);
+    tracep->declBus(c+23,"mr",-1, FST_VD_IMPLICIT,FST_VT_SV_LOGIC, false,-1, 24,0);
     tracep->popNamePrefix(2);
 }
 
@@ -85,14 +96,46 @@ VL_ATTR_COLD void Vadder___024root__trace_full_sub_0(Vadder___024root* vlSelf, V
                                       >> 0x17U))),8);
     bufp->fullCData(oldp+6,((0xffU & (vlSelf->tb_adder__DOT__tb_data2 
                                       >> 0x17U))),8);
-    bufp->fullIData(oldp+7,(vlSelf->tb_adder__DOT__tb_result),32);
-    bufp->fullCData(oldp+8,(vlSelf->tb_adder__DOT__DUT__DOT__exp_sub),8);
-    bufp->fullIData(oldp+9,(vlSelf->tb_adder__DOT__DUT__DOT__mant1),23);
-    bufp->fullIData(oldp+10,(vlSelf->tb_adder__DOT__DUT__DOT__mant2),23);
-    bufp->fullCData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
-    bufp->fullIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),23);
-    bufp->fullIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),23);
-    bufp->fullIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__carroutCheck),24);
-    bufp->fullIData(oldp+15,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),23);
-    bufp->fullCData(oldp+16,(vlSelf->tb_adder__DOT__DUT__DOT__count),8);
+    bufp->fullIData(oldp+7,((0x800000U | (0x7fffffU 
+                                          & vlSelf->tb_adder__DOT__tb_data1))),24);
+    bufp->fullIData(oldp+8,((0x800000U | (0x7fffffU 
+                                          & vlSelf->tb_adder__DOT__tb_data2))),24);
+    bufp->fullBit(oldp+9,(vlSelf->tb_adder__DOT__DUT__DOT__underflow_temp));
+    bufp->fullBit(oldp+10,(vlSelf->tb_adder__DOT__DUT__DOT__overflow_temp));
+    bufp->fullCData(oldp+11,(vlSelf->tb_adder__DOT__DUT__DOT__exp_sub),8);
+    bufp->fullIData(oldp+12,(vlSelf->tb_adder__DOT__DUT__DOT__mantissaResult),26);
+    bufp->fullIData(oldp+13,(vlSelf->tb_adder__DOT__DUT__DOT__shift1),25);
+    bufp->fullIData(oldp+14,(vlSelf->tb_adder__DOT__DUT__DOT__shift2),25);
+    bufp->fullIData(oldp+15,(vlSelf->tb_adder__DOT__DUT__DOT__shift_int),25);
+    bufp->fullCData(oldp+16,(vlSelf->tb_adder__DOT__DUT__DOT__biggerExp),8);
+    bufp->fullCData(oldp+17,(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp),8);
+    bufp->fullIData(oldp+18,(vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant),24);
+    bufp->fullBit(oldp+19,(vlSelf->tb_adder__DOT__DUT__DOT__carry));
+    bufp->fullIData(oldp+20,(vlSelf->tb_adder__DOT__DUT__DOT__temp),25);
+    bufp->fullIData(oldp+21,(((((IData)(vlSelf->tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0)
+                                 ? (vlSelf->tb_adder__DOT__tb_data1 
+                                    >> 0x1fU) : ((vlSelf->tb_adder__DOT__DUT__DOT__shift1 
+                                                  > vlSelf->tb_adder__DOT__DUT__DOT__shift2)
+                                                  ? 
+                                                 (vlSelf->tb_adder__DOT__tb_data1 
+                                                  >> 0x1fU)
+                                                  : 
+                                                 (vlSelf->tb_adder__DOT__tb_data2 
+                                                  >> 0x1fU))) 
+                               << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                             << 0x17U) 
+                                            | (0x7fffffU 
+                                               & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))),32);
+    bufp->fullBit(oldp+22,((1U & ((IData)(vlSelf->tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0)
+                                   ? (vlSelf->tb_adder__DOT__tb_data1 
+                                      >> 0x1fU) : (
+                                                   (vlSelf->tb_adder__DOT__DUT__DOT__shift1 
+                                                    > vlSelf->tb_adder__DOT__DUT__DOT__shift2)
+                                                    ? 
+                                                   (vlSelf->tb_adder__DOT__tb_data1 
+                                                    >> 0x1fU)
+                                                    : 
+                                                   (vlSelf->tb_adder__DOT__tb_data2 
+                                                    >> 0x1fU))))));
+    bufp->fullIData(oldp+23,(0U),25);
 }

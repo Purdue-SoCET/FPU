@@ -16,18 +16,22 @@ class alignas(VL_CACHE_LINE_BYTES) Vadder___024root final : public VerilatedModu
 
     // DESIGN SPECIFIC STATE
     CData/*7:0*/ tb_adder__DOT__DUT__DOT__exp_sub;
+    CData/*0:0*/ tb_adder__DOT__DUT__DOT__sign_result;
     CData/*7:0*/ tb_adder__DOT__DUT__DOT__biggerExp;
-    CData/*7:0*/ tb_adder__DOT__DUT__DOT__count;
+    CData/*7:0*/ tb_adder__DOT__DUT__DOT__normalized_exp;
+    CData/*0:0*/ tb_adder__DOT__DUT__DOT__overflow_temp;
+    CData/*0:0*/ tb_adder__DOT__DUT__DOT__underflow_temp;
+    CData/*0:0*/ tb_adder__DOT__DUT__DOT__carry;
+    CData/*0:0*/ tb_adder__DOT__DUT__DOT____VdfgExtracted_h9ee74b83__0;
     CData/*0:0*/ __VactContinue;
     IData/*31:0*/ tb_adder__DOT__tb_data1;
     IData/*31:0*/ tb_adder__DOT__tb_data2;
-    IData/*31:0*/ tb_adder__DOT__tb_result;
-    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mant1;
-    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mant2;
-    IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift1;
-    IData/*22:0*/ tb_adder__DOT__DUT__DOT__shift2;
-    IData/*23:0*/ tb_adder__DOT__DUT__DOT__carroutCheck;
-    IData/*22:0*/ tb_adder__DOT__DUT__DOT__mantissaResult;
+    IData/*25:0*/ tb_adder__DOT__DUT__DOT__mantissaResult;
+    IData/*24:0*/ tb_adder__DOT__DUT__DOT__shift1;
+    IData/*24:0*/ tb_adder__DOT__DUT__DOT__shift2;
+    IData/*24:0*/ tb_adder__DOT__DUT__DOT__shift_int;
+    IData/*23:0*/ tb_adder__DOT__DUT__DOT__normalized_mant;
+    IData/*24:0*/ tb_adder__DOT__DUT__DOT__temp;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;

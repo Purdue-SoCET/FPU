@@ -22,69 +22,133 @@ VL_INLINE_OPT VlCoroutine Vadder___024root___eval_initial__TOP__0(Vadder___024ro
     __Vtemp_haca5b60e__0[4U] = 0x4164U;
     vlSymsp->_vm_contextp__->dumpfile(VL_CVT_PACK_STR_NW(5, __Vtemp_haca5b60e__0));
     vlSymsp->_traceDumpOpen();
-    vlSelf->tb_adder__DOT__tb_data1 = 0U;
-    vlSelf->tb_adder__DOT__tb_data2 = 0U;
-    co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
-                                       "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       21);
-    vlSelf->__Vm_traceActivity[2U] = 1U;
     vlSelf->tb_adder__DOT__tb_data1 = 0x42c86666U;
     vlSelf->tb_adder__DOT__tb_data2 = 0x42b50000U;
-    if (VL_UNLIKELY((0x433eb333U != vlSelf->tb_adder__DOT__tb_result))) {
-        VL_WRITEF("Wrong output, actual value 190.7. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
-    }
     co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
                                        "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       30);
+                                       26);
     vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0x433eb333U != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value 190.7. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
     vlSelf->tb_adder__DOT__tb_data1 = 0x4249999aU;
     vlSelf->tb_adder__DOT__tb_data2 = 0x42c9999aU;
-    if (VL_UNLIKELY((0x43173333U != vlSelf->tb_adder__DOT__tb_result))) {
-        VL_WRITEF("Wrong output, actual value 151.2. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
-    }
     co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
                                        "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       38);
+                                       43);
     vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0x43173333U != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value 151.2. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
     vlSelf->tb_adder__DOT__tb_data1 = 0xc2acfae1U;
     vlSelf->tb_adder__DOT__tb_data2 = 0xc4163852U;
-    if (VL_UNLIKELY((0xc42bd7aeU != vlSelf->tb_adder__DOT__tb_result))) {
-        VL_WRITEF("Wrong output, actual value -687.37. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
-    }
     co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
                                        "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       47);
+                                       52);
     vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0xc42bd7aeU != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value -687.37. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
     vlSelf->tb_adder__DOT__tb_data1 = 0xc3f6e666U;
     vlSelf->tb_adder__DOT__tb_data2 = 0xc376e666U;
-    if (VL_UNLIKELY((0xc4392ccdU != vlSelf->tb_adder__DOT__tb_result))) {
-        VL_WRITEF("Wrong output, actual value -740.7. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
-    }
     co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
                                        "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       55);
+                                       61);
     vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0xc4392ccdU != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value -740.7. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
+    vlSelf->tb_adder__DOT__tb_data1 = 0x43163333U;
+    vlSelf->tb_adder__DOT__tb_data2 = 0xc1f40000U;
+    co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
+                                       "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
+                                       69);
+    vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0x42ef6666U != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value 119.7. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
     vlSelf->tb_adder__DOT__tb_data1 = 0x42c86666U;
     vlSelf->tb_adder__DOT__tb_data2 = 0xc2b50000U;
-    if (VL_UNLIKELY((0x411b3333U != vlSelf->tb_adder__DOT__tb_result))) {
-        VL_WRITEF("Wrong output, actual value 9.7. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
-    }
     co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
                                        "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
-                                       63);
+                                       81);
     vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0x411b3333U != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
+        VL_WRITEF("Wrong output, actual value 9.7. Yours: %10#\n",
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
+    }
     vlSelf->tb_adder__DOT__tb_data1 = 0xc2c86666U;
     vlSelf->tb_adder__DOT__tb_data2 = 0x42b50000U;
-    if (VL_UNLIKELY((0xc11b3333U != vlSelf->tb_adder__DOT__tb_result))) {
+    co_await vlSelf->__VdlySched.delay(0xaULL, nullptr, 
+                                       "uvm_tb/uvm_tb_add_single/tb_adder.sv", 
+                                       99);
+    vlSelf->__Vm_traceActivity[2U] = 1U;
+    if (VL_UNLIKELY((0xc11b3333U != (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                                      << 0x1fU) | (
+                                                   ((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                                    << 0x17U) 
+                                                   | (0x7fffffU 
+                                                      & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant)))))) {
         VL_WRITEF("Wrong output, actual value -9.7. Yours: %10#\n",
-                  32,vlSelf->tb_adder__DOT__tb_result);
+                  32,(((IData)(vlSelf->tb_adder__DOT__DUT__DOT__sign_result) 
+                       << 0x1fU) | (((IData)(vlSelf->tb_adder__DOT__DUT__DOT__normalized_exp) 
+                                     << 0x17U) | (0x7fffffU 
+                                                  & vlSelf->tb_adder__DOT__DUT__DOT__normalized_mant))));
     }
-    VL_FINISH_MT("uvm_tb/uvm_tb_add_single/tb_adder.sv", 72, "");
+    VL_FINISH_MT("uvm_tb/uvm_tb_add_single/tb_adder.sv", 105, "");
     vlSelf->__Vm_traceActivity[2U] = 1U;
 }
 
