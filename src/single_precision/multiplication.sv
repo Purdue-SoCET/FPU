@@ -1,6 +1,6 @@
 module multiplication (    
     input logic [31:0] data1, data2,
-    output logic [31:0] result
+    output logic [31:0] result,
     output logic overflow, underflow
 );
 
