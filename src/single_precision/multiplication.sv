@@ -54,8 +54,8 @@ module multiplication (
     assign infi1 = (exp1 == 255) && (mant1 == 0); // infinity when all ones and mant is 0
     assign infi2 = (exp2 == 255) && (mant2 == 0); // infinity when all ones and mant is 0
     // Not a number 
-    assign na1 == (exp1 == 255) && (mant1 != 0); // NaN when all ones and mant is not 0 
-    assign na2 == (exp2 == 255) && (mant2 != 0); // NaN when all ones and mant is not 0 
+    assign na1 = (exp1 == 255) && (mant1 != 0); // NaN when all ones and mant is not 0 
+    assign na2 = (exp2 == 255) && (mant2 != 0); // NaN when all ones and mant is not 0 
 
     // Caculate for sign, temp exponent and mantissa
     always_comb begin 
