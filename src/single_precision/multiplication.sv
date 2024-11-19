@@ -128,9 +128,9 @@ module multiplication (
                     mant_result = mant_AB[22:0];
                 end
                 result = {sign_result, 8'h00, mant_result};
-                else begin 
-                    result = {sign_result, exp_result, mant_result};
-                end
+                // else begin 
+                //     result = {sign_result, exp_result, mant_result};
+                // end
             end
         end
     end
