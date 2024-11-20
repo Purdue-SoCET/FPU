@@ -38,7 +38,7 @@ module multiplication (
         else if (exp2 != 0) begin // normalized numbers with 1 leading of data 1
             mantB = {1'b0, mant2};
         end
-        else if (exp == 0) begin // denormalized numbers with 0 leading of data 2
+        else if (exp2 == 0) begin // denormalized numbers with 0 leading of data 2
             mantB = {0'b0, mant2};
         end
     end
@@ -104,7 +104,7 @@ module multiplication (
             // checking for mantissa of result falls in range from 1 to over 2
             if (mant_temp[47]) begin // MSB is 1, result's mantissa > 2.0 
                 mant_AB = mant_temp[47:24]; /*FIXME shift right (or left?)*/
-                mant_temp = man_temp << 1; /* FIXME shift left (or right?) 1 bit to normalize */  
+                mant_temp = mant_temp << 1; /* FIXME shift left (or right?) 1 bit to normalize */  
                 exp_result = exp_temp[7:0] + 1; // take 8 bit and increment the exp by 1
             end
             else begin // no carry, result's mantissa is already within 1 to 2 (no needed shift)
