@@ -33,6 +33,22 @@ module multiplication (
         mantA = (exp1 != 0) ? {1'b1, mant1} : {1'b0, mant1}; // Normalized or denormalized
         mantB = (exp2 != 0) ? {1'b1, mant2} : {1'b0, mant2}; // Normalized or denormalized
     end
+    // always_comb begin 
+    //     if (exp1 != 0) begin 
+    //         mantA = {1'b0, mant1}; // normalized numbers with 1 leading of data 1
+    //     end
+    //     else if (exp1 == 0) begin // denormalized numbers with 0 leading of data 2
+    //         mantA = {1'b0, mant1};
+    //     end
+    //     else if (exp2 != 0) begin // normalized numbers with 1 leading of data 1
+    //         mantB = {1'b0, mant2};
+    //     end
+    //     else if (exp == 0) begin // denormalized numbers with 0 leading of data 2
+    //         mantB = {1'b0, mant2};
+    //     end
+    // end
+
+    
 
     // Check for special cases
     logic zero1, zero2; // flags for checking zero 
