@@ -27,20 +27,11 @@ module multiplication (
     assign exp2 = data2[30:23];
     assign mant1 = data1[22:0];
     assign mant2 = data2[22:0];
-
-    always_comb begin 
-        if (exp1 != 0) begin 
-            mantA = {1'b0, mant1}; // normalized numbers with 1 leading of data 1
-        end
-        else if (exp1 == 0) begin // denormalized numbers with 0 leading of data 2
-            mantA = {0'b0, mant1};
-        end
-        else if (exp2 != 0) begin // normalized numbers with 1 leading of data 1
-            mantB = {1'b0, mant2};
-        end
-        else if (exp2 == 0) begin // denormalized numbers with 0 leading of data 2
-            mantB = {0'b0, mant2};
-        end
+    
+    // Handle mantissa normalization
+    always_comb begin
+        mantA = (exp1 != 0) ? {1'b1, mant1} : {1'b0, mant1}; // Normalized or denormalized
+        mantB = (exp2 != 0) ? {1'b1, mant2} : {1'b0, mant2}; // Normalized or denormalized
     end
 
     // Check for special cases
@@ -59,6 +50,9 @@ module multiplication (
 
     // Caculate for sign, temp exponent and mantissa
     always_comb begin 
+        // Initialize defaults for avoiding latches
+        exp_temp = 0;
+        mant_temp = 0;
         // sign bit
         sign_result = sign1 ^ sign2; // same sign (positive), different sign (negative)
         // exponent bit 
@@ -75,10 +69,13 @@ module multiplication (
     assign mant_result = mant_temp[45:23];
 
     // Special case with normal multiplication process
-    always_comb begin 
+    always_comb begin
+        // Initialize defaults to avoid latches
         overflow = 0;
         underflow = 0;
-
+        exp_temp = 0;
+        mant_temp = 0;
+        result = 0;
         // case zero  
         if (zero1 || zero2) begin 
             // zero times any number is zero
@@ -104,7 +101,7 @@ module multiplication (
             // checking for mantissa of result falls in range from 1 to over 2
             if (mant_temp[47]) begin // MSB is 1, result's mantissa > 2.0 
                 mant_AB = mant_temp[47:24]; /*FIXME shift right (or left?)*/
-                mant_temp = mant_temp << 1; /* FIXME shift left (or right?) 1 bit to normalize */  
+                // mant_temp = mant_temp << 1; /* FIXME shift left (or right?) 1 bit to normalize */  
                 exp_result = exp_temp[7:0] + 1; // take 8 bit and increment the exp by 1
             end
             else begin // no carry, result's mantissa is already within 1 to 2 (no needed shift)
@@ -114,10 +111,10 @@ module multiplication (
             // handling and detecting overflow
             if (exp_result >= 8'd255) begin // when MSB is 1, exponent is set to max value from IEEE 754
                 overflow = 1;
-                exp_result = 8'hff;
-                result = {sign_result, exp_result, 23'h0}; // infinity
+                // exp_result = 8'hff;
+                result = {sign_result, 8'hFF, 23'h0}; // infinity
             end
-            else if (exp_result <= 0) begin 
+            else if (exp_result == 0) begin 
                 underflow = 1;
                 if (exp_result < -23) begin // the result is too small for denormalized representation 
                     mant_AB = 24'h0; // set underflow to zero
@@ -127,7 +124,7 @@ module multiplication (
                     mant_AB = mant_temp >> (1 - exp_result); 
                     mant_result = mant_AB[22:0];
                 end
-                result = {sign_result, 8'h00, mant_result};
+                result = {sign_result, 8'h00, mant_AB[22:0]};
                 // else begin 
                 //     result = {sign_result, exp_result, mant_result};
                 // end
@@ -137,7 +134,7 @@ module multiplication (
 
     // final result 
     always_comb begin 
-        result = {sign_result, exp_result, mant_result};
+        result = {sign_result, exp_result, mant_AB[22:0]};
     end
 
 endmodule 
