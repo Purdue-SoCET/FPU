@@ -6,8 +6,10 @@ module tb_mult ();
     logic [31:0] tb_result;
     logic tb_overflow, tb_underflow;
 
-    // Instantiate the subtractor module
+    // Instantiate the multiplication module
     multiplication DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result), .overflow(tb_overflow), .underflow(tb_underflow));
+
+    //mult_diya DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result));
 
     task setinputs;
     input logic [31:0] data1tb;
