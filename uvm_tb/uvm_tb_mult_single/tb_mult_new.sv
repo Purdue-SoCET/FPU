@@ -19,7 +19,7 @@ module tb_mult ();
     endtask
 
     initial begin
-        $dumpfile("Multiplication_waveform.fst");
+        $dumpfile("Multiplication_new_waveform.fst");
         $dumpvars(0, tb_mult);
 
        $display("Initializing data variables...");
