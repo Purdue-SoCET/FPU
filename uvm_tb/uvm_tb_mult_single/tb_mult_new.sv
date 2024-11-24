@@ -1,4 +1,4 @@
-module tb_mult ();
+module tb_mult_new ();
 
     // logic declarations
     logic [31:0] tb_data1;
