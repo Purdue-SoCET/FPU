@@ -1,6 +1,6 @@
 module mult_new (    
     input logic [31:0] data1, data2,
-    output logic [31:0] result,
+    output logic [31:0] result
 );
 
     // Intermediate signals
@@ -45,7 +45,7 @@ module mult_new (
         mant_result = '0;
         sign_result = '0;
         exp_sum = '0;
-        mant_mult = '0;
+        mant_result = '0;
         //test signals
         zero = 0;
         snan = 0;
@@ -106,7 +106,7 @@ module mult_new (
                             break;
                         end
                     end
-                    exp_result = exp2 - (8'd127 - shift) + 8'd1; // Adjust the exponent for subnormal * normalized
+                    exp_result = exp_data2 - (8'd127 - shift) + 8'd1; // Adjust the exponent for subnormal * normalized
                     exp_result_temp = {2'b0, exp_data2} - (8'd127 - shift) + 8'd1;
                     mant_result = {1'b1, mant_data1 << (8'd127 - shift)} * {1'b1, mant_data2}; // Align mantissas for multiplication
                 end else if (exp_data2 == '0) begin // data2 = sub
