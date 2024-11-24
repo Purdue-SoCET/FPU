@@ -16,7 +16,7 @@ module mult_new (
     logic [31:0] norm_input1, norm_input2, norm_result;
     logic norm_overflow, norm_underflow;
 
-    adder adder (
+    adder u0 (
         .data1(norm_input1),
         .data2(norm_input2),
         .result(norm_result),
@@ -117,7 +117,7 @@ module mult_new (
                         end
                     end
                     exp_result = exp_data1 - (8'd127 - shift) + 8'd1; // Adjust the exponent for normalized * subnormal
-                    exp_result_temp = {2'b0, exp_data1} - (8'd127 - shift) + 8'd1;
+                   // exp_result_temp = {2'b0, exp_data1} - (8'd127 - shift) + 8'd1;
                     mant_result = {1'b1, mant_data2 << (8'd127 - shift)} * {1'b1, mant_data1}; // Align mantissas for multiplication
                 end
             end
