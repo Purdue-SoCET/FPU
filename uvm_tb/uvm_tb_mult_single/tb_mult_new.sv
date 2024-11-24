@@ -7,7 +7,7 @@ module tb_mult_new ();
     
 
     // Instantiate the multiplication module
-    mult_diya DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result));
+    mult_new DUT (.data1(tb_data1), .data2(tb_data2), .result(tb_result));
 
     task setinputs;
     input logic [31:0] data1tb;

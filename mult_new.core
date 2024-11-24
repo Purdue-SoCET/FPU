@@ -5,7 +5,7 @@ description: FPU multiplication
 filesets:
   rtl:
     files:
-      - src/single_precision/mult_diya.sv
+      - src/single_precision/mult_new.sv
     file_type: systemVerilogSource
   
   tb:
