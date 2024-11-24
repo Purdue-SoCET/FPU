@@ -144,7 +144,7 @@ module multiplication (
             end
             // for the normal case
             else begin 
-                result = {sign_result, exp_result, mant_AB[22:0};
+                result = {sign_result, exp_result, mant_AB[22:0]};
             end
         end
     end
