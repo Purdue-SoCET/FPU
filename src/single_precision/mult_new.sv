@@ -106,9 +106,9 @@ module mult_new (
                             break;
                         end
                     end
-                    exp_result = exp_data2 - (8'd127 - shift) + 8'd1; // Adjust the exponent for subnormal * normalized
+                    exp_result = exp_data2 - (8'd127 - {3'b000, shift}) + 8'd1; // Adjust the exponent for subnormal * normalized
                    // exp_result_temp = {2'b0, exp_data2} - (8'd127 - shift) + 8'd1;
-                    mant_result = {1'b1, mant_data1 << (8'd127 - shift)} * {1'b1, mant_data2}; // Align mantissas for multiplication
+                    mant_result = {1'b1, mant_data1 << (8'd127 - {3'b000, shift})} * {1'b1, mant_data2}; // Align mantissas for multiplication
                 end else if (exp_data2 == '0) begin // data2 = sub
                     for (int i = 22; i >= 0; i = i - 1) begin
                         if (mant_data2[i] == 1'b1) begin
@@ -116,9 +116,9 @@ module mult_new (
                             break;
                         end
                     end
-                    exp_result = exp_data1 - (8'd127 - shift) + 8'd1; // Adjust the exponent for normalized * subnormal
+                    exp_result = exp_data1 - (8'd127 - {3'b000, shift}) + 8'd1; // Adjust the exponent for normalized * subnormal
                    // exp_result_temp = {2'b0, exp_data1} - (8'd127 - shift) + 8'd1;
-                    mant_result = {1'b1, mant_data2 << (8'd127 - shift)} * {1'b1, mant_data1}; // Align mantissas for multiplication
+                    mant_result = {1'b1, mant_data2 << (8'd127 - {3'b000, shift})} * {1'b1, mant_data1}; // Align mantissas for multiplication
                 end
             end
         end
@@ -139,7 +139,7 @@ module mult_new (
             exp_adjusted = exp_result + 1;         // Increment exponent
         end else begin
             no_carry = 1;
-            norm_input1 = {sign_result, exp_result, mant_result[46:23]}; // Use adder for shift
+            norm_input1 = {sign_result, exp_result[7:0], mant_result[45:23]}; // Use adder for shift
             norm_input2 = 32'b0; // Add zero to isolate normalization
             exp_adjusted = exp_result; // Let adder handle further adjustment
         end 
