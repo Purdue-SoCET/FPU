@@ -7,6 +7,8 @@ filesets:
     files:
       - src/single_precision/mult_new.sv
     file_type: systemVerilogSource
+    depend:
+      - socet:aft:adder:1.0.0
   
   tb:
     files:
