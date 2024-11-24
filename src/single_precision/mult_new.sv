@@ -88,7 +88,7 @@ module mult_new (
          end else begin 
             sign_result = sign_data1 ^ sign_data2;
             exp_sum = exp_data1 + exp_data2 - 8'd127; // Adjust bias
-            mant_mult = mant_data1 * mant_data2;
+            mant_result = mant_data1 * mant_data2;
 
             if (exp_data1 == '0 && exp_data2 == '0) begin // sub * sub
                 exp_result = '0;
