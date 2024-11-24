@@ -65,42 +65,37 @@ module multiplication (
     assign na2 = (exp2 == 255) && (mant2 != 0); // NaN when all ones and mant is not 0 
 
     // Caculate for sign, temp exponent and mantissa
+    // Special case with normal multiplication process
     always_comb begin 
         // Initialize defaults for avoiding latches
         exp_temp = 0;
         mant_temp = 0;
+        overflow = 0;
+        underflow = 0;
+        result = 32'b0;
         // sign bit
         sign_result = sign1 ^ sign2; // same sign (positive), different sign (negative)
         // exponent bit 
-        if ((exp1 + exp2) < 8'd127) begin 
-            exp_temp = 9'd0; // if less than 127, assign to 0 to prevent underflow
-        end
-        else begin 
-            exp_temp = exp1 + exp2 - 8'd127;
-        end
-        // mantissa bit 
-        mant_temp = mantA * mantB;
-    end
+        
+        // if ((exp1 + exp2) < 8'd127) begin 
+        //     exp_temp = 9'd0; // if less than 127, assign to 0 to prevent underflow
+        // end
+        // else begin 
+        //     exp_temp = exp1 + exp2 - 8'd127;
+        // end
+        // mantissa bit (move to regular multipilication)
+        // mant_temp = mantA * mantB;
 
-    assign mant_result = mant_temp[45:23];
-
-    // Special case with normal multiplication process
-    always_comb begin
-        // Initialize defaults to avoid latches
-        overflow = 0;
-        underflow = 0;
-        exp_temp = 0;
-        mant_temp = 0;
-        result = 0;
+        // assign mant_result = mant_temp[45:23];
         // case zero  
         if (zero1 || zero2) begin 
             // zero times any number is zero
-            result = {sign_result, 31'h0};
+            result = {sign_result, 31'b0};
         end
         // case infinity
         else if (infi1 || infi2) begin 
             // if one operand is infinite value, result is infinity
-            result = {sign_result, 8'hFF, 23'h0};
+            result = {sign_result, 8'hFF, 23'b0};
         end
         // Undefined case 
         else if (infi1 && zero2) begin 
@@ -115,6 +110,10 @@ module multiplication (
 
         else begin 
             // checking for mantissa of result falls in range from 1 to over 2
+            // regular multiplication 
+             exp_temp = exp1 + exp2 - 8'd127; // Compute temp exponent
+             mant_temp = mantA * mantB; // Multiply mantissas
+
             if (mant_temp[47]) begin // MSB is 1, result's mantissa > 2.0 
                 mant_AB = mant_temp[47:24]; /*FIXME shift right (or left?)*/
                 // mant_temp = mant_temp << 1; /* FIXME shift left (or right?) 1 bit to normalize */  
@@ -124,33 +123,30 @@ module multiplication (
                 mant_AB = mant_temp[46:23];
                 exp_result = exp_temp[7:0]; // take the lower 8 bits 
             end
+            
             // handling and detecting overflow
             if (exp_result >= 8'd255) begin // when MSB is 1, exponent is set to max value from IEEE 754
                 overflow = 1;
                 // exp_result = 8'hff;
-                result = {sign_result, 8'hFF, 23'h0}; // infinity
+                result = {sign_result, 8'hFF, 23'b0}; // infinity
             end
             else if (exp_result == 0) begin 
                 underflow = 1;
                 if (exp_result < -23) begin // the result is too small for denormalized representation 
-                    mant_AB = 24'h0; // set underflow to zero
+                    mant_AB = 24'b0; // set underflow to zero
                     mant_result = mant_AB[22:0]; 
                 end
                 else begin // the result can be represented as denormalized number
                     mant_AB = mant_temp >> (1 - exp_result); 
                     mant_result = mant_AB[22:0];
                 end
-                result = {sign_result, 8'h00, mant_AB[22:0]};
-                // else begin 
-                //     result = {sign_result, exp_result, mant_result};
-                // end
+                result = {sign_result, 8'b0, mant_AB[22:0]};
+            end
+            // for the normal case
+            else begin 
+                result = {sign_result, exp_result, mant_AB[22:0};
             end
         end
-    end
-
-    // final result 
-    always_comb begin 
-        result = {sign_result, exp_result, mant_AB[22:0]};
     end
 
 endmodule 
