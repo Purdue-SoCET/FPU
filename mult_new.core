@@ -14,6 +14,8 @@ filesets:
     files:
       - uvm_tb/uvm_tb_mult_single/tb_mult_new.sv
     file_type: systemVerilogSource
+    depend:
+      - socet:aft:adder:1.0.0
   
   tb-cpp:
     files:
