@@ -95,7 +95,7 @@ module mult_new (
                 s_s = 1;
             end else if (exp_data1 != '0 && exp_data2 != '0) begin // norm * norm
                 exp_result = exp_sum;
-                exp_result_temp = ({2'b0, exp_data1} - 8'd127) + {2'b0, exp_data2};
+                //exp_result_temp = ({2'b0, exp_data1} - 8'd127) + {2'b0, exp_data2};
                 n_n = 1;
             end else begin // sub * norm or norm * sub
                 n_s = 1;
@@ -107,7 +107,7 @@ module mult_new (
                         end
                     end
                     exp_result = exp_data2 - (8'd127 - shift) + 8'd1; // Adjust the exponent for subnormal * normalized
-                    exp_result_temp = {2'b0, exp_data2} - (8'd127 - shift) + 8'd1;
+                   // exp_result_temp = {2'b0, exp_data2} - (8'd127 - shift) + 8'd1;
                     mant_result = {1'b1, mant_data1 << (8'd127 - shift)} * {1'b1, mant_data2}; // Align mantissas for multiplication
                 end else if (exp_data2 == '0) begin // data2 = sub
                     for (int i = 22; i >= 0; i = i - 1) begin
