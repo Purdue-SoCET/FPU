@@ -1,4 +1,4 @@
-module mult_diya (    
+module mult_new (    
     input logic [31:0] data1, data2,
     output logic [31:0] result,
 );

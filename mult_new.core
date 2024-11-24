@@ -1,5 +1,5 @@
 CAPI=2:
-name: socet:aft:multiplication:1.0.0
+name: socet:aft:mult_new:1.0.0
 description: FPU multiplication 
 
 filesets:
