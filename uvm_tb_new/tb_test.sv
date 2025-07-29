@@ -1,13 +1,13 @@
 `timescale 1ns/1ps
-import uvm_pkg::*;
-import fpu_uvm_pkg::*;
-
 module tb_top;
+    import uvm_pkg::*;
+    import fpu_uvm_pkg::*;
+
     logic clk;
     logic rst;
     fifo_interface intf(clk, rst);
 
-    // Instantiate DUT
+    // DUT instantiation
     fifo_buffer dut (
         .clk(clk),
         .rst(rst),
@@ -31,8 +31,9 @@ module tb_top;
         #20 rst = 0;
     end
 
-    // Run UVM test
+    // Pass virtual interface to UVM
     initial begin
+        uvm_config_db#(virtual fifo_interface)::set(null, "*", "vif", intf);
         run_test("tb_test");
     end
 endmodule
