@@ -1,6 +1,3 @@
-`ifndef FIFO_SEQ_ITEM_SV
-`define FIFO_SEQ_ITEM_SV
-
 class fifo_seq_item extends uvm_sequence_item;
     rand bit [31:0] data;
     rand bit write;
@@ -12,9 +9,18 @@ class fifo_seq_item extends uvm_sequence_item;
         super.new(name);
     endfunction
 
+    constraint random_fp_values {
+        // Occasionally generate special floating-point values
+        (data dist {
+            32'h7FC00000 := 5,   // NaN
+            32'h7F800000 := 5,   // +Inf
+            32'hFF800000 := 5,   // -Inf
+            [32'h00000001:32'h000FFFFF] := 10, // Subnormal
+            [32'h00800000:32'h7F7FFFFF] := 75  // Normal range
+        });
+    }
+
     function string convert2string();
-        return $sformatf("data=%h write=%0b read=%0b", data, write, read);
+        return $sformatf("FP DATA=%h WRITE=%0b READ=%0b", data, write, read);
     endfunction
 endclass
-
-`endif
