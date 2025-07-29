@@ -1,13 +1,13 @@
-module tb_top;
-    import uvm_pkg::*;
-    `include "environment.sv"
-    // Include all other components here or use a package
+`timescale 1ns/1ps
+import uvm_pkg::*;
+import fpu_uvm_pkg::*;
 
+module tb_top;
     logic clk;
     logic rst;
     fifo_interface intf(clk, rst);
 
-    // DUT instantiation
+    // Instantiate DUT
     fifo_buffer dut (
         .clk(clk),
         .rst(rst),
@@ -19,38 +19,20 @@ module tb_top;
         .empty(intf.empty)
     );
 
+    // Clock generation
     initial begin
         clk = 0;
         forever #5 clk = ~clk;
     end
 
+    // Reset logic
+    initial begin
+        rst = 1;
+        #20 rst = 0;
+    end
+
+    // Run UVM test
     initial begin
         run_test("tb_test");
     end
 endmodule
-
-class tb_test extends uvm_test;
-    environment env;
-    fifo_seq fseq;
-    clk_seq cseq;
-
-    `uvm_component_utils(tb_test)
-
-    function new(string name, uvm_component parent);
-        super.new(name, parent);
-    endfunction
-
-    function void build_phase(uvm_phase phase);
-        super.build_phase(phase);
-        env = environment::type_id::create("env", this);
-    endfunction
-
-    task run_phase(uvm_phase phase);
-        phase.raise_objection(this);
-        fseq = fifo_seq::type_id::create("fseq");
-        cseq = clk_seq::type_id::create("cseq");
-        fseq.start(env.f_agent.seqr);
-        cseq.start(env.c_agent.seqr);
-        phase.drop_objection(this);
-    endtask
-endclass
