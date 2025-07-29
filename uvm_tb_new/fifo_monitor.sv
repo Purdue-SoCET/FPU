@@ -9,6 +9,12 @@ class fifo_monitor extends uvm_monitor;
         ap = new("ap", this);
     endfunction
 
+    function void build_phase(uvm_phase phase);
+        super.build_phase(phase);
+        if (!uvm_config_db#(virtual fifo_interface)::get(this, "", "vif", vif))
+            `uvm_fatal("NOVIF", "No virtual interface set for fifo_monitor")
+    endfunction
+
     task run_phase(uvm_phase phase);
         fifo_seq_item item;
         forever begin
