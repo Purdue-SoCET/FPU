@@ -1,11 +1,21 @@
-interface float_div_if (
-  input  logic clk, reset_n,
-  output logic valid,          // indicates new operands
-  output logic [31:0] dividend,
-  output logic [31:0] divisor,
-  input  logic ready,          // DUT ready to accept
-  input  logic [31:0] result,  // quotient
-  input  logic done            // result valid
+`ifndef FLOAT_DIV_IF_SVH
+`define FLOAT_DIV_IF_SVH
+`include "uvm_fpu_pkg.vh"
+import uvm_fpu_pkg::*;
+
+interface float_div_if#(parameter WIDTH = 16)  (input logic clk);
+
+    //input
+    logic n_rst; 
+    logic [WIDTH-1:0] float1;
+    logic [WIDTH-1:0] float2;
+    //output
+    logic [WIDTH-1:0] product;
+
+modport fdiv (
+    input clk, n_rst, float1, float2,
+    output product
 );
-  // Clocking blocks, modports, etc.
+
 endinterface
+`endif

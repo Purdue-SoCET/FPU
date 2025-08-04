@@ -1,23 +1,59 @@
+`ifndef FDIV_MONITOR_SVH
+`define FDIV_MONITOR_SVH
+
+import uvm_pkg::*;
+`include "uvm_macros.svh"
+`include "float_div_if.svh"
+`include "uvm_fpu_pkg.vh"
+import uvm_fpu_pkg::*;
+
 class fdiv_monitor extends uvm_monitor;
-  `uvm_component_utils(fdiv_monitor)
+    `uvm_component_utils(fdiv_monitor)
 
-  virtual float_div_if vif;
-  uvm_analysis_port#(float_div_txn) ap;
+    virtual float_div_if#(.WIDTH(WIDTH)) vif;
 
-  function new(string name, uvm_component parent);
-    super.new(name, parent);
-    ap = new("ap", this);
-  endfunction
+    uvm_analysis_port #(transaction) result_ap;
+    
+    function new(string name, uvm_component parent = null);    
+        super.new(name, parent);
+        result_ap = new("result_ap",this);
+        //`uvm_info("fdiv_monitor","monitor construct",UVM_LOW);
+    endfunction: new
 
-  virtual task run_phase(uvm_phase phase);
-    float_div_txn txn;
-    forever begin
-      @(posedge vif.done);
-      txn = float_div_txn::type_id::create("txn");
-      txn.dividend = vif.dividend;
-      txn.divisor  = vif.divisor;
-      txn.expected = vif.result; // observed; scoreboard will check
-      ap.write(txn);
-    end
-  endtask
-endclass
+    // Build Phase - Get handle to signals in the testbench
+    virtual function void build_phase(uvm_phase phase);  
+        if (!uvm_config_db#(virtual float_div_if#(.WIDTH(WIDTH)))::get(this, "", "float_div_vif", vif)) begin
+            `uvm_fatal("monitor", "No virtual interface specified for this monitor instance")
+        end
+        //`uvm_info("fdiv_monitor","monitor build",UVM_LOW);
+    endfunction
+
+    virtual task run_phase(uvm_phase phase);
+        //`uvm_info("fdiv_monitor","monitor run",UVM_LOW);
+        // Wait for clock to be active
+        @(posedge vif.clk);
+        
+        // Start monitoring
+        forever begin
+            transaction txn;
+            wait(vif.float1 !== 'x && vif.float2 !== 'x);
+            @(posedge vif.clk);
+            txn = transaction::type_id::create("txn");
+            
+            // Sample input signals
+            txn.float1 = vif.float1;
+            txn.float2 = vif.float2;
+
+            // Sample output signals
+            txn.product = vif.product;
+        
+            // Send transaction to scoreboard
+            result_ap.write(txn);
+
+            // // Wait for next cycle
+            // @(posedge vif.clk);
+        end
+endtask
+
+endclass: fdiv_monitor
+`endif
