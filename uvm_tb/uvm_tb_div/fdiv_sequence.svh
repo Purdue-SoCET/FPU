@@ -312,9 +312,7 @@ class Inf_Inf_div_seq extends uvm_sequence#(transaction);
 endclass: Inf_Inf_div_seq
 
 
-//-----------------------------------------
-// Overflow: max numer ÷ min normal → huge result
-//-----------------------------------------
+// Overflow: max numer ÷ min normal = huge result
 class overflow_div_seq extends uvm_sequence#(transaction);
   `uvm_object_utils(overflow_div_seq)
   function new(string name = "overflow_div_seq");
@@ -336,9 +334,7 @@ class overflow_div_seq extends uvm_sequence#(transaction);
 endclass: overflow_div_seq
 
 
-//-----------------------------------------
 // Underflow: min normal ÷ max numer = tiny result
-//-----------------------------------------
 class underflow_div_seq extends uvm_sequence#(transaction);
   `uvm_object_utils(underflow_div_seq)
   function new(string name = "underflow_div_seq");
