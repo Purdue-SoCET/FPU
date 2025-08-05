@@ -82,6 +82,229 @@ class neg_neg_test extends base_test;
 
 endclass: neg_neg_test
 
+// Newly Added for div
+class pos_neg_test extends base_test;
+    `uvm_component_utils(pos_neg_test)
+
+    function new(string name = "pos_neg_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        pos_neg_seq seq = pos_neg_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: pos_neg_seq
+
+class neg_pos_div_test extends base_test;
+    `uvm_component_utils(neg_pos_div_test)
+
+    function new(string name = "neg_pos_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        neg_pos_div_seq seq = neg_pos_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: neg_pos_div_seq
+
+class zero_num_div_test extends base_test;
+    `uvm_component_utils(zero_num_div_test)
+
+    function new(string name = "zero_num_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        zero_num_div_seq seq = zero_num_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: zero_num_div_seq
+
+class div_by_zero_test extends base_test;
+    `uvm_component_utils(div_by_zero_test)
+
+    function new(string name = "div_by_zero_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        div_by_zero_seq seq = div_by_zero_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: div_by_zero_seq
+
+class zero_zero_div_test extends base_test;
+    `uvm_component_utils(zero_zero_div_test)
+
+    function new(string name = "zero_zero_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        zero_zero_div_seq seq = zero_zero_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: zero_zero_div_seq
+
+class NaN_div_test extends base_test;
+    `uvm_component_utils(NaN_div_test)
+
+    function new(string name = "NaN_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        NaN_div_seq seq = NaN_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: NaN_div_seq
+
+class Inf_div_test extends base_test;
+    `uvm_component_utils(Inf_div_test)
+
+    function new(string name = "Inf_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        Inf_div_seq seq = Inf_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Inf_div_seq
+
+class norm_div_Inf_test extends base_test;
+    `uvm_component_utils(norm_div_Inf_test)
+
+    function new(string name = "norm_div_Inf_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        norm_div_Inf_seq seq = norm_div_Inf_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: norm_div_Inf_seq
+
+class Inf_Inf_div_test extends base_test;
+    `uvm_component_utils(Inf_Inf_div_test)
+
+    function new(string name = "Inf_Inf_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        Inf_Inf_div_seq seq = Inf_Inf_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Inf_Inf_div_seq
+
+class overflow_div_test extends base_test;
+    `uvm_component_utils(overflow_div_test)
+
+    function new(string name = "overflow_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        overflow_div_seq seq = overflow_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Inf_Inf_div_seq
+
+class underflow_div_test extends base_test;
+    `uvm_component_utils(underflow_div_test)
+
+    function new(string name = "underflow_div_test", uvm_component parent = null);
+            super.new(name, parent);
+    endfunction: new
+
+    task run_phase(uvm_phase phase);
+        underflow_div_seq seq = underflow_div_seq::type_id::create("seq",this);
+        
+        phase.raise_objection( this, "Starting sequence in run phase" );
+        $display("%t Starting sequence run_phase",$time);
+        seq.start(env.agt.sqr);
+        #30ns;    
+        phase.drop_objection( this , "Finished in run phase" );
+    
+    endtask
+
+endclass: Inf_Inf_div_seq
+
+// Finished with new additions for div
+
 class NaN_test extends base_test;
     `uvm_component_utils(NaN_test)
 
