@@ -101,7 +101,7 @@ class pos_neg_test extends base_test;
     
     endtask
 
-endclass: pos_neg_seq
+endclass: pos_neg_test
 
 class neg_pos_div_test extends base_test;
     `uvm_component_utils(neg_pos_div_test)
@@ -121,7 +121,7 @@ class neg_pos_div_test extends base_test;
     
     endtask
 
-endclass: neg_pos_div_seq
+endclass: neg_pos_div_test
 
 class zero_num_div_test extends base_test;
     `uvm_component_utils(zero_num_div_test)
@@ -141,7 +141,7 @@ class zero_num_div_test extends base_test;
     
     endtask
 
-endclass: zero_num_div_seq
+endclass: zero_num_div_test
 
 class div_by_zero_test extends base_test;
     `uvm_component_utils(div_by_zero_test)
@@ -161,7 +161,7 @@ class div_by_zero_test extends base_test;
     
     endtask
 
-endclass: div_by_zero_seq
+endclass: div_by_zero_test
 
 class zero_zero_div_test extends base_test;
     `uvm_component_utils(zero_zero_div_test)
@@ -181,7 +181,7 @@ class zero_zero_div_test extends base_test;
     
     endtask
 
-endclass: zero_zero_div_seq
+endclass: zero_zero_div_test
 
 class NaN_div_test extends base_test;
     `uvm_component_utils(NaN_div_test)
@@ -201,7 +201,7 @@ class NaN_div_test extends base_test;
     
     endtask
 
-endclass: NaN_div_seq
+endclass: NaN_div_test
 
 class Inf_div_test extends base_test;
     `uvm_component_utils(Inf_div_test)
@@ -221,7 +221,7 @@ class Inf_div_test extends base_test;
     
     endtask
 
-endclass: Inf_div_seq
+endclass: Inf_div_test
 
 class norm_div_Inf_test extends base_test;
     `uvm_component_utils(norm_div_Inf_test)
@@ -241,7 +241,7 @@ class norm_div_Inf_test extends base_test;
     
     endtask
 
-endclass: norm_div_Inf_seq
+endclass: norm_div_Inf_test
 
 class Inf_Inf_div_test extends base_test;
     `uvm_component_utils(Inf_Inf_div_test)
@@ -261,7 +261,7 @@ class Inf_Inf_div_test extends base_test;
     
     endtask
 
-endclass: Inf_Inf_div_seq
+endclass: Inf_Inf_div_test
 
 class overflow_div_test extends base_test;
     `uvm_component_utils(overflow_div_test)
@@ -281,7 +281,7 @@ class overflow_div_test extends base_test;
     
     endtask
 
-endclass: Inf_Inf_div_seq
+endclass: Inf_Inf_div_test
 
 class underflow_div_test extends base_test;
     `uvm_component_utils(underflow_div_test)
@@ -301,7 +301,7 @@ class underflow_div_test extends base_test;
     
     endtask
 
-endclass: Inf_Inf_div_seq
+endclass: Inf_Inf_div_test
 
 // Finished with new additions for div
 
@@ -404,6 +404,7 @@ class Zero_test extends base_test;
     endtask
 
 endclass: Zero_test
+
 class Inf_test extends base_test;
     `uvm_component_utils(Inf_test)
 

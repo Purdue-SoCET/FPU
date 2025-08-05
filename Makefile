@@ -34,6 +34,13 @@ add_uvm: clean
 	make -f new_uvm_fadd.mk dpi
 	make -f new_uvm_fadd.mk build
 	make -f new_uvm_fadd.mk run
+
+div_uvm: clean
+	make -f new_uvm_fdiv.mk clean
+	make -f new_uvm_fdiv.mk
+	make -f new_uvm_fdiv.mk dpi
+	make -f new_uvm_fdiv.mk build
+	make -f new_uvm_fdiv.mk run
 # clean targets
 clean:
 	rm -rf build/
