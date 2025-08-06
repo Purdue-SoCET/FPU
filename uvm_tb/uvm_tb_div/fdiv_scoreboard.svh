@@ -50,7 +50,7 @@ class fdiv_scoreboard extends uvm_scoreboard;
             // uvm_report_info("Input float", $sformatf("%16b * %16b => %.8f * %.8f", actual_txn.float1, actual_txn.float2,num1,num2), UVM_LOW);
 
             // calculate the expected product
-            expected_product = compute_expected_product(actual_txn.float1,actual_txn.float2);
+            expected_product = compute_expected_quotient(actual_txn.float1,actual_txn.float2);
             // get actual product
             actual_product = actual_txn.product;
 
@@ -58,7 +58,7 @@ class fdiv_scoreboard extends uvm_scoreboard;
             if (actual_product != expected_product) begin
                 MISMATCH++;
                 uvm_report_info("Input float", $sformatf("%b * %b => %e * %e", actual_txn.float1[WIDTH-1:0], actual_txn.float2[WIDTH-1:0],num1,num2), UVM_LOW);
-                uvm_report_info("Product", $sformatf("%e",num1*num2), UVM_LOW);
+                uvm_report_info("Product", $sformatf("%e",num1/num2), UVM_LOW);
                 `uvm_error("fdiv_Scoreboard", $sformatf("\nPRODUCT MISMATCH: \nExpected product: %b(%e)\n  Actual product: %b(%e)", 
                                                             expected_product[WIDTH-1:0],binary_to_float(expected_product), actual_product[WIDTH-1:0],binary_to_float(actual_product)))
             end
@@ -73,67 +73,143 @@ class fdiv_scoreboard extends uvm_scoreboard;
        
     endfunction
 
-    function logic [WIDTH-1:0] compute_expected_product(logic [WIDTH-1:0] binary_float1, logic [WIDTH-1:0] binary_float2);
-        logic sign_product;
-        // logic [WIDTH-1:0]qNaN,sNaN,Inf,nInf;
-        real float_product;
-        logic [WIDTH-1:0] binary_product;
-        int exp_overflow;
-        real norm_bound;
-        real subnorm_bound;
+    // function logic [WIDTH-1:0] compute_expected_product(logic [WIDTH-1:0] binary_float1, logic [WIDTH-1:0] binary_float2);
+    //     logic sign_product;
+    //     // logic [WIDTH-1:0]qNaN,sNaN,Inf,nInf;
+    //     real float_product;
+    //     logic [WIDTH-1:0] binary_product;
+    //     int exp_overflow;
+    //     real norm_bound;
+    //     real subnorm_bound;
 
-        norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number
-        subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number
+    //     norm_bound = binary_to_float(MAX_NORM);  //maximum normalize number
+    //     subnorm_bound = binary_to_float(MINI_SUB); //smallest subnormal number
 
-        //calculate signed bit
-        sign_product = binary_float1[WIDTH-1] ^ binary_float2[WIDTH-1];
+    //     //calculate signed bit
+    //     sign_product = binary_float1[WIDTH-1] ^ binary_float2[WIDTH-1];
 
-        // Handling NaN case
-        // Any calculation involved NaN {exp = 5'b11111, mant != 0} => qNaN
-        if (isNaN(binary_float1) || isNaN(binary_float2)) begin
-            return QNAN; 
-        end
+    //     // Handling NaN case
+    //     // Any calculation involved NaN {exp = 5'b11111, mant != 0} => qNaN
+    //     if (isNaN(binary_float1) || isNaN(binary_float2)) begin
+    //         return QNAN; 
+    //     end
         
-        // Handling Zero case
-        if(binary_float1[EXPONENT_MSB:FRACTION_LSB] == '0 || binary_float2[EXPONENT_MSB:FRACTION_LSB] == '0) begin
-            if(isInf(binary_float1) || isInf(binary_float2)) begin
-                return QNAN; // Zero * Inf => qNaN
-            end
-            else begin
-                return {sign_product,{EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};    // +/- 0
-            end
-        end
+    //     // Handling Zero case
+    //     if(binary_float1[EXPONENT_MSB:FRACTION_LSB] == '0 || binary_float2[EXPONENT_MSB:FRACTION_LSB] == '0) begin
+    //         if(isInf(binary_float1) || isInf(binary_float2)) begin
+    //             return QNAN; // Zero * Inf => qNaN
+    //         end
+    //         else begin
+    //             return {sign_product,{EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};    // +/- 0
+    //         end
+    //     end
             
-        // Handling Inf case
-        if (isInf(binary_float1) || isInf(binary_float2)) begin
-            return {sign_product,{EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b0}}};  // Inf
-        end
+    //     // Handling Inf case
+    //     if (isInf(binary_float1) || isInf(binary_float2)) begin
+    //         return {sign_product,{EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b0}}};  // Inf
+    //     end
 
-        float_product = binary_to_float(binary_float1)*binary_to_float(binary_float2);
-        // uvm_report_info("Product", $sformatf("%.8f",float_product), UVM_LOW);
+    //     float_product = binary_to_float(binary_float1)/binary_to_float(binary_float2);
+    //     // uvm_report_info("Product", $sformatf("%.8f",float_product), UVM_LOW);
 
-        // Handling Underflow case
-        if((float_product < (subnorm_bound) && float_product > (-subnorm_bound))) begin
-            return {sign_product,{EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};    //underflow-> flush to 0
-        end
+    //     // Handling Underflow case
+    //     if((float_product < (subnorm_bound) && float_product > (-subnorm_bound))) begin
+    //         return {sign_product,{EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};    //underflow-> flush to 0
+    //     end
         
-        // Handling Overflow case
-        if ((float_product > norm_bound) || (float_product < (-norm_bound))) begin
-            if(sign_product) begin 
-                return NINF; //Overflow-> -Inf
-            end
-            else begin 
-                return INF;  //Overflow-> Inf
-            end
-        end
+    //     // Handling Overflow case
+    //     if ((float_product > norm_bound) || (float_product < (-norm_bound))) begin
+    //         if(sign_product) begin 
+    //             return NINF; //Overflow-> -Inf
+    //         end
+    //         else begin 
+    //             return INF;  //Overflow-> Inf
+    //         end
+    //     end
         
-        //convert float to binary
-        binary_product = float_to_binary(float_product);
+    //     //convert float to binary
+    //     binary_product = float_to_binary(float_product);
 
-        return binary_product;
+    //     return binary_product;
     
-    endfunction
+    // endfunction
 
+/// new function to compute expected quotient
+    // This function computes the expected quotient of two binary floating-point numbers.
+
+function logic [WIDTH-1:0] compute_expected_quotient(
+  logic [WIDTH-1:0] binary_float1,
+  logic [WIDTH-1:0] binary_float2
+);
+  logic sign_quotient;
+  real  float_quotient;
+  logic [WIDTH-1:0] binary_quotient;
+  real  norm_bound, subnorm_bound;
+
+  norm_bound   = binary_to_float(MAX_NORM);  // largest normal value
+  subnorm_bound= binary_to_float(MINI_SUB);  // smallest subnormal value
+
+    //Sign of the division quotient
+  sign_quotient = binary_float1[WIDTH-1] ^ binary_float2[WIDTH-1];
+
+  //NaN propagation
+  if (isNaN(binary_float1) || isNaN(binary_float2)) begin
+    return QNAN;
+  end
+
+  //Zero numerator
+  if (binary_float1[EXPONENT_MSB:EXPONENT_LSB]==0 &&
+      binary_float1[FRACTION_MSB:FRACTION_LSB]==0) begin
+    if (isInf(binary_float2)) 
+      return QNAN;          
+    else
+      return {sign_quotient, {EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};
+  end
+
+
+  // Divide by zero = Inf (unless Inf/0 = NaN)
+  if (binary_float2[EXPONENT_MSB:EXPONENT_LSB]==0 &&
+      binary_float2[FRACTION_MSB:FRACTION_LSB]==0) begin
+    if (isInf(binary_float1))
+      return QNAN;           
+    else
+      return {sign_quotient, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b0}}};
+  end
+
+  //Infinity cases
+  if (isInf(binary_float1) || isInf(binary_float2)) begin
+    if (isInf(binary_float1) && !isInf(binary_float2))
+      return {sign_quotient, {EXPONENT_WIDTH{1'b1}}, {FRACTION_WIDTH{1'b0}}};
+    if (!isInf(binary_float1) && isInf(binary_float2))
+      return {sign_quotient, {EXPONENT_WIDTH{1'b0}}, {FRACTION_WIDTH{1'b0}}};
+    return QNAN;
+  end
+
+    // Calculate the quotient in floating-point format
+  float_quotient = binary_to_float(binary_float1) / binary_to_float(binary_float2);
+
+  // Underflow
+  if (float_quotient >  -subnorm_bound && float_quotient <   subnorm_bound) begin
+    return {sign_quotient, {EXPONENT_WIDTH+FRACTION_WIDTH{1'b0}}};
+  end
+
+  // Overflow
+  if (float_quotient >   norm_bound  || float_quotient <  -norm_bound) begin
+    return sign_quotient 
+      ? NINF  // negative infinity
+      : INF;  // positive infinity
+  end
+
+  // Round and pack to binary form
+  binary_quotient = float_to_binary(float_quotient);
+
+  return binary_quotient;
+endfunction
+
+
+
+
+    // Convert binary floating-point to real
 
     function real binary_to_float(logic [WIDTH-1:0] binary_float);
         int signed S = binary_float[WIDTH-1];
